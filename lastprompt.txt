@@ -1,0 +1,11 @@
+Current backend restart appears unstable: the smoke test now reports failures for /api/health and also ///search//profile (likely because the server didn’t start correctly after the restart, or crashed before serving).
+
+Please do one quick check in the terminal that you started with node d:\myProjects\pinpin\server\src\server.js:
+
+What exact message did you see right after starting?
+Ideally it should print: “PinPin auth server listening on port 3001”
+If there was an error/stack trace, paste it here.
+After that, I’ll immediately rerun:
+
+GET /api/health
+GET /
