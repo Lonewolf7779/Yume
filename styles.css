@@ -186,11 +186,7 @@ body {
 }
 
 .hero-showcase-backdrop {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, #fff9fa 0%, #fff9fa 38%, rgba(255, 249, 250, 0.85) 52%, transparent 75%);
-    z-index: 1;
-    pointer-events: none;
+    display: none;
 }
 
 .hero-left-content {
