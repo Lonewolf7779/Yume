@@ -5,9 +5,13 @@ import {
   getFalGenerationResult,
   getFalGenerationStatus,
   getFalModel,
+  getFalTransformModel,
   isFalConfigured,
-  submitFalGeneration
+  submitFalGeneration,
+  submitFalTransformation
 } from '../services/fal.js';
+import { generationIpRateLimiter, checkDailyGenerationQuota } from '../services/rateLimiter.js';
+import { getPresignedOrProxyUrl } from '../services/storage.js';
 
 const router = Router();
 
@@ -27,6 +31,7 @@ function toGeneration(row) {
     seed: row.seed,
     model: row.model,
     status: row.status,
+    sourceUploadId: row.source_upload_id || null,
     images: Array.isArray(row.images) ? row.images : [],
     error: row.error_message,
     createdAt: row.created_at,
@@ -88,13 +93,13 @@ async function refreshGeneration(generation) {
       const providerResult = await getFalGenerationResult(generation.provider_response_url);
       const images = Array.isArray(providerResult?.images)
         ? providerResult.images
-          .filter((image) => image?.url)
-          .map((image) => ({
-            url: image.url,
-            width: image.width || null,
-            height: image.height || null,
-            contentType: image.content_type || null
-          }))
+            .filter((image) => image?.url)
+            .map((image) => ({
+              url: image.url,
+              width: image.width || null,
+              height: image.height || null,
+              contentType: image.content_type || null
+            }))
         : [];
 
       if (images.length === 0) {
@@ -153,11 +158,21 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/', requireAuth, async (req, res) => {
+/**
+ * POST /api/generations
+ * Text-to-Image AI generation endpoint with rate limits and quota enforcement
+ */
+router.post('/', requireAuth, generationIpRateLimiter, async (req, res) => {
   if (!isFalConfigured()) {
     return res.status(503).json({
       error: 'Image generation is not configured yet. Add FAL_KEY to the server environment.'
     });
+  }
+
+  try {
+    await checkDailyGenerationQuota(pgPool, req.session.userId);
+  } catch (quotaError) {
+    return res.status(429).json({ error: quotaError.message });
   }
 
   const prompt = readPrompt(req.body?.prompt);
@@ -220,6 +235,104 @@ router.post('/', requireAuth, async (req, res) => {
   } catch (error) {
     console.error('Failed to create generation', error);
     return res.status(500).json({ error: 'Unable to create this generation' });
+  }
+});
+
+/**
+ * POST /api/generations/transform
+ * Dedicated Personal Photo Transformation endpoint using Fal Image-to-Image / Redux model
+ */
+router.post('/transform', requireAuth, generationIpRateLimiter, async (req, res) => {
+  if (!isFalConfigured()) {
+    return res.status(503).json({
+      error: 'Image transformation is not configured yet. Add FAL_KEY to the server environment.'
+    });
+  }
+
+  try {
+    await checkDailyGenerationQuota(pgPool, req.session.userId);
+  } catch (quotaError) {
+    return res.status(429).json({ error: quotaError.message });
+  }
+
+  const sourceUploadId = Number(req.body?.sourceUploadId);
+  const prompt = readPrompt(req.body?.prompt);
+  const imageSize = typeof req.body?.imageSize === 'string' ? req.body.imageSize : 'portrait_4_3';
+  const size = IMAGE_SIZES.has(imageSize);
+  const seed = readSeed(req.body?.seed);
+
+  if (!Number.isSafeInteger(sourceUploadId) || sourceUploadId < 1) {
+    return res.status(400).json({ error: 'Valid source photo upload ID is required for photo transformation' });
+  }
+
+  if (prompt.length < 3 || prompt.length > 1600) {
+    return res.status(400).json({ error: 'Prompt must be between 3 and 1600 characters' });
+  }
+
+  if (!size) {
+    return res.status(400).json({ error: 'Choose a valid image size' });
+  }
+
+  try {
+    // 1. Verify user owns the source photo upload
+    const uploadResult = await pgPool.query(
+      `SELECT id, user_id, storage_key FROM user_uploads WHERE id = $1 AND user_id = $2`,
+      [sourceUploadId, req.session.userId]
+    );
+
+    if (uploadResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Source uploaded photo not found or access denied.' });
+    }
+
+    const upload = uploadResult.rows[0];
+
+    // 2. Generate short-lived view URL for Fal worker access
+    const imageUrl = await getPresignedOrProxyUrl(req, upload.id, upload.storage_key);
+
+    // 3. Create queued generation record
+    const created = await pgPool.query(
+      `
+        INSERT INTO generations (user_id, prompt, image_size, seed, model, status, source_upload_id)
+        VALUES ($1, $2, $3, $4, $5, 'queued', $6)
+        RETURNING *
+      `,
+      [req.session.userId, prompt, imageSize, seed, getFalTransformModel(), upload.id]
+    );
+
+    let generation = created.rows[0];
+
+    try {
+      const submission = await submitFalTransformation({
+        prompt,
+        imageUrl,
+        imageSize,
+        seed
+      });
+
+      const updated = await pgPool.query(
+        `
+          UPDATE generations
+          SET status = 'processing',
+              provider_request_id = $1,
+              provider_status_url = $2,
+              provider_response_url = $3,
+              updated_at = NOW()
+          WHERE id = $4
+          RETURNING *
+        `,
+        [submission.requestId, submission.statusUrl, submission.responseUrl, generation.id]
+      );
+      generation = updated.rows[0];
+    } catch (error) {
+      console.error('fal photo transformation submission failed', error);
+      generation = await markGenerationFailed(generation, 'The image provider could not start photo transformation');
+      return res.status(502).json({ error: 'The image provider could not start photo transformation', generation: toGeneration(generation) });
+    }
+
+    return res.status(202).json({ generation: toGeneration(generation) });
+  } catch (error) {
+    console.error('Failed to create photo transformation', error);
+    return res.status(500).json({ error: 'Unable to create photo transformation' });
   }
 });
 
