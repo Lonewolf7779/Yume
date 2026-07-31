@@ -2026,24 +2026,29 @@ bottomNavBtns.forEach((btn) => {
     });
 });
 
-logo.addEventListener('click', () => navigateTo('/home'));
+logo?.addEventListener('click', () => navigateTo('/home'));
 
-createNavBtn.addEventListener('click', () => {
+document.querySelector('.yume-brand')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigateTo('/home');
+});
+
+createNavBtn?.addEventListener('click', () => {
     if (!requireAuthOrRedirect('/create')) return;
     navigateTo('/create');
 });
 
-notificationsBtn.addEventListener('click', () => {
+notificationsBtn?.addEventListener('click', () => {
     if (!requireAuthOrRedirect('/activity')) return;
     navigateTo('/activity');
 });
 
-profileNavBtn.addEventListener('click', () => {
+profileNavBtn?.addEventListener('click', () => {
     if (!requireAuthOrRedirect('/profile')) return;
     navigateTo('/profile');
 });
 
-searchInput.addEventListener('input', (event) => {
+searchInput?.addEventListener('input', (event) => {
     activeSearchTerm = event.target.value.trim();
     if (getRoute().page !== 'search') {
         navigateTo('/search');
