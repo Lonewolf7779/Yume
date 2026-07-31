@@ -16,7 +16,7 @@ Create and share high-quality AI images—from anime characters and original pro
 
 ## Current status
 
-The repository currently contains the Yume frontend prototype and an early authentication backend foundation. Image generation, uploads, storage, and social-content persistence are still in development.
+The repository contains the Yume frontend, PostgreSQL-backed authentication, and a Flux 1.1 Pro generation flow. Personal-photo uploads, permanent storage, and social-content persistence are still in development.
 
 ## Project direction
 
@@ -34,12 +34,22 @@ The current runnable foundation includes the frontend shell, PostgreSQL-backed a
 
 Never commit `server/.env`. Rotate any credential that was previously committed.
 
+## Generate with fal Flux 1.1 Pro
+
+1. Create a fal API key in your fal account.
+2. In `server/.env`, set `FAL_KEY` to that value. It must remain on the server—never put it in frontend JavaScript or GitHub.
+3. Keep `FAL_IMAGE_MODEL=fal-ai/flux-pro/v1.1` (the default).
+4. Start the server, sign in, and open **Create**.
+
+Yume creates a private queued generation record and polls its own backend for the result. Generated images can be revisited, re-used as prompts, opened, downloaded, or removed from the library. No fal request is made until a real server-side key is configured.
+
+The current library stores the provider's returned image URL. Before accepting real-person uploads or promising long-term storage, add an object-storage provider, moderation, consent controls, and deletion handling.
+
 ## Next product milestones
 
 The following needs a deliberate provider choice and credentials before it can be built safely:
 
-- AI image-generation provider and model selection
-- Object storage for uploads and generated images
+- Object storage for uploads and permanent generated-image archives
 - Content moderation, consent, and reporting for real-person uploads
 - Persistent posts, feed, likes, saves, follows, profiles, and activity
 

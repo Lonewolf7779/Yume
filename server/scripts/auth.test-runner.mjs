@@ -130,6 +130,18 @@ async function main() {
     });
     assert.equal(login.response.status, 200);
 
+    const generationList = await requestJSON(loginJar, `${baseUrl}/api/generations`);
+    assert.equal(generationList.response.status, 200);
+    assert.deepEqual(generationList.body.generations, []);
+
+    const unconfiguredGeneration = await requestJSON(loginJar, `${baseUrl}/api/generations`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ prompt: 'A quiet moonlit garden', imageSize: 'portrait_4_3' })
+    });
+    assert.equal(unconfiguredGeneration.response.status, 503);
+    assert.match(unconfiguredGeneration.body.error, /not configured/i);
+
     const wrongPassword = await requestJSON(new CookieJar(), `${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

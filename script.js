@@ -103,6 +103,9 @@ const profileNavBtn = document.querySelector('.profile-btn');
 
 let activeSearchTerm = '';
 let activeCategory = 'all';
+let generationPollingTimer = null;
+let generationLibraryFilter = 'all';
+let latestGenerationLibrary = [];
 
 // Auth state (in-memory)
 const authState = {
@@ -184,6 +187,7 @@ function navigateTo(route) {
 
 function renderRoute() {
     const { page, id } = getRoute();
+    if (page !== 'create') stopGenerationPolling();
     const routes = {
         home: renderHomePage,
         search: renderSearchPage,
@@ -454,47 +458,317 @@ function renderSearchPage() {
     if (grid) renderCards(filteredPins, grid);
 }
 
+
 function renderCreatePage() {
+    stopGenerationPolling();
+    generationLibraryFilter = 'all';
+    latestGenerationLibrary = [];
+
     appRoot.innerHTML = `
-        <section class="page-shell">
-            <header class="page-header">
+        <section class="page-shell studio-page">
+            <div class="studio-orb studio-orb-one" aria-hidden="true"></div>
+            <div class="studio-orb studio-orb-two" aria-hidden="true"></div>
+            <header class="studio-hero">
                 <div>
-                    <h1 class="page-title">Create</h1>
-                    <p class="page-subtitle">Mock publishing flow for a new visual idea</p>
+                    <p class="studio-kicker">YUME LAB · FLUX 1.1 PRO</p>
+                    <h1 class="studio-title">Make the image<br><em>only you can imagine.</em></h1>
+                    <p class="studio-subtitle">Build an original character, an anime scene, or a photoreal visual. Your prompt and creations stay in your private studio.</p>
                 </div>
+                <div class="studio-hero-mark" aria-hidden="true"><span>✦</span><span>✦</span><span>✦</span></div>
             </header>
-            <div class="create-layout">
-                <div class="upload-zone surface-panel">
-                    <div>
-                        <div class="upload-icon">
-                            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
-                                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                            </svg>
+
+            <div class="studio-layout">
+                <form class="generation-studio surface-panel" data-generation-form>
+                    <div class="studio-panel-heading">
+                        <div><p class="studio-label">01 · DESCRIBE YOUR DREAM</p><h2>Prompt canvas</h2></div>
+                        <span class="studio-model-pill">fal · Flux 1.1 Pro</span>
+                    </div>
+                    <label class="sr-only" for="generationPrompt">Image prompt</label>
+                    <textarea id="generationPrompt" class="generation-prompt" data-generation-prompt maxlength="1600" placeholder="A luminous anime heroine standing in a rain-soaked neon alley, cinematic light, intricate details..." required></textarea>
+                    <div class="prompt-footer"><span>Be specific about subject, setting, light, mood, and camera.</span><span data-prompt-count>0 / 1,600</span></div>
+
+                    <div class="studio-control-group">
+                        <div class="studio-control-copy"><p class="studio-label">02 · START WITH A SPARK</p><h3>Prompt starters</h3></div>
+                        <div class="prompt-preset-grid">
+                            <button type="button" class="prompt-preset" data-prompt-preset="An elegant anime girl, long silver hair, shrine courtyard at dusk, cherry blossom petals, dreamy cinematic light, detailed illustration">Anime muse <span>↗</span></button>
+                            <button type="button" class="prompt-preset" data-prompt-preset="A fashion editorial portrait, soft studio flash, sculptural fabric, warm cream background, magazine photography, refined detail">Editorial glow <span>↗</span></button>
+                            <button type="button" class="prompt-preset" data-prompt-preset="A futuristic city at blue hour, rain reflections, elevated train, atmospheric fog, cinematic wide angle, ultra detailed">Neo city <span>↗</span></button>
+                            <button type="button" class="prompt-preset" data-prompt-preset="A quiet fantasy library hidden inside an ancient tree, glowing lanterns, moss, magical realism, rich texture, inviting mood">Dream world <span>↗</span></button>
                         </div>
-                        <h2 class="section-title">Add an image</h2>
-                        <p class="page-subtitle">This static prototype uses mock data, so uploads are represented as a preview flow.</p>
+                    </div>
+
+                    <div class="studio-control-group">
+                        <div class="studio-control-copy"><p class="studio-label">03 · FRAME THE STORY</p><h3>Image format</h3></div>
+                        <div class="aspect-ratio-grid" role="radiogroup" aria-label="Image format">
+                            <button type="button" class="aspect-button" data-image-size="square" role="radio" aria-checked="false"><span class="ratio-icon ratio-square"></span><span>Square</span><small>1:1</small></button>
+                            <button type="button" class="aspect-button active" data-image-size="portrait_4_3" role="radio" aria-checked="true"><span class="ratio-icon ratio-portrait"></span><span>Portrait</span><small>4:3</small></button>
+                            <button type="button" class="aspect-button" data-image-size="landscape_4_3" role="radio" aria-checked="false"><span class="ratio-icon ratio-landscape"></span><span>Landscape</span><small>4:3</small></button>
+                        </div>
+                    </div>
+
+                    <details class="generation-advanced">
+                        <summary>Fine tune <span>Optional reproducible seed</span></summary>
+                        <label class="seed-label" for="generationSeed">Seed<input id="generationSeed" data-generation-seed inputmode="numeric" pattern="[0-9]*" placeholder="Leave empty for surprise" /></label>
+                    </details>
+
+                    <div class="studio-submit-row">
+                        <button class="generate-art-button" type="submit" data-generate-button><span class="generate-art-icon">✦</span><span data-generate-button-label>Generate with Flux</span><span class="generate-art-arrow">→</span></button>
+                        <p class="studio-status" data-studio-status aria-live="polite">Ready when your idea is.</p>
+                    </div>
+                </form>
+
+                <aside class="studio-side-note surface-panel" aria-label="Generation notes">
+                    <div class="studio-side-icon">✦</div><h2>From thought<br>to visual.</h2>
+                    <p>Each result lands in your private library. Re-use prompts to evolve an idea instead of starting over.</p>
+                    <div class="studio-side-rule"></div><p class="studio-side-small">Generation starts only after the server owner adds the private fal API key.</p>
+                </aside>
+            </div>
+
+            <section class="creation-library" aria-labelledby="creationLibraryTitle">
+                <div class="creation-library-header">
+                    <div><p class="studio-kicker">YOUR PRIVATE COLLECTION</p><h2 id="creationLibraryTitle">Creation library</h2></div>
+                    <div class="generation-filter-bar" role="group" aria-label="Filter creations">
+                        <button type="button" class="generation-filter active" data-generation-filter="all">All</button>
+                        <button type="button" class="generation-filter" data-generation-filter="working">In progress</button>
+                        <button type="button" class="generation-filter" data-generation-filter="completed">Ready</button>
                     </div>
                 </div>
-                <form class="mock-form surface-panel">
-                    <div class="mock-field">
-                        <label for="pinTitle">Title</label>
-                        <input id="pinTitle" value="Weekend moodboard detail" />
-                    </div>
-                    <div class="mock-field">
-                        <label for="pinDescription">Description</label>
-                        <textarea id="pinDescription">A saved visual reference for styling, travel plans, and future collections.</textarea>
-                    </div>
-                    <div class="mock-field">
-                        <label for="pinCategory">Category</label>
-                        <select id="pinCategory">
-                            ${categories.filter((category) => category !== 'all').map((category) => `<option>${capitalize(category)}</option>`).join('')}
-                        </select>
-                    </div>
-                    <button class="primary-action" type="button">Preview creation</button>
-                </form>
-            </div>
+                <div class="generation-library-grid" data-generation-library aria-live="polite"><div class="generation-library-loading"><span></span><span></span><span></span></div></div>
+            </section>
         </section>
     `;
+
+    const form = appRoot.querySelector('[data-generation-form]');
+    const promptInput = appRoot.querySelector('[data-generation-prompt]');
+    const seedInput = appRoot.querySelector('[data-generation-seed]');
+    const promptCount = appRoot.querySelector('[data-prompt-count]');
+    const generateButton = appRoot.querySelector('[data-generate-button]');
+    const generateButtonLabel = appRoot.querySelector('[data-generate-button-label]');
+    const library = appRoot.querySelector('[data-generation-library]');
+
+    const updatePromptCount = () => {
+        promptCount.textContent = `${promptInput.value.length.toLocaleString()} / 1,600`;
+    };
+    updatePromptCount();
+    promptInput.addEventListener('input', updatePromptCount);
+
+    appRoot.querySelectorAll('[data-prompt-preset]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const preset = button.dataset.promptPreset || '';
+            promptInput.value = promptInput.value.trim() ? `${promptInput.value.trim()}, ${preset}` : preset;
+            updatePromptCount();
+            promptInput.focus();
+            setStudioStatus('Prompt starter added — make it yours.', 'ready');
+        });
+    });
+
+    appRoot.querySelectorAll('[data-image-size]').forEach((button) => {
+        button.addEventListener('click', () => {
+            appRoot.querySelectorAll('[data-image-size]').forEach((option) => {
+                const active = option === button;
+                option.classList.toggle('active', active);
+                option.setAttribute('aria-checked', String(active));
+            });
+        });
+    });
+
+    appRoot.querySelectorAll('[data-generation-filter]').forEach((button) => {
+        button.addEventListener('click', () => {
+            generationLibraryFilter = button.dataset.generationFilter || 'all';
+            appRoot.querySelectorAll('[data-generation-filter]').forEach((option) => option.classList.toggle('active', option === button));
+            renderGenerationLibrary(library, latestGenerationLibrary);
+        });
+    });
+
+    library.addEventListener('click', async (event) => {
+        const reuseButton = event.target.closest('[data-generation-reuse]');
+        const deleteButton = event.target.closest('[data-generation-delete]');
+
+        if (reuseButton) {
+            const generation = latestGenerationLibrary.find((item) => String(item.id) === reuseButton.dataset.generationReuse);
+            if (!generation) return;
+            promptInput.value = generation.prompt || '';
+            updatePromptCount();
+            promptInput.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setStudioStatus('Prompt loaded — adjust it and create a new variation.', 'ready');
+            return;
+        }
+
+        if (deleteButton) {
+            const generationId = Number(deleteButton.dataset.generationDelete);
+            if (!Number.isSafeInteger(generationId) || !window.confirm('Remove this creation from your Yume library?')) return;
+            deleteButton.disabled = true;
+            const { res, body } = await apiFetchJson(`/api/generations/${generationId}`, { method: 'DELETE' });
+            if (!res.ok) {
+                deleteButton.disabled = false;
+                setStudioStatus(body?.error || 'Could not remove that creation.', 'error');
+                return;
+            }
+            latestGenerationLibrary = latestGenerationLibrary.filter((item) => item.id !== generationId);
+            renderGenerationLibrary(library, latestGenerationLibrary);
+            setStudioStatus('Creation removed from your library.', 'ready');
+        }
+    });
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const prompt = promptInput.value.trim();
+        const imageSize = appRoot.querySelector('[data-image-size].active')?.dataset.imageSize || 'portrait_4_3';
+        if (prompt.length < 3) {
+            setStudioStatus('Give the image a little more detail before generating.', 'error');
+            promptInput.focus();
+            return;
+        }
+
+        generateButton.disabled = true;
+        generateButtonLabel.textContent = 'Sending your idea…';
+        setStudioStatus('Opening a private generation request…', 'working');
+
+        try {
+            const { res, body } = await apiFetchJson('/api/generations', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ prompt, imageSize, seed: seedInput.value.trim() })
+            });
+            if (!res.ok) {
+                setStudioStatus(body?.error || 'The generation could not start.', 'error');
+                await loadGenerationLibrary();
+                return;
+            }
+            setStudioStatus('Your image is in the Flux queue. This usually takes a moment.', 'working');
+            await loadGenerationLibrary();
+            pollGenerationUntilSettled(body.generation.id);
+        } catch {
+            setStudioStatus('Could not reach Yume’s generation service. Please try again.', 'error');
+        } finally {
+            generateButton.disabled = false;
+            generateButtonLabel.textContent = 'Generate with Flux';
+        }
+    });
+
+    loadGenerationLibrary({ resumePolling: true });
+}
+
+function stopGenerationPolling() {
+    if (generationPollingTimer) window.clearTimeout(generationPollingTimer);
+    generationPollingTimer = null;
+}
+
+function isGenerationStudioVisible() {
+    return Boolean(appRoot.querySelector('[data-generation-form]'));
+}
+
+function setStudioStatus(message, tone = 'ready') {
+    const status = appRoot.querySelector('[data-studio-status]');
+    if (!status) return;
+    status.textContent = message;
+    status.dataset.tone = tone;
+}
+
+async function loadGenerationLibrary({ resumePolling = false } = {}) {
+    const library = appRoot.querySelector('[data-generation-library]');
+    if (!library) return;
+    try {
+        const { res, body } = await apiFetchJson('/api/generations');
+        if (!res.ok) {
+            library.innerHTML = `<div class="generation-empty"><strong>Your library is unavailable right now.</strong><span>${escapeHtml(body?.error || 'Try refreshing the page.')}</span></div>`;
+            return;
+        }
+        latestGenerationLibrary = Array.isArray(body?.generations) ? body.generations : [];
+        renderGenerationLibrary(library, latestGenerationLibrary);
+        if (resumePolling) {
+            const pending = latestGenerationLibrary.find((item) => ['queued', 'processing'].includes(item.status));
+            if (pending) pollGenerationUntilSettled(pending.id);
+        }
+    } catch {
+        library.innerHTML = '<div class="generation-empty"><strong>Your library is unavailable right now.</strong><span>Check your connection and try again.</span></div>';
+    }
+}
+
+function renderGenerationLibrary(library, generations) {
+    if (!library) return;
+    const visible = generations.filter((generation) => {
+        if (generationLibraryFilter === 'working') return ['queued', 'processing'].includes(generation.status);
+        if (generationLibraryFilter === 'completed') return generation.status === 'completed';
+        return true;
+    });
+
+    if (!visible.length) {
+        const copy = generations.length ? 'No creations match this view yet.' : 'Your first image will appear here, ready to revisit whenever inspiration strikes.';
+        library.innerHTML = `<div class="generation-empty"><div class="generation-empty-icon">✦</div><strong>${generationLibraryFilter === 'all' ? 'A clean canvas is waiting.' : 'Nothing here yet.'}</strong><span>${copy}</span></div>`;
+        return;
+    }
+
+    library.innerHTML = visible.map((generation) => {
+        const image = generation.images?.[0];
+        const imageUrl = getSafeExternalUrl(image?.url);
+        const pending = ['queued', 'processing'].includes(generation.status);
+        const failed = generation.status === 'failed';
+        const statusLabel = generation.status === 'completed' ? 'Ready' : failed ? 'Needs attention' : generation.status === 'queued' ? 'Queued' : 'Creating';
+        const visual = imageUrl
+            ? `<img class="generation-card-image" src="${imageUrl}" alt="Generated creation" loading="lazy" />`
+            : `<div class="generation-image-placeholder ${pending ? 'is-pending' : failed ? 'is-failed' : ''}"><div class="generation-placeholder-orb"></div><span>${pending ? 'Making your visual…' : failed ? 'Generation stopped' : 'No preview returned'}</span></div>`;
+
+        return `
+            <article class="generation-card ${pending ? 'is-pending' : ''} ${failed ? 'is-failed' : ''}">
+                <div class="generation-card-visual">${visual}<span class="generation-status status-${escapeHtml(generation.status)}">${statusLabel}</span>${pending ? '<div class="generation-sheen" aria-hidden="true"></div>' : ''}</div>
+                <div class="generation-card-body">
+                    <p class="generation-card-prompt">${escapeHtml(generation.prompt)}</p>
+                    <div class="generation-card-meta"><span>Flux 1.1 Pro</span><time datetime="${escapeHtml(String(generation.createdAt || ''))}">${escapeHtml(formatGenerationDate(generation.createdAt))}</time></div>
+                    ${failed && generation.error ? `<p class="generation-card-error">${escapeHtml(generation.error)}</p>` : ''}
+                    <div class="generation-card-actions">
+                        <button type="button" data-generation-reuse="${generation.id}">Use prompt</button>
+                        ${imageUrl ? `<a href="${imageUrl}" target="_blank" rel="noopener noreferrer" download>Open / save</a>` : ''}
+                        <button type="button" class="generation-delete" data-generation-delete="${generation.id}">Remove</button>
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+async function pollGenerationUntilSettled(generationId) {
+    stopGenerationPolling();
+    const checkStatus = async () => {
+        if (!isGenerationStudioVisible()) return;
+        try {
+            const { res, body } = await apiFetchJson(`/api/generations/${generationId}`);
+            if (!res.ok) {
+                setStudioStatus(body?.error || 'We could not check that generation yet.', 'error');
+                return;
+            }
+            await loadGenerationLibrary();
+            const status = body?.generation?.status;
+            if (['queued', 'processing'].includes(status)) {
+                setStudioStatus(status === 'queued' ? 'Your idea is queued with Flux…' : 'Flux is drawing your visual…', 'working');
+                generationPollingTimer = window.setTimeout(checkStatus, 2400);
+                return;
+            }
+            generationPollingTimer = null;
+            if (status === 'completed') setStudioStatus('Your creation is ready in the library below.', 'success');
+            else setStudioStatus(body?.generation?.error || 'This generation did not finish. You can refine the prompt and try again.', 'error');
+        } catch {
+            setStudioStatus('Still trying to reach the image service…', 'working');
+            generationPollingTimer = window.setTimeout(checkStatus, 3500);
+        }
+    };
+    await checkStatus();
+}
+
+function getSafeExternalUrl(value) {
+    if (typeof value !== 'string') return '';
+    try {
+        const url = new URL(value);
+        return ['https:', 'http:'].includes(url.protocol) ? escapeHtml(url.href) : '';
+    } catch {
+        return '';
+    }
+}
+
+function formatGenerationDate(value) {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? 'Just now' : new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' }).format(date);
 }
 
 function renderActivityPage() {
@@ -1309,6 +1583,15 @@ function filterPins(searchTerm, category) {
         const searchableText = `${pin.title} ${pin.category} ${pin.creator.name} ${pin.creator.handle}`.toLowerCase();
         return matchesCategory && (!term || searchableText.includes(term));
     });
+}
+
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 function formatNumber(num) {
