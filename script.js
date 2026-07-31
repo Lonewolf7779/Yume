@@ -279,7 +279,9 @@ function renderHomePage() {
                 </div>
             </div>
 
-            <div class="hero-right-artwork" aria-hidden="true"></div>
+            <div class="hero-right-artwork" aria-hidden="true">
+                <img src="img/mock_full_hero.jpg" alt="Hero artwork" class="hero-right-artwork-img" />
+            </div>
         </section>
 
         <!-- Feed Header + Visual Filter Bar -->
