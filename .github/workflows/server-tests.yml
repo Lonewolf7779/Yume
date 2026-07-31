@@ -1,0 +1,64 @@
+name: Server tests
+
+on:
+  pull_request:
+    paths:
+      - 'server/**'
+      - '.github/workflows/server-tests.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+      - '.github/workflows/server-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }} with PostgreSQL
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20]
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: yume
+          POSTGRES_PASSWORD: yume_test_password
+          POSTGRES_DB: yume_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U yume -d yume_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Run authentication integration tests
+        working-directory: server
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://yume:yume_test_password@localhost:5432/yume_test
+          DATABASE_SSL: 'false'
+          SESSION_SECRET: github-actions-test-secret-not-for-production
+        run: npm test
