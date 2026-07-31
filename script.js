@@ -280,7 +280,7 @@ function renderHomePage() {
             </div>
 
             <div class="hero-right-artwork" aria-hidden="true">
-                <img src="img/mock_full_hero.jpg" alt="Hero artwork" class="hero-right-artwork-img" />
+                <img src="img/hero_artwork.jpg" alt="Hero artwork" class="hero-right-artwork-img" />
             </div>
         </section>
 
