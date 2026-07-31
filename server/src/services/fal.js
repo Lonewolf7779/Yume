@@ -48,11 +48,11 @@ async function falRequest(url, options = {}) {
   return body;
 }
 
-export async function submitFalGeneration({ prompt, width, height, seed }) {
+export async function submitFalGeneration({ prompt, imageSize, seed }) {
   const body = {
     prompt,
-    width,
-    height,
+    image_size: imageSize,
+    num_images: 1,
     output_format: 'jpeg'
   };
 
