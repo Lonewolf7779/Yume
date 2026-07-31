@@ -248,7 +248,6 @@ function renderHomePage() {
     appRoot.innerHTML = `
         <!-- Hero Showcase Section (Exact Match to User Design Mock) -->
         <section class="hero-showcase">
-            <div class="hero-showcase-backdrop"></div>
             <div class="hero-left-content">
                 <p class="hero-eyebrow">WHERE AI CREATORS ARE BORN</p>
                 <h1 class="hero-headline">
@@ -279,6 +278,8 @@ function renderHomePage() {
                     </div>
                 </div>
             </div>
+
+            <div class="hero-right-artwork" aria-hidden="true"></div>
         </section>
 
         <!-- Feed Header + Visual Filter Bar -->

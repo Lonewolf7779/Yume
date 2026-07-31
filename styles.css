@@ -179,23 +179,29 @@ body {
     padding: 40px 0 60px 56px;
     max-width: 1440px;
     margin: 0 auto;
-    background-image: url('img/mock_full_hero.jpg');
-    background-size: cover;
-    background-position: center right;
+    background-color: #fff9fa;
     overflow: hidden;
-}
-
-.hero-showcase-backdrop {
-    display: none;
 }
 
 .hero-left-content {
     position: relative;
     z-index: 2;
-    max-width: 580px;
+    max-width: 520px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.hero-right-artwork {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    background-image: url('img/yume_hero_anime.jpg');
+    background-size: cover;
+    background-position: center top;
+    z-index: 1;
 }
 
 .hero-eyebrow {
