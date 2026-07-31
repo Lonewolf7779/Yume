@@ -172,22 +172,34 @@ body {
    ============================================ */
 
 .hero-showcase {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: 24px;
+    position: relative;
+    display: flex;
     align-items: center;
-    min-height: 85vh;
-    padding: 20px 0 40px 40px;
-    max-width: 1360px;
+    min-height: 88vh;
+    padding: 40px 0 60px 56px;
+    max-width: 1440px;
     margin: 0 auto;
+    background-image: url('img/mock_full_hero.jpg');
+    background-size: cover;
+    background-position: center right;
+    overflow: hidden;
+}
+
+.hero-showcase-backdrop {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #fff9fa 0%, #fff9fa 38%, rgba(255, 249, 250, 0.85) 52%, transparent 75%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .hero-left-content {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-right: 20px;
-    z-index: 2;
 }
 
 .hero-eyebrow {
@@ -308,25 +320,6 @@ body {
     font-size: 12px;
     font-weight: 600;
     color: #7d6974;
-}
-
-.hero-right-artwork {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.hero-artwork-img {
-    width: 100%;
-    max-height: 82vh;
-    border-radius: 32px;
-    object-fit: cover;
-    object-position: center top;
-    box-shadow: -15px 15px 45px rgba(220, 80, 140, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.9);
 }
 
 @media (max-width: 900px) {

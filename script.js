@@ -248,6 +248,7 @@ function renderHomePage() {
     appRoot.innerHTML = `
         <!-- Hero Showcase Section (Exact Match to User Design Mock) -->
         <section class="hero-showcase">
+            <div class="hero-showcase-backdrop"></div>
             <div class="hero-left-content">
                 <p class="hero-eyebrow">WHERE AI CREATORS ARE BORN</p>
                 <h1 class="hero-headline">
@@ -277,10 +278,6 @@ function renderHomePage() {
                         <span>Creators building their worlds</span>
                     </div>
                 </div>
-            </div>
-
-            <div class="hero-right-artwork">
-                <img src="img/yume_hero_anime.jpg" alt="AI creator artwork" class="hero-artwork-img" />
             </div>
         </section>
 
