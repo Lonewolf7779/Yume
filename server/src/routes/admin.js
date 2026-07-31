@@ -209,7 +209,7 @@ router.patch('/users/:userId/role', async (req, res) => {
     await pgPool.query(
       `
         INSERT INTO admin_audit_logs (actor_user_id, action, target_type, target_id, target_user_id, metadata)
-        VALUES ($1, 'user.role_updated', 'user', $2, $2, $3::jsonb)
+        VALUES ($1, 'user.role_updated', 'user', $2::bigint, $2::integer, $3::jsonb)
       `,
       [
         req.session.userId,
