@@ -3,72 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yume⁺ — Where AI Creators Are Born</title>
+    <title>Yume⁺ — AI Creator Platform & Workspace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Floating Pill Navigation Bar (Exact Reference Specs) -->
-    <header class="floating-header-wrap">
-        <nav class="yume-navbar">
-            <!-- Brand Logo -->
-            <a class="yume-brand" href="#/home">
-                <span class="yume-brand-text">Yume<sup class="yume-brand-plus">⁺</sup></span>
-            </a>
-
-            <!-- Centered Nav Links -->
-            <div class="yume-nav-links">
-                <a href="#/home" class="yume-nav-link active" data-nav-target="home">Gallery</a>
-                <a href="#/search" class="yume-nav-link" data-nav-target="search">Explore</a>
-                <a href="#/profile" class="yume-nav-link" data-nav-target="profile">Creators</a>
-                <a href="#/pricing" class="yume-nav-link" data-nav-target="pricing">Pricing</a>
-                <a href="#/about" class="yume-nav-link" data-nav-target="about">About</a>
+    <div class="app-shell-layout">
+        <!-- Permanent Left Sidebar Rail (Desktop) -->
+        <aside class="app-sidebar">
+            <div class="sidebar-brand-wrap">
+                <a class="sidebar-brand" href="#/home">
+                    <span class="sidebar-brand-text">Yume<sup class="sidebar-brand-plus">⁺</sup></span>
+                </a>
             </div>
 
-            <!-- Right Actions -->
-            <div class="yume-nav-actions">
-                <button type="button" class="yume-login-link" data-nav-login>Log in</button>
-                <button type="button" class="yume-start-creating-btn" data-nav-create>✦ Start Creating ✦</button>
+            <!-- Primary Action CTA -->
+            <div class="sidebar-cta-wrap">
+                <button type="button" class="sidebar-create-btn" data-rail-create>
+                    <span class="create-btn-spark">✦</span> Create
+                </button>
             </div>
-        </nav>
-    </header>
 
-    <!-- Main Content Root -->
-    <main class="main-container" id="appRoot">
-        <!-- Dynamic pages rendered by script.js -->
-    </main>
+            <!-- Main Workspace Navigation -->
+            <nav class="sidebar-nav" aria-label="Main Navigation">
+                <a href="#/home" class="sidebar-nav-item active" data-rail-nav="home">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                    <span>Discover</span>
+                </a>
+                <a href="#/library" class="sidebar-nav-item" data-rail-nav="library">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>My Library</span>
+                </a>
+                <a href="#/activity" class="sidebar-nav-item" data-rail-nav="activity">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span>Notifications</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- User Workspace & System Navigation -->
+            <nav class="sidebar-nav" aria-label="Personal Navigation">
+                <a href="#/profile" class="sidebar-nav-item" data-rail-nav="profile">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Profile</span>
+                </a>
+                <a href="#/settings" class="sidebar-nav-item" data-rail-nav="settings">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <span>Settings</span>
+                </a>
+                <a href="#/admin" class="sidebar-nav-item admin-rail-item" data-rail-nav="admin" style="display: none;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span>Admin Centre</span>
+                </a>
+            </nav>
+
+            <!-- User Footer Profile Card -->
+            <div class="sidebar-user-footer" data-rail-user-footer>
+                <img class="sidebar-user-avatar" data-user-avatar src="https://i.pravatar.cc/80?img=33" alt="User avatar" />
+                <div class="sidebar-user-meta">
+                    <span class="sidebar-user-name" data-user-name>Guest Creator</span>
+                    <span class="sidebar-user-status" data-user-status>Sign in</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Viewport Container -->
+        <div class="app-viewport">
+            <!-- Top Utility Bar -->
+            <header class="top-utility-bar">
+                <div class="utility-left">
+                    <span class="utility-breadcrumb" data-utility-breadcrumb>Discover</span>
+                </div>
+
+                <div class="utility-center">
+                    <div class="utility-search-box">
+                        <svg class="utility-search-icon" viewBox="0 0 24 24" width="16" height="16">
+                            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" class="utility-search-input" data-utility-search placeholder="Search creations, styles, creators..." />
+                    </div>
+                </div>
+
+                <div class="utility-right">
+                    <button type="button" class="utility-login-btn" data-utility-login>Log in</button>
+                    <button type="button" class="utility-create-btn" data-utility-create>✦ Create</button>
+                </div>
+            </header>
+
+            <!-- Dynamic View Container -->
+            <main class="main-container" id="appRoot">
+                <!-- Page contents rendered by script.js -->
+            </main>
+        </div>
+    </div>
 
     <!-- Fixed Bottom Navigation (Mobile Only) -->
     <nav class="bottom-navbar">
-        <button class="bottom-nav-btn active" data-nav="home" aria-label="Home">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9.5 12 3l9 6.5" />
-                <path d="M5 10v11h14V10" />
+        <button class="bottom-nav-btn active" data-nav="home" aria-label="Discover">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
             </svg>
         </button>
-        <button class="bottom-nav-btn" data-nav="search" aria-label="Explore">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="7" />
-                <path d="M21 21l-4.35-4.35" />
+        <button class="bottom-nav-btn" data-nav="search" aria-label="Search">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
             </svg>
         </button>
         <button class="bottom-nav-btn" data-nav="create" aria-label="Create">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 5v14" />
-                <path d="M5 12h14" />
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
             </svg>
         </button>
-        <button class="bottom-nav-btn" data-nav="activity" aria-label="Activity">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        <button class="bottom-nav-btn" data-nav="library" aria-label="My Library">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
             </svg>
         </button>
         <button class="bottom-nav-btn" data-nav="profile" aria-label="Profile">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
             </svg>
         </button>
     </nav>

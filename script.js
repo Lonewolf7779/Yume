@@ -215,12 +215,66 @@ function renderRoute() {
 }
 
 function updateActiveNav(page) {
-    const activePage = page === 'pin' ? '' : page;
+    const activePage = page === 'pin' ? 'discover' : page;
 
-    // Only bottom-nav highlights for the base pages; login/register/settings are top-level pages.
-    bottomNavBtns.forEach((btn) => {
-        btn.classList.toggle('active', btn.dataset.nav === activePage);
+    // Desktop left rail active state
+    document.querySelectorAll('[data-rail-nav]').forEach((link) => {
+        const target = link.dataset.railNav;
+        link.classList.toggle('active', target === activePage || (target === 'home' && activePage === 'discover'));
     });
+
+    // Mobile bottom nav active state
+    bottomNavBtns.forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.nav === activePage || (btn.dataset.nav === 'home' && activePage === 'discover'));
+    });
+
+    // Top utility breadcrumb
+    const breadcrumb = document.querySelector('[data-utility-breadcrumb]');
+    if (breadcrumb) {
+        const titles = {
+            home: 'Discover',
+            search: 'Explore',
+            create: 'Create Studio',
+            library: 'My Library',
+            activity: 'Notifications',
+            profile: 'Profile',
+            settings: 'Settings',
+            admin: 'Admin Centre',
+            login: 'Log In',
+            register: 'Create Account'
+        };
+        breadcrumb.textContent = titles[page] || 'Yume';
+    }
+
+    // Role-gated admin rail item
+    const adminRailItem = document.querySelector('.admin-rail-item');
+    if (adminRailItem) {
+        adminRailItem.style.display = isAdmin() ? 'flex' : 'none';
+    }
+
+    // User footer update
+    const userAvatar = document.querySelector('[data-user-avatar]');
+    const userName = document.querySelector('[data-user-name]');
+    const userStatus = document.querySelector('[data-user-status]');
+    const utilityLoginBtn = document.querySelector('[data-utility-login]');
+
+    if (isAuthenticated()) {
+        if (userAvatar) userAvatar.src = `https://i.pravatar.cc/80?img=${(authState.user.id % 20) + 1}`;
+        if (userName) userName.textContent = authState.user.username || 'Creator';
+        if (userStatus) userStatus.textContent = authState.user.role === 'admin' ? 'Admin Creator' : 'Pro Creator';
+        if (utilityLoginBtn) {
+            utilityLoginBtn.textContent = 'Account';
+            utilityLoginBtn.onclick = () => navigateTo('/profile');
+        }
+    } else {
+        if (userAvatar) userAvatar.src = 'https://i.pravatar.cc/80?img=33';
+        if (userName) userName.textContent = 'Guest Creator';
+        if (userStatus) userStatus.textContent = 'Sign in';
+        if (utilityLoginBtn) {
+            utilityLoginBtn.textContent = 'Log in';
+            utilityLoginBtn.onclick = () => navigateTo('/login');
+        }
+    }
 }
 
 /* ============================================
@@ -2026,29 +2080,14 @@ bottomNavBtns.forEach((btn) => {
     });
 });
 
-logo?.addEventListener('click', () => navigateTo('/home'));
-
-document.querySelector('.yume-brand')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    navigateTo('/home');
+document.querySelectorAll('[data-rail-create], [data-utility-create], .yume-start-creating-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        if (!requireAuthOrRedirect('/create')) return;
+        navigateTo('/create');
+    });
 });
 
-createNavBtn?.addEventListener('click', () => {
-    if (!requireAuthOrRedirect('/create')) return;
-    navigateTo('/create');
-});
-
-notificationsBtn?.addEventListener('click', () => {
-    if (!requireAuthOrRedirect('/activity')) return;
-    navigateTo('/activity');
-});
-
-profileNavBtn?.addEventListener('click', () => {
-    if (!requireAuthOrRedirect('/profile')) return;
-    navigateTo('/profile');
-});
-
-searchInput?.addEventListener('input', (event) => {
+document.querySelector('[data-utility-search]')?.addEventListener('input', (event) => {
     activeSearchTerm = event.target.value.trim();
     if (getRoute().page !== 'search') {
         navigateTo('/search');
@@ -2056,6 +2095,11 @@ searchInput?.addEventListener('input', (event) => {
     }
     renderSearchPage();
     updateActiveNav('search');
+});
+
+document.querySelector('[data-rail-user-footer]')?.addEventListener('click', () => {
+    if (isAuthenticated()) navigateTo('/profile');
+    else navigateTo('/login');
 });
 
 appRoot.addEventListener('click', (event) => {
