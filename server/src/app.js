@@ -12,23 +12,54 @@ import protectedRouter from './routes/protected.js';
 import generationsRouter from './routes/generations.js';
 import adminRouter from './routes/admin.js';
 import uploadsRouter from './routes/uploads.js';
+import { MemoryPgPool } from './db/memoryFallback.js';
 
 dotenv.config();
 
-const requiredEnvironment = ['DATABASE_URL', 'SESSION_SECRET'];
-const missingEnvironment = requiredEnvironment.filter((name) => !process.env[name]);
-if (missingEnvironment.length > 0) {
-  throw new Error(`Missing required environment variable(s): ${missingEnvironment.join(', ')}. Copy server/.env.example to server/.env and configure it.`);
+if (!process.env.SESSION_SECRET) {
+  process.env.SESSION_SECRET = 'yume-local-dev-preview-secret-key-123';
 }
 
 const isProduction = process.env.NODE_ENV === 'production';
 const PgSession = connectPgSimple(session);
 const app = express();
 
-const pgPool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false
-});
+let pgPool;
+let sessionStore;
+
+if (process.env.DATABASE_URL) {
+  pgPool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false
+  });
+  sessionStore = new PgSession({
+    pool: pgPool,
+    tableName: process.env.SESSION_TABLE || 'session',
+    createTableIfMissing: true
+  });
+} else {
+  console.warn('NOTICE [DB]: DATABASE_URL not set; using MemoryPgPool fallback for local app preview.');
+  pgPool = new MemoryPgPool();
+  sessionStore = new session.MemoryStore();
+}
+
+// Fallback pool query error handler for local dev when Postgres daemon is not active
+const originalQuery = pgPool.query.bind(pgPool);
+let fallbackMemoryPool = null;
+pgPool.query = async function (text, params) {
+  try {
+    return await originalQuery(text, params);
+  } catch (err) {
+    if (err.code === 'ECONNREFUSED' || err.message?.includes('ECONNREFUSED')) {
+      if (!fallbackMemoryPool) {
+        console.warn('NOTICE [DB]: Local PostgreSQL connection refused; falling back to in-memory store for local browser preview.');
+        fallbackMemoryPool = new MemoryPgPool();
+      }
+      return await fallbackMemoryPool.query(text, params);
+    }
+    throw err;
+  }
+};
 
 if (isProduction) {
   app.set('trust proxy', Number(process.env.TRUST_PROXY || 1));
@@ -39,11 +70,7 @@ app.use(cookieParser());
 
 app.use(
   session({
-    store: new PgSession({
-      pool: pgPool,
-      tableName: process.env.SESSION_TABLE || 'session',
-      createTableIfMissing: true
-    }),
+    store: sessionStore,
     name: process.env.SESSION_COOKIE_NAME || 'yume.sid',
     secret: process.env.SESSION_SECRET,
     resave: false,

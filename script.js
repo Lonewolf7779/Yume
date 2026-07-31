@@ -246,47 +246,45 @@ function renderHomePage() {
     const creationsTodayCount = '12,487';
 
     appRoot.innerHTML = `
-        <section class="page-shell yume-home-hero-section" aria-label="Yume home hero">
-            <div class="yume-home-hero-glass surface-panel">
-                <div class="yume-home-hero-content">
-                    <div class="yume-home-hero-brand" aria-label="Yume brand">
-                        <div class="yume-home-hero-logo" aria-hidden="true">Yume</div>
-                        <div class="yume-home-hero-dream">Dream. Create. Inspire.</div>
-                    </div>
+        <!-- Hero Showcase Section (Exact Match to User Design Mock) -->
+        <section class="hero-showcase">
+            <div class="hero-left-content">
+                <p class="hero-eyebrow">WHERE AI CREATORS ARE BORN</p>
+                <h1 class="hero-headline">
+                    Become the<br>
+                    <span class="pink-gradient-text">AI creator</span><br>
+                    people<br>
+                    remember<span class="pink-dot">.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Your imagination deserves more than a prompt. It deserves a legacy.
+                </p>
 
-                    <p class="yume-home-hero-tagline">
-                        A beautiful place where AI creators generate, share and discover extraordinary artwork.
-                    </p>
-
-                    <div class="yume-home-hero-ctas" aria-label="Primary actions">
-                        <button class="yume-hero-primary" type="button" data-hero-primary>
-                            ✨ Generate AI Art
-                        </button>
-                        <button class="yume-hero-secondary" type="button" data-hero-secondary>
-                            🌸 Explore Creations
-                        </button>
-                    </div>
+                <div class="hero-cta-group">
+                    <button class="hero-primary-btn" type="button" data-hero-create>✦ Start Creating ✦</button>
+                    <button class="hero-secondary-btn" type="button" data-hero-explore>Explore Gallery &rarr;</button>
                 </div>
 
-                <div class="yume-home-hero-bloom" aria-hidden="true"></div>
+                <div class="hero-social-proof">
+                    <div class="avatar-stack">
+                        <img src="https://i.pravatar.cc/80?img=33" alt="Creator avatar" />
+                        <img src="https://i.pravatar.cc/80?img=47" alt="Creator avatar" />
+                        <img src="https://i.pravatar.cc/80?img=12" alt="Creator avatar" />
+                        <img src="https://i.pravatar.cc/80?img=65" alt="Creator avatar" />
+                    </div>
+                    <div class="proof-copy">
+                        <strong>50K+</strong>
+                        <span>Creators building their worlds</span>
+                    </div>
+                </div>
             </div>
 
-            <section class="yume-home-hero-block yume-home-hero-trending" aria-label="Trending styles">
-                <h2 class="yume-home-block-title">Trending</h2>
-                <div class="yume-home-chip-row" role="list" aria-label="Trending styles chips">
-                    <span class="yume-chip" role="listitem">#AnimeGirls</span>
-                    <span class="yume-chip" role="listitem">#Fantasy</span>
-                    <span class="yume-chip" role="listitem">#Cyberpunk</span>
-                    <span class="yume-chip" role="listitem">#Dreamcore</span>
-                    <span class="yume-chip" role="listitem">#Cute</span>
-                    <span class="yume-chip" role="listitem">#ShrineMaiden</span>
-                    <span class="yume-chip" role="listitem">#Landscape</span>
-                    <span class="yume-chip" role="listitem">#Fashion</span>
-                </div>
-            </section>
+            <div class="hero-right-artwork">
+                <img src="img/yume_hero_anime.jpg" alt="AI creator artwork" class="hero-artwork-img" />
+            </div>
         </section>
 
-        <!-- Feed Header + Visual Filter Bar (above masonry feed) -->
+        <!-- Feed Header + Visual Filter Bar -->
         <section class="grid-container yume-feed-shell" aria-label="Feed header and filters">
             <header class="yume-feed-header">
                 <div class="yume-feed-header-left">
@@ -301,17 +299,17 @@ function renderHomePage() {
                 </div>
             </div>
 
-            <!-- Existing masonry feed (preserved as-is) -->
+            <!-- Existing masonry feed -->
             <div class="masonry-grid" id="masonryGrid"></div>
         </section>
     `;
 
-    appRoot.querySelector('[data-hero-primary]')?.addEventListener('click', () => {
+    appRoot.querySelector('[data-hero-create]')?.addEventListener('click', () => {
         if (requireAuthOrRedirect('/create')) navigateTo('/create');
     });
-    appRoot.querySelector('[data-hero-secondary]')?.addEventListener('click', () => {
-        activeCategory = 'all';
-        navigateTo('/search');
+    appRoot.querySelector('[data-hero-explore]')?.addEventListener('click', () => {
+        const grid = document.getElementById('masonryGrid');
+        if (grid) grid.scrollIntoView({ behavior: 'smooth' });
     });
     appRoot.querySelectorAll('[data-home-filter]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -2092,6 +2090,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshAuth();
     if (!window.location.hash) navigateTo('/home');
     renderRoute();
+
+    // Floating header buttons
+    document.querySelector('[data-nav-create]')?.addEventListener('click', () => {
+        if (requireAuthOrRedirect('/create')) navigateTo('/create');
+    });
+
+    document.querySelector('[data-nav-login]')?.addEventListener('click', () => {
+        if (currentUser) navigateTo('/profile');
+        else navigateTo('/login');
+    });
+
+    document.querySelectorAll('[data-nav-target]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = link.dataset.navTarget;
+            if (target === 'home') navigateTo('/home');
+            else if (target === 'search') navigateTo('/search');
+            else if (target === 'profile') navigateTo('/profile');
+            else if (target === 'pricing' || target === 'about') navigateTo('/search');
+        });
+    });
 });
 
 /* ============================================
