@@ -4,22 +4,35 @@ import session from 'express-session';
 import pg from 'pg';
 import connectPgSimple from 'connect-pg-simple';
 import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import authRouter from './routes/auth.js';
+import protectedRouter from './routes/protected.js';
 
 dotenv.config();
 
+const requiredEnvironment = ['DATABASE_URL', 'SESSION_SECRET'];
+const missingEnvironment = requiredEnvironment.filter((name) => !process.env[name]);
+if (missingEnvironment.length > 0) {
+  throw new Error(`Missing required environment variable(s): ${missingEnvironment.join(', ')}. Copy server/.env.example to server/.env and configure it.`);
+}
+
+const isProduction = process.env.NODE_ENV === 'production';
 const PgSession = connectPgSimple(session);
-
 const app = express();
-
-app.use(express.json({ limit: '1mb' }));
-app.use(cookieParser());
 
 const pgPool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false
 });
 
-app.set('trust proxy', 1);
+if (isProduction) {
+  app.set('trust proxy', Number(process.env.TRUST_PROXY || 1));
+}
+
+app.use(express.json({ limit: '1mb' }));
+app.use(cookieParser());
 
 app.use(
   session({
@@ -28,77 +41,50 @@ app.use(
       tableName: process.env.SESSION_TABLE || 'session',
       createTableIfMissing: true
     }),
-    name: process.env.SESSION_COOKIE_NAME || 'pinpin.sid',
-    secret: process.env.SESSION_SECRET || 'dev_session_secret_change_me',
+    name: process.env.SESSION_COOKIE_NAME || 'yume.sid',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
       sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+      secure: isProduction,
+      maxAge: 1000 * 60 * 60 * 24 * 7
     }
   })
 );
 
-// Routes
-import authRouter from './routes/auth.js';
-import protectedRouter from './routes/protected.js';
 app.use('/api/auth', authRouter);
-
-// Public/protected split for future expansion.
-// For now, just mount protected placeholder routes.
 app.use('/api', protectedRouter);
 
-app.get('/api/health', (req, res) => {
-  res.json({ ok: true });
+app.get('/api/health', async (req, res) => {
+  try {
+    await pgPool.query('SELECT 1');
+    res.json({ ok: true, database: 'connected' });
+  } catch {
+    res.status(503).json({ ok: false, database: 'unavailable' });
+  }
 });
-
-/**
- * Static frontend hosting (client-side router fallback)
- * Serves index.html, script.js, styles.css, and common static dirs from repo root.
- */
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// repo root = /server/src -> /server -> /repo root
 const repoRoot = path.resolve(__dirname, '../..');
 
-// Serve static assets from repo root (index.html, script.js, styles.css, and any folders like /assets, /images, /fonts)
 app.use(express.static(repoRoot));
 
-// Explicit route for the homepage (avoid relying solely on wildcard handlers)
 app.get('/', (req, res) => {
   res.sendFile(path.join(repoRoot, 'index.html'));
 });
 
-// Client-side routing fallback: return index.html for non-API routes
 app.get(/.*/, (req, res, next) => {
-  if (req.path === '/api/health') return next();
   if (req.path.startsWith('/api/')) return next();
-  if (req.path.startsWith('/api')) return next();
   return res.sendFile(path.join(repoRoot, 'index.html'));
 });
 
-
-// Helpful one-time startup log for verification (debugging static paths)
-// eslint-disable-next-line no-console
-import fs from 'node:fs';
-
-const indexExists = fs.existsSync(path.join(repoRoot, 'index.html'));
-const scriptExists = fs.existsSync(path.join(repoRoot, 'script.js'));
-const stylesExists = fs.existsSync(path.join(repoRoot, 'styles.css'));
-
-console.log('\n----------------------------------------');
-console.log('Express startup diagnostics\n');
-console.log('__dirname:\n', __dirname, '\n');
-console.log('repoRoot:\n', repoRoot, '\n');
-console.log('index.html:', indexExists ? '✓ FOUND' : '✗ MISSING');
-console.log('script.js:', scriptExists ? '✓ FOUND' : '✗ MISSING');
-console.log('styles.css:', stylesExists ? '✓ FOUND' : '✗ MISSING');
-console.log('----------------------------------------\n');
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  console.error('Unhandled request error', err);
+  return res.status(500).json({ error: 'Internal server error' });
+});
 
 export { app, pgPool };
