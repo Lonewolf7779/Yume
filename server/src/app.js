@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 import authRouter from './routes/auth.js';
 import protectedRouter from './routes/protected.js';
+import generationsRouter from './routes/generations.js';
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ app.use(
 
 app.use('/api/auth', authRouter);
 app.use('/api', protectedRouter);
+app.use('/api/generations', generationsRouter);
 
 app.get('/api/health', async (req, res) => {
   try {
