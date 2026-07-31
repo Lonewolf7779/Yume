@@ -117,6 +117,10 @@ function isAuthenticated() {
     return authState.status === 'authenticated' && !!authState.user?.id;
 }
 
+function isAdmin() {
+    return isAuthenticated() && authState.user?.role === 'admin';
+}
+
 async function apiFetchJson(url, options = {}) {
     const res = await fetch(url, {
         ...options,
@@ -196,7 +200,8 @@ function renderRoute() {
         create: () => requireAuthOrRedirect('/create') && renderCreatePage(),
         activity: () => requireAuthOrRedirect('/activity') && renderActivityPage(),
         profile: () => requireAuthOrRedirect('/profile') && renderProfilePage(),
-        settings: () => requireAuthOrRedirect('/settings') && renderSettingsPage()
+        settings: () => requireAuthOrRedirect('/settings') && renderSettingsPage(),
+        admin: () => requireAdminOrRedirect('/admin') && renderAdminPage()
     };
 
     if (page === 'pin') {
@@ -999,10 +1004,13 @@ function renderSettingsPage() {
                     Signed in as <strong>${authState.user?.username || 'user'}</strong>
                 </p>
 
+                ${isAdmin() ? '<button class="secondary-action" type="button" data-go-admin>Admin centre</button>' : ''}
                 <button class="secondary-action" type="button" data-logout>Logout</button>
             </div>
         </section>
     `;
+
+    appRoot.querySelector('[data-go-admin]')?.addEventListener('click', () => navigateTo('/admin'));
 
     appRoot.querySelector('[data-logout]').addEventListener('click', async () => {
         await apiFetchJson('/api/auth/logout', { method: 'POST' });
@@ -1010,6 +1018,269 @@ function renderSettingsPage() {
         navigateTo('/home');
         renderRoute();
     });
+}
+
+function renderAdminAccessDenied() {
+    appRoot.innerHTML = `
+        <section class="page-shell admin-access-denied">
+            <div class="admin-denied-card surface-panel">
+                <div class="admin-denied-icon">✦</div>
+                <p class="studio-kicker">ADMIN CONTROL CENTRE</p>
+                <h1>Private space.</h1>
+                <p>This account does not have administrator access. Ask the site owner to add your email to the server-only <code>ADMIN_EMAILS</code> setting.</p>
+                <button class="secondary-action" type="button" data-admin-back>Back to Yume</button>
+            </div>
+        </section>
+    `;
+    appRoot.querySelector('[data-admin-back]')?.addEventListener('click', () => navigateTo('/home'));
+}
+
+function requireAdminOrRedirect(targetRoute) {
+    if (!isAuthenticated()) {
+        navigateTo(`/login?next=${encodeURIComponent(targetRoute || '/admin')}`);
+        return false;
+    }
+    if (isAdmin()) return true;
+    renderAdminAccessDenied();
+    return false;
+}
+
+function renderAdminLoading() {
+    appRoot.innerHTML = `
+        <section class="page-shell admin-page">
+            <header class="admin-header">
+                <div><p class="studio-kicker">YUME OPERATIONS</p><h1>Control centre</h1><p>Loading your live workspace…</p></div>
+            </header>
+            <div class="admin-metric-grid admin-loading-grid">
+                <div></div><div></div><div></div><div></div>
+            </div>
+        </section>
+    `;
+}
+
+async function renderAdminPage() {
+    renderAdminLoading();
+
+    try {
+        const [overviewResult, usersResult, generationsResult] = await Promise.all([
+            apiFetchJson('/api/admin/overview'),
+            apiFetchJson('/api/admin/users?limit=30'),
+            apiFetchJson('/api/admin/generations?limit=30')
+        ]);
+
+        if (!overviewResult.res.ok || !usersResult.res.ok || !generationsResult.res.ok) {
+            if (overviewResult.res.status === 401 || overviewResult.res.status === 403) {
+                await refreshAuth();
+                renderAdminAccessDenied();
+                return;
+            }
+            throw new Error(overviewResult.body?.error || usersResult.body?.error || generationsResult.body?.error || 'The control centre could not load.');
+        }
+
+        if (getRoute().page !== 'admin') return;
+        renderAdminWorkspace(
+            overviewResult.body,
+            usersResult.body.users || [],
+            generationsResult.body.generations || []
+        );
+    } catch (error) {
+        appRoot.innerHTML = `
+            <section class="page-shell admin-page">
+                <div class="admin-denied-card surface-panel">
+                    <div class="admin-denied-icon">!</div>
+                    <p class="studio-kicker">ADMIN CONTROL CENTRE</p>
+                    <h1>Couldn’t load the workspace.</h1>
+                    <p>${escapeHtml(error?.message || 'Please refresh and try again.')}</p>
+                    <button class="secondary-action" type="button" data-admin-retry>Try again</button>
+                </div>
+            </section>
+        `;
+        appRoot.querySelector('[data-admin-retry]')?.addEventListener('click', renderAdminPage);
+    }
+}
+
+function renderAdminWorkspace(overview, users, generations) {
+    const metrics = overview.metrics || {};
+    const latestGenerations = generations.length ? generations : (overview.latestGenerations || []);
+    const recentActivity = overview.recentActivity || [];
+
+    appRoot.innerHTML = `
+        <section class="page-shell admin-page">
+            <header class="admin-header">
+                <div>
+                    <p class="studio-kicker">YUME OPERATIONS · PRIVATE</p>
+                    <h1>Control centre</h1>
+                    <p>Watch creation activity, spot failures, and shape the team without leaving Yume.</p>
+                </div>
+                <div class="admin-header-actions">
+                    <span class="admin-live-indicator"><i></i> Live database</span>
+                    <button class="secondary-action" type="button" data-admin-refresh>Refresh</button>
+                </div>
+            </header>
+
+            <section class="admin-metric-grid" aria-label="Yume activity summary">
+                ${adminMetricCard('People', metrics.totalUsers, `${metrics.newUsers7d || 0} new this week`, 'pink')}
+                ${adminMetricCard('Creations', metrics.totalGenerations, `${metrics.generationsToday || 0} today`, 'violet')}
+                ${adminMetricCard('In progress', metrics.processingGenerations, `${metrics.activeCreators24h || 0} active creators today`, 'blue')}
+                ${adminMetricCard('Needs attention', metrics.failedGenerations, `${metrics.completedGenerations || 0} completed overall`, 'orange')}
+            </section>
+
+            <section class="admin-overview-grid">
+                <div class="admin-panel surface-panel admin-generation-panel">
+                    <div class="admin-panel-heading">
+                        <div><p class="studio-label">LIVE ACTIVITY</p><h2>Generation monitor</h2></div>
+                        <div class="admin-filter-bar" role="group" aria-label="Filter generation activity">
+                            <button type="button" class="admin-filter active" data-admin-generation-filter="">All</button>
+                            <button type="button" class="admin-filter" data-admin-generation-filter="processing">Working</button>
+                            <button type="button" class="admin-filter" data-admin-generation-filter="failed">Failed</button>
+                        </div>
+                    </div>
+                    <div class="admin-generation-list" data-admin-generation-list>
+                        ${renderAdminGenerationRows(latestGenerations)}
+                    </div>
+                </div>
+
+                <aside class="admin-panel surface-panel admin-health-panel">
+                    <p class="studio-label">SYSTEM SNAPSHOT</p>
+                    <h2>Good to know</h2>
+                    <div class="admin-health-stack">
+                        <div><span class="admin-health-dot healthy"></span><p><strong>App data</strong><small>PostgreSQL is responding through Yume.</small></p></div>
+                        <div><span class="admin-health-dot ${metrics.processingGenerations ? 'watch' : 'healthy'}"></span><p><strong>Flux queue</strong><small>${metrics.processingGenerations || 0} active request${metrics.processingGenerations === 1 ? '' : 's'}.</small></p></div>
+                        <div><span class="admin-health-dot ${metrics.failedGenerations ? 'alert' : 'healthy'}"></span><p><strong>Failures</strong><small>${metrics.failedGenerations || 0} generation${metrics.failedGenerations === 1 ? '' : 's'} need review.</small></p></div>
+                    </div>
+                    <p class="admin-health-note">Provider keys remain server-only. A “failed” result means the creator can refine their prompt and retry.</p>
+                </aside>
+            </section>
+
+            <section class="admin-panel surface-panel admin-users-panel">
+                <div class="admin-panel-heading">
+                    <div><p class="studio-label">PEOPLE & ACCESS</p><h2>Recent members</h2></div>
+                    <span class="admin-panel-caption">Moderator access is managed here. Admin access stays in the private server setting.</span>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-user-table">
+                        <thead><tr><th>Member</th><th>Joined</th><th>Creations</th><th>Access</th></tr></thead>
+                        <tbody>
+                            ${users.length ? users.map(renderAdminUserRow).join('') : '<tr><td colspan="4" class="admin-empty-row">No members yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="admin-panel surface-panel admin-audit-panel">
+                <div class="admin-panel-heading">
+                    <div><p class="studio-label">ACCOUNTABILITY</p><h2>Recent admin actions</h2></div>
+                </div>
+                <div class="admin-audit-list">
+                    ${recentActivity.length ? recentActivity.map(renderAdminAuditItem).join('') : '<div class="admin-empty-row">No privileged actions recorded yet.</div>'}
+                </div>
+            </section>
+        </section>
+    `;
+
+    appRoot.querySelector('[data-admin-refresh]')?.addEventListener('click', renderAdminPage);
+    appRoot.querySelectorAll('[data-admin-generation-filter]').forEach((button) => {
+        button.addEventListener('click', async () => {
+            const filter = button.dataset.adminGenerationFilter || '';
+            const list = appRoot.querySelector('[data-admin-generation-list]');
+            if (!list) return;
+            appRoot.querySelectorAll('[data-admin-generation-filter]').forEach((item) => item.classList.toggle('active', item === button));
+            list.innerHTML = '<div class="admin-list-loading">Refreshing generation activity…</div>';
+            const { res, body } = await apiFetchJson(`/api/admin/generations?limit=30&status=${encodeURIComponent(filter)}`);
+            list.innerHTML = res.ok
+                ? renderAdminGenerationRows(body.generations || [])
+                : '<div class="admin-list-loading">Could not load that view.</div>';
+        });
+    });
+
+    appRoot.querySelectorAll('[data-admin-role]').forEach((select) => {
+        select.addEventListener('change', async () => {
+            const userId = Number(select.dataset.adminRole);
+            const previousRole = select.dataset.previousRole || 'user';
+            const nextRole = select.value;
+            if (!Number.isSafeInteger(userId) || !window.confirm(`Change this member’s access to ${nextRole}?`)) {
+                select.value = previousRole;
+                return;
+            }
+
+            select.disabled = true;
+            const { res, body } = await apiFetchJson(`/api/admin/users/${userId}/role`, {
+                method: 'PATCH',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ role: nextRole })
+            });
+            if (!res.ok) {
+                select.disabled = false;
+                select.value = previousRole;
+                window.alert(body?.error || 'Could not change that access level.');
+                return;
+            }
+            renderAdminPage();
+        });
+    });
+}
+
+function adminMetricCard(label, value, note, tone) {
+    return `
+        <article class="admin-metric-card tone-${tone}">
+            <p>${escapeHtml(label)}</p>
+            <strong>${formatNumber(Number(value || 0))}</strong>
+            <span>${escapeHtml(note)}</span>
+        </article>
+    `;
+}
+
+function renderAdminGenerationRows(generations) {
+    if (!generations.length) return '<div class="admin-empty-row">No generations in this view.</div>';
+    return generations.map((generation) => {
+        const status = generation.status || 'queued';
+        return `
+            <article class="admin-generation-row">
+                <span class="admin-generation-state state-${escapeHtml(status)}">${escapeHtml(status)}</span>
+                <div class="admin-generation-copy">
+                    <strong>${escapeHtml(generation.prompt || 'Untitled generation')}</strong>
+                    <span>${escapeHtml(generation.user?.username || 'Unknown creator')} · ${escapeHtml(formatAdminDate(generation.createdAt))}</span>
+                    ${generation.error ? `<small>${escapeHtml(generation.error)}</small>` : ''}
+                </div>
+                <span class="admin-generation-format">${escapeHtml(generation.imageSize || '')}</span>
+            </article>
+        `;
+    }).join('');
+}
+
+function renderAdminUserRow(user) {
+    const role = user.role || 'user';
+    const lockedAdmin = user.isConfiguredAdmin || role === 'admin';
+    return `
+        <tr>
+            <td><div class="admin-member"><span class="admin-member-avatar">${escapeHtml((user.username || '?').slice(0, 1).toUpperCase())}</span><div><strong>${escapeHtml(user.username)}</strong><small>${escapeHtml(user.email)}</small></div></div></td>
+            <td>${escapeHtml(formatAdminDate(user.createdAt))}</td>
+            <td>${formatNumber(Number(user.generatedCount || 0))}</td>
+            <td>
+                ${lockedAdmin
+                    ? '<span class="admin-role-badge">Admin</span>'
+                    : `<select data-admin-role="${user.id}" data-previous-role="${escapeHtml(role)}" aria-label="Access level for ${escapeHtml(user.username)}"><option value="user" ${role === 'user' ? 'selected' : ''}>Member</option><option value="moderator" ${role === 'moderator' ? 'selected' : ''}>Moderator</option></select>`}
+            </td>
+        </tr>
+    `;
+}
+
+function renderAdminAuditItem(entry) {
+    const actor = entry.actor?.username || 'An admin';
+    const target = entry.target?.username || 'a member';
+    const nextRole = entry.metadata?.nextRole ? ` → ${entry.metadata.nextRole}` : '';
+    return `
+        <article class="admin-audit-item">
+            <div class="admin-audit-mark">✦</div>
+            <p><strong>${escapeHtml(actor)}</strong> updated access for <strong>${escapeHtml(target)}</strong>${escapeHtml(nextRole)}.<span>${escapeHtml(formatAdminDate(entry.createdAt))}</span></p>
+        </article>
+    `;
+}
+
+function formatAdminDate(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Just now';
+    return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(date);
 }
 
 function renderProfilePage() {

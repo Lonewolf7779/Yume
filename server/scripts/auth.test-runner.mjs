@@ -142,6 +142,53 @@ async function main() {
     assert.equal(unconfiguredGeneration.response.status, 503);
     assert.match(unconfiguredGeneration.body.error, /not configured/i);
 
+    const nonAdminOverview = await requestJSON(loginJar, `${baseUrl}/api/admin/overview`);
+    assert.equal(nonAdminOverview.response.status, 403);
+
+    const member = {
+      username: `member_${runId}`,
+      email: `member_${runId}@yume.local`,
+      password: 'YumeTestPass!123'
+    };
+    const memberRegistration = await requestJSON(new CookieJar(), `${baseUrl}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(member)
+    });
+    assert.equal(memberRegistration.response.status, 201);
+
+    await pgPool.query('UPDATE users SET role = $1 WHERE id = $2', ['admin', register.body.user.id]);
+
+    const adminJar = new CookieJar();
+    const adminLogin = await requestJSON(adminJar, `${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: user.email, password: user.password })
+    });
+    assert.equal(adminLogin.response.status, 200);
+    assert.equal(adminLogin.body.user.role, 'admin');
+
+    const adminOverview = await requestJSON(adminJar, `${baseUrl}/api/admin/overview`);
+    assert.equal(adminOverview.response.status, 200);
+    assert.equal(adminOverview.body.metrics.totalUsers >= 2, true);
+
+    const adminUsers = await requestJSON(adminJar, `${baseUrl}/api/admin/users`);
+    assert.equal(adminUsers.response.status, 200);
+    const memberRecord = adminUsers.body.users.find((candidate) => candidate.email === member.email);
+    assert.ok(memberRecord);
+
+    const roleUpdate = await requestJSON(adminJar, `${baseUrl}/api/admin/users/${memberRecord.id}/role`, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ role: 'moderator' })
+    });
+    assert.equal(roleUpdate.response.status, 200);
+    assert.equal(roleUpdate.body.user.role, 'moderator');
+
+    const overviewWithAudit = await requestJSON(adminJar, `${baseUrl}/api/admin/overview`);
+    assert.equal(overviewWithAudit.response.status, 200);
+    assert.equal(overviewWithAudit.body.recentActivity.some((entry) => entry.action === 'user.role_updated'), true);
+
     const wrongPassword = await requestJSON(new CookieJar(), `${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

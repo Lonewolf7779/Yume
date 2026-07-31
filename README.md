@@ -54,3 +54,10 @@ The following needs a deliberate provider choice and credentials before it can b
 - Persistent posts, feed, likes, saves, follows, profiles, and activity
 
 Until those milestones are implemented, the gallery and social interactions remain a frontend prototype with mock data.
+
+
+## Admin control centre
+
+After you create your own account, add its email address to the server-only `ADMIN_EMAILS` environment variable (for example, `ADMIN_EMAILS=you@example.com`). Restart the server, then sign out and in again. Your account can then open `/#/admin`.
+
+The admin centre is server-protected and shows user, generation, queue/failure, and recent privileged-action information. It can grant or remove the `moderator` role. It deliberately cannot create another admin account through the browser; administrator access is controlled by the private server setting.

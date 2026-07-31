@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { pgPool } from '../app.js';
+import { effectiveRole } from '../services/roles.js';
 
 const router = Router();
 const USER_ROLE = 'user';
@@ -12,7 +13,7 @@ function publicUser(row) {
     id: row.id,
     username: row.username,
     email: row.email,
-    role: row.role
+    role: effectiveRole(row)
   };
 }
 

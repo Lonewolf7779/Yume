@@ -40,3 +40,21 @@ CREATE INDEX IF NOT EXISTS idx_generations_user_created
 CREATE INDEX IF NOT EXISTS idx_generations_pending
     ON generations (status)
     WHERE status IN ('queued', 'processing');
+
+
+-- A small append-only record of privileged actions for operational accountability.
+CREATE TABLE IF NOT EXISTS admin_audit_logs (
+    id BIGSERIAL PRIMARY KEY,
+    actor_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(80) NOT NULL,
+    target_type VARCHAR(40) NOT NULL,
+    target_id BIGINT,
+    target_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_admin_audit_logs_created
+    ON admin_audit_logs (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_admin_audit_logs_target_user
+    ON admin_audit_logs (target_user_id, created_at DESC);
