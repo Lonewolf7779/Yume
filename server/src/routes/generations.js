@@ -11,13 +11,13 @@ import {
 
 const router = Router();
 
-const IMAGE_SIZES = {
-  square: { width: 1024, height: 1024 },
-  portrait_4_3: { width: 896, height: 1152 },
-  portrait_16_9: { width: 768, height: 1344 },
-  landscape_4_3: { width: 1152, height: 896 },
-  landscape_16_9: { width: 1344, height: 768 }
-};
+const IMAGE_SIZES = new Set([
+  'square',
+  'portrait_4_3',
+  'portrait_16_9',
+  'landscape_4_3',
+  'landscape_16_9'
+]);
 
 function toGeneration(row) {
   return {
@@ -162,7 +162,7 @@ router.post('/', requireAuth, async (req, res) => {
 
   const prompt = readPrompt(req.body?.prompt);
   const imageSize = typeof req.body?.imageSize === 'string' ? req.body.imageSize : 'portrait_4_3';
-  const size = IMAGE_SIZES[imageSize];
+  const size = IMAGE_SIZES.has(imageSize);
   const seed = readSeed(req.body?.seed);
 
   if (prompt.length < 3 || prompt.length > 1600) {
@@ -192,8 +192,7 @@ router.post('/', requireAuth, async (req, res) => {
     try {
       const submission = await submitFalGeneration({
         prompt,
-        width: size.width,
-        height: size.height,
+        imageSize,
         seed
       });
 
