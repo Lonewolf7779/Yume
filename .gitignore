@@ -36,3 +36,7 @@ Thumbs.db
 # IDE files
 .vscode/
 .idea/
+
+# Local media uploads storage
+server/storage/
+uploads/

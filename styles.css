@@ -3484,3 +3484,222 @@ body {
     .admin-generation-format { display: none; }
     .admin-denied-card { padding: 28px 20px; }
 }
+
+/* ============================================
+   Creation Studio: Personal Photo Uploads & Transformation
+   ============================================ */
+
+.studio-mode-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.studio-mode-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(230, 215, 225, 0.8);
+    color: var(--dark-color);
+    font: inherit;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.studio-mode-tab:hover {
+    background: #ffffff;
+    border-color: rgba(220, 120, 170, 0.4);
+    transform: translateY(-1px);
+}
+
+.studio-mode-tab.active {
+    background: linear-gradient(135deg, #3a2a36 0%, #1e151c 100%);
+    color: #ffffff;
+    border-color: #3a2a36;
+    box-shadow: 0 8px 24px rgba(30, 21, 28, 0.18);
+}
+
+.upload-consent-box {
+    background: #fff8fc;
+    border: 1px dashed #f0c4dc;
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin: 16px 0 20px;
+}
+
+.consent-checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.consent-checkbox-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: #df5b9c;
+    cursor: pointer;
+}
+
+.consent-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #3a2a36;
+    line-height: 1.5;
+}
+
+.consent-notice {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 650;
+    color: #836d7b;
+    line-height: 1.5;
+    padding-left: 32px;
+}
+
+.upload-dropzone {
+    border: 2px dashed #e6d0de;
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.upload-dropzone:hover {
+    border-color: #df5b9c;
+    background: #fff0f7;
+}
+
+.upload-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.upload-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #3a2a36;
+    margin-bottom: 4px;
+}
+
+.upload-subtitle {
+    font-size: 12px;
+    font-weight: 650;
+    color: #836d7b;
+}
+
+.upload-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.upload-thumb-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
+    background: #f8edf3;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upload-thumb-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.upload-thumb-card.selected {
+    border-color: #df5b9c;
+    box-shadow: 0 0 0 3px rgba(223, 91, 156, 0.25);
+}
+
+.upload-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.7) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px;
+}
+
+.upload-delete-btn {
+    align-self: flex-end;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    color: #ffffff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.upload-delete-btn:hover {
+    background: #e63946;
+}
+
+.upload-thumb-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selected-photo-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: #f4ecf2;
+    border: 1px solid #e2d2de;
+    margin: 16px 0;
+}
+
+.selected-photo-preview {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.selected-photo-meta {
+    flex: 1;
+}
+
+.selected-photo-meta strong {
+    display: block;
+    font-size: 13px;
+    color: #3a2a36;
+}
+
+.selected-photo-meta span {
+    font-size: 11px;
+    color: #836d7b;
+}
+

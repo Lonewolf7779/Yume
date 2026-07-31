@@ -11,6 +11,7 @@ import authRouter from './routes/auth.js';
 import protectedRouter from './routes/protected.js';
 import generationsRouter from './routes/generations.js';
 import adminRouter from './routes/admin.js';
+import uploadsRouter from './routes/uploads.js';
 
 dotenv.config();
 
@@ -60,6 +61,7 @@ app.use('/api/auth', authRouter);
 app.use('/api', protectedRouter);
 app.use('/api/generations', generationsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/uploads', uploadsRouter);
 
 app.get('/api/health', async (req, res) => {
   try {

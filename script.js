@@ -464,10 +464,15 @@ function renderSearchPage() {
 }
 
 
+let studioMode = 'generate'; // 'generate' | 'transform'
+let userUploads = [];
+let selectedSourceUploadId = null;
+
 function renderCreatePage() {
     stopGenerationPolling();
     generationLibraryFilter = 'all';
     latestGenerationLibrary = [];
+    selectedSourceUploadId = null;
 
     appRoot.innerHTML = `
         <section class="page-shell studio-page">
@@ -475,24 +480,81 @@ function renderCreatePage() {
             <div class="studio-orb studio-orb-two" aria-hidden="true"></div>
             <header class="studio-hero">
                 <div>
-                    <p class="studio-kicker">YUME LAB · FLUX 1.1 PRO</p>
+                    <p class="studio-kicker">YUME LAB · CREATION STUDIO</p>
                     <h1 class="studio-title">Make the image<br><em>only you can imagine.</em></h1>
-                    <p class="studio-subtitle">Build an original character, an anime scene, or a photoreal visual. Your prompt and creations stay in your private studio.</p>
+                    <p class="studio-subtitle">Build original AI characters from prompts or transform your personal photos with Flux AI. All creations are kept strictly private.</p>
                 </div>
                 <div class="studio-hero-mark" aria-hidden="true"><span>✦</span><span>✦</span><span>✦</span></div>
             </header>
 
+            <div class="studio-mode-tabs" role="tablist" aria-label="Creation mode">
+                <button type="button" class="studio-mode-tab active" data-studio-mode="generate" role="tab" aria-selected="true">
+                    <span>✨ AI Image Generator</span>
+                </button>
+                <button type="button" class="studio-mode-tab" data-studio-mode="transform" role="tab" aria-selected="false">
+                    <span>📷 Personal Photo Transformation</span>
+                </button>
+            </div>
+
             <div class="studio-layout">
                 <form class="generation-studio surface-panel" data-generation-form>
-                    <div class="studio-panel-heading">
+                    <!-- Mode A: Text-to-Image Header -->
+                    <div class="studio-panel-heading" data-mode-heading="generate">
                         <div><p class="studio-label">01 · DESCRIBE YOUR DREAM</p><h2>Prompt canvas</h2></div>
                         <span class="studio-model-pill">fal · Flux 1.1 Pro</span>
                     </div>
-                    <label class="sr-only" for="generationPrompt">Image prompt</label>
-                    <textarea id="generationPrompt" class="generation-prompt" data-generation-prompt maxlength="1600" placeholder="A luminous anime heroine standing in a rain-soaked neon alley, cinematic light, intricate details..." required></textarea>
-                    <div class="prompt-footer"><span>Be specific about subject, setting, light, mood, and camera.</span><span data-prompt-count>0 / 1,600</span></div>
 
+                    <!-- Mode B: Photo Transformation Header -->
+                    <div class="studio-panel-heading" data-mode-heading="transform" style="display:none;">
+                        <div><p class="studio-label">01 · SELECT YOUR PHOTO</p><h2>Personal Photo Library</h2></div>
+                        <span class="studio-model-pill">fal · Flux Redux</span>
+                    </div>
+
+                    <!-- Mode B Photo Upload Section -->
+                    <div class="photo-upload-section" data-mode-section="transform" style="display:none;">
+                        <div class="upload-consent-box">
+                            <label class="consent-checkbox-row">
+                                <input type="checkbox" id="photoConsentCheck" data-photo-consent />
+                                <span class="consent-text">I confirm that I own this photo or have explicit permission to use and transform it.</span>
+                            </label>
+                            <p class="consent-notice">Notice: Uploaded photos are stored privately. When transforming, your photo will be processed securely and sent to Fal AI for transformation.</p>
+                        </div>
+
+                        <div class="upload-dropzone" data-upload-dropzone>
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-title">Choose a personal photo to upload</div>
+                            <div class="upload-subtitle">JPEG, PNG, WebP (max 10MB). EXIF/location metadata will be stripped automatically.</div>
+                            <input type="file" id="photoFileInput" data-photo-file accept="image/png, image/jpeg, image/webp" style="display:none;" />
+                        </div>
+
+                        <div class="selected-photo-badge" data-selected-photo-badge style="display:none;">
+                            <img class="selected-photo-preview" data-selected-photo-img src="" alt="Selected photo" />
+                            <div class="selected-photo-meta">
+                                <strong>Selected Photo for Transformation</strong>
+                                <span data-selected-photo-filename>photo.webp</span>
+                            </div>
+                            <button type="button" class="secondary-action" data-clear-photo-selection>Change</button>
+                        </div>
+
+                        <div class="studio-control-group" style="margin-top:20px;">
+                            <div class="studio-control-copy"><p class="studio-label">YOUR UPLOADED PHOTOS</p><h3>Select a photo to transform</h3></div>
+                            <div class="upload-gallery-grid" data-upload-gallery>
+                                <div class="generation-library-loading"><span></span><span></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Textarea -->
                     <div class="studio-control-group">
+                        <div class="studio-control-copy" data-prompt-heading="transform" style="display:none;">
+                            <p class="studio-label">02 · DESCRIBE THE TRANSFORMATION</p><h3>Transformation prompt</h3>
+                        </div>
+                        <label class="sr-only" for="generationPrompt">Image prompt</label>
+                        <textarea id="generationPrompt" class="generation-prompt" data-generation-prompt maxlength="1600" placeholder="A luminous anime heroine standing in a rain-soaked neon alley, cinematic light, intricate details..." required></textarea>
+                        <div class="prompt-footer"><span>Be specific about subject, style, lighting, and transformation details.</span><span data-prompt-count>0 / 1,600</span></div>
+                    </div>
+
+                    <div class="studio-control-group" data-mode-section="generate">
                         <div class="studio-control-copy"><p class="studio-label">02 · START WITH A SPARK</p><h3>Prompt starters</h3></div>
                         <div class="prompt-preset-grid">
                             <button type="button" class="prompt-preset" data-prompt-preset="An elegant anime girl, long silver hair, shrine courtyard at dusk, cherry blossom petals, dreamy cinematic light, detailed illustration">Anime muse <span>↗</span></button>
@@ -525,7 +587,7 @@ function renderCreatePage() {
                 <aside class="studio-side-note surface-panel" aria-label="Generation notes">
                     <div class="studio-side-icon">✦</div><h2>From thought<br>to visual.</h2>
                     <p>Each result lands in your private library. Re-use prompts to evolve an idea instead of starting over.</p>
-                    <div class="studio-side-rule"></div><p class="studio-side-small">Generation starts only after the server owner adds the private fal API key.</p>
+                    <div class="studio-side-rule"></div><p class="studio-side-small">Generations are saved privately to your account.</p>
                 </aside>
             </div>
 
@@ -550,12 +612,190 @@ function renderCreatePage() {
     const generateButton = appRoot.querySelector('[data-generate-button]');
     const generateButtonLabel = appRoot.querySelector('[data-generate-button-label]');
     const library = appRoot.querySelector('[data-generation-library]');
+    const consentCheckbox = appRoot.querySelector('[data-photo-consent]');
+    const photoFileInput = appRoot.querySelector('[data-photo-file]');
+    const dropzone = appRoot.querySelector('[data-upload-dropzone]');
+    const uploadGallery = appRoot.querySelector('[data-upload-gallery]');
+    const selectedBadge = appRoot.querySelector('[data-selected-photo-badge]');
+    const selectedImg = appRoot.querySelector('[data-selected-photo-img]');
+    const selectedFilename = appRoot.querySelector('[data-selected-photo-filename]');
 
     const updatePromptCount = () => {
         promptCount.textContent = `${promptInput.value.length.toLocaleString()} / 1,600`;
     };
     updatePromptCount();
     promptInput.addEventListener('input', updatePromptCount);
+
+    // Mode Tab Switcher logic
+    appRoot.querySelectorAll('[data-studio-mode]').forEach((tabBtn) => {
+        tabBtn.addEventListener('click', () => {
+            studioMode = tabBtn.dataset.studioMode;
+            appRoot.querySelectorAll('[data-studio-mode]').forEach((btn) => {
+                const active = btn === tabBtn;
+                btn.classList.toggle('active', active);
+                btn.setAttribute('aria-selected', String(active));
+            });
+
+            const isTransform = studioMode === 'transform';
+
+            appRoot.querySelectorAll('[data-mode-heading="generate"]').forEach((el) => el.style.display = isTransform ? 'none' : 'flex');
+            appRoot.querySelectorAll('[data-mode-heading="transform"]').forEach((el) => el.style.display = isTransform ? 'flex' : 'none');
+            appRoot.querySelectorAll('[data-mode-section="generate"]').forEach((el) => el.style.display = isTransform ? 'none' : 'block');
+            appRoot.querySelectorAll('[data-mode-section="transform"]').forEach((el) => el.style.display = isTransform ? 'block' : 'none');
+            appRoot.querySelectorAll('[data-prompt-heading="transform"]').forEach((el) => el.style.display = isTransform ? 'block' : 'none');
+
+            if (isTransform) {
+                promptInput.placeholder = "Transform this photo into an anime hero with glowing aura, cybernetic armor, and detailed background...";
+                generateButtonLabel.textContent = 'Transform Photo with Flux Redux';
+                loadUserUploads();
+            } else {
+                promptInput.placeholder = "A luminous anime heroine standing in a rain-soaked neon alley, cinematic light, intricate details...";
+                generateButtonLabel.textContent = 'Generate with Flux';
+            }
+        });
+    });
+
+    // Load User Uploads gallery
+    const loadUserUploads = async () => {
+        if (!uploadGallery) return;
+        try {
+            const { res, body } = await apiFetchJson('/api/uploads');
+            if (res.ok && Array.isArray(body?.uploads)) {
+                userUploads = body.uploads;
+                renderUploadGallery();
+            } else {
+                uploadGallery.innerHTML = '<div class="generation-empty"><p>No uploaded photos yet.</p></div>';
+            }
+        } catch {
+            uploadGallery.innerHTML = '<div class="generation-empty"><p>Could not load uploaded photos.</p></div>';
+        }
+    };
+
+    const renderUploadGallery = () => {
+        if (!uploadGallery) return;
+        if (userUploads.length === 0) {
+            uploadGallery.innerHTML = '<div class="generation-empty"><span>No photos uploaded yet. Upload your first photo above!</span></div>';
+            return;
+        }
+
+        uploadGallery.innerHTML = userUploads.map((upload) => {
+            const isSelected = selectedSourceUploadId === upload.id;
+            return `
+                <div class="upload-thumb-card ${isSelected ? 'selected' : ''}" data-select-upload="${upload.id}">
+                    <img class="upload-thumb-img" src="${upload.view_url}" alt="${escapeHtml(upload.original_filename)}" loading="lazy" />
+                    <div class="upload-thumb-overlay">
+                        <button type="button" class="upload-delete-btn" data-delete-upload="${upload.id}" title="Delete photo">✕</button>
+                        <span class="upload-thumb-name">${escapeHtml(upload.original_filename)}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    };
+
+    // Click handlers for upload gallery items
+    uploadGallery?.addEventListener('click', async (event) => {
+        const deleteBtn = event.target.closest('[data-delete-upload]');
+        const selectCard = event.target.closest('[data-select-upload]');
+
+        if (deleteBtn) {
+            event.stopPropagation();
+            const uploadId = Number(deleteBtn.dataset.deleteUpload);
+            if (!Number.isSafeInteger(uploadId) || !window.confirm('Delete this photo upload from your private library?')) return;
+
+            const { res, body } = await apiFetchJson(`/api/uploads/${uploadId}`, { method: 'DELETE' });
+            if (res.ok) {
+                if (selectedSourceUploadId === uploadId) {
+                    selectedSourceUploadId = null;
+                    if (selectedBadge) selectedBadge.style.display = 'none';
+                }
+                userUploads = userUploads.filter((u) => u.id !== uploadId);
+                renderUploadGallery();
+                setStudioStatus('Photo upload deleted.', 'ready');
+            } else {
+                setStudioStatus(body?.error || 'Failed to delete photo.', 'error');
+            }
+            return;
+        }
+
+        if (selectCard) {
+            const uploadId = Number(selectCard.dataset.selectUpload);
+            const upload = userUploads.find((u) => u.id === uploadId);
+            if (!upload) return;
+
+            selectedSourceUploadId = uploadId;
+            renderUploadGallery();
+
+            if (selectedBadge && selectedImg && selectedFilename) {
+                selectedImg.src = upload.view_url;
+                selectedFilename.textContent = upload.original_filename;
+                selectedBadge.style.display = 'flex';
+            }
+            setStudioStatus(`Photo selected for transformation. Enter your transformation prompt below.`, 'ready');
+        }
+    });
+
+    // Clear photo selection button
+    appRoot.querySelector('[data-clear-photo-selection]')?.addEventListener('click', () => {
+        selectedSourceUploadId = null;
+        if (selectedBadge) selectedBadge.style.display = 'none';
+        renderUploadGallery();
+        setStudioStatus('Photo selection cleared.', 'ready');
+    });
+
+    // Dropzone file picker trigger
+    dropzone?.addEventListener('click', () => {
+        if (!consentCheckbox.checked) {
+            alert('Explicit consent required: Please check the consent checkbox confirming you own or have permission to use this photo before uploading.');
+            consentCheckbox.focus();
+            return;
+        }
+        photoFileInput.click();
+    });
+
+    // Handle File Input Upload
+    photoFileInput?.addEventListener('change', async () => {
+        const file = photoFileInput.files?.[0];
+        if (!file) return;
+
+        if (!consentCheckbox.checked) {
+            alert('Explicit user consent is required before uploading personal photos.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('consent', 'true');
+        formData.append('photo', file);
+
+        setStudioStatus('Uploading and sanitizing personal photo (stripping EXIF metadata)…', 'working');
+
+        try {
+            const res = await fetch('/api/uploads', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+            const body = await res.json();
+
+            if (res.ok && body.upload) {
+                setStudioStatus('Photo uploaded successfully! Selected for transformation.', 'success');
+                selectedSourceUploadId = body.upload.id;
+
+                if (selectedBadge && selectedImg && selectedFilename) {
+                    selectedImg.src = body.upload.view_url;
+                    selectedFilename.textContent = body.upload.original_filename;
+                    selectedBadge.style.display = 'flex';
+                }
+
+                await loadUserUploads();
+            } else {
+                setStudioStatus(body.error || 'Failed to upload photo.', 'error');
+            }
+        } catch {
+            setStudioStatus('Upload network error. Please try again.', 'error');
+        } finally {
+            photoFileInput.value = '';
+        }
+    });
 
     appRoot.querySelectorAll('[data-prompt-preset]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -620,35 +860,47 @@ function renderCreatePage() {
         event.preventDefault();
         const prompt = promptInput.value.trim();
         const imageSize = appRoot.querySelector('[data-image-size].active')?.dataset.imageSize || 'portrait_4_3';
+
         if (prompt.length < 3) {
             setStudioStatus('Give the image a little more detail before generating.', 'error');
             promptInput.focus();
             return;
         }
 
+        if (studioMode === 'transform' && !selectedSourceUploadId) {
+            setStudioStatus('Please select or upload a personal photo to transform.', 'error');
+            return;
+        }
+
         generateButton.disabled = true;
-        generateButtonLabel.textContent = 'Sending your idea…';
-        setStudioStatus('Opening a private generation request…', 'working');
+        generateButtonLabel.textContent = studioMode === 'transform' ? 'Starting photo transformation…' : 'Sending your idea…';
+        setStudioStatus(studioMode === 'transform' ? 'Submitting photo transformation request to Fal…' : 'Opening a private generation request…', 'working');
 
         try {
-            const { res, body } = await apiFetchJson('/api/generations', {
+            const endpoint = studioMode === 'transform' ? '/api/generations/transform' : '/api/generations';
+            const payload = studioMode === 'transform'
+                ? { sourceUploadId: selectedSourceUploadId, prompt, imageSize, seed: seedInput.value.trim() }
+                : { prompt, imageSize, seed: seedInput.value.trim() };
+
+            const { res, body } = await apiFetchJson(endpoint, {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({ prompt, imageSize, seed: seedInput.value.trim() })
+                body: JSON.stringify(payload)
             });
+
             if (!res.ok) {
                 setStudioStatus(body?.error || 'The generation could not start.', 'error');
                 await loadGenerationLibrary();
                 return;
             }
-            setStudioStatus('Your image is in the Flux queue. This usually takes a moment.', 'working');
+            setStudioStatus('Your request is in the Fal queue. This usually takes a moment.', 'working');
             await loadGenerationLibrary();
             pollGenerationUntilSettled(body.generation.id);
         } catch {
             setStudioStatus('Could not reach Yume’s generation service. Please try again.', 'error');
         } finally {
             generateButton.disabled = false;
-            generateButtonLabel.textContent = 'Generate with Flux';
+            generateButtonLabel.textContent = studioMode === 'transform' ? 'Transform Photo with Flux Redux' : 'Generate with Flux';
         }
     });
 

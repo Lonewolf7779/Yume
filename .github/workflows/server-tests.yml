@@ -54,7 +54,7 @@ jobs:
         working-directory: server
         run: npm ci
 
-      - name: Run authentication integration tests
+      - name: Run server integration test suite
         working-directory: server
         env:
           NODE_ENV: test

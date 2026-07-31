@@ -58,3 +58,30 @@ CREATE INDEX IF NOT EXISTS idx_admin_audit_logs_created
     ON admin_audit_logs (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_admin_audit_logs_target_user
     ON admin_audit_logs (target_user_id, created_at DESC);
+
+-- User personal photo uploads for AI transformation and creation
+CREATE TABLE IF NOT EXISTS user_uploads (
+    id BIGSERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    original_filename VARCHAR(255) NOT NULL,
+    storage_key VARCHAR(255) NOT NULL UNIQUE,
+    storage_provider VARCHAR(32) NOT NULL DEFAULT 'local',
+    mime_type VARCHAR(64) NOT NULL,
+    file_size_bytes BIGINT NOT NULL,
+    width INTEGER,
+    height INTEGER,
+    is_private BOOLEAN NOT NULL DEFAULT true,
+    consent_given BOOLEAN NOT NULL DEFAULT false,
+    consent_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    consent_version VARCHAR(32) NOT NULL DEFAULT 'v1.0',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_uploads_user_created
+    ON user_uploads (user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_user_uploads_storage_key
+    ON user_uploads (storage_key);
+
+-- Add optional reference to source upload photo in generations
+ALTER TABLE generations ADD COLUMN IF NOT EXISTS source_upload_id BIGINT REFERENCES user_uploads(id) ON DELETE SET NULL;
+
