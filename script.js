@@ -172,9 +172,10 @@ function getNextRouteFromQuery() {
    ============================================ */
 
 function getRoute() {
-    const hash = window.location.hash.replace(/^#\/?/, '');
-    const [page = 'home', id] = hash.split('/');
-    return { page: page || 'home', id };
+    const rawHash = window.location.hash.replace(/^#\/?/, '');
+    const [path = '', query = ''] = rawHash.split('?');
+    const [page = 'home', id] = path.split('/');
+    return { page: page || 'home', id, query };
 }
 
 function navigateTo(route) {
@@ -221,16 +222,16 @@ function renderHomePage() {
     const featuredCreator = creators.find((c) => c.handle === '@miatorres') || creators[0];
 
     const filters = [
-        { label: '✨ Recommended' },
-        { label: '🔥 Trending' },
-        { label: '🌸 Anime' },
-        { label: '🎮 Gaming' },
-        { label: '🏙 Cyberpunk' },
-        { label: '🏰 Fantasy' },
-        { label: '🌄 Landscape' },
-        { label: '👗 Fashion' },
-        { label: '🤖 Sci-Fi' },
-        { label: '❤️ Following' }
+        { label: '✨ Recommended', category: 'all' },
+        { label: '🔥 Trending', category: 'all' },
+        { label: '🌸 Anime', category: 'art' },
+        { label: '🎮 Gaming', category: 'art' },
+        { label: '🏙 Cyberpunk', category: 'art' },
+        { label: '🏰 Fantasy', category: 'art' },
+        { label: '🌄 Landscape', category: 'nature' },
+        { label: '👗 Fashion', category: 'fashion' },
+        { label: '🤖 Sci-Fi', category: 'art' },
+        { label: '❤️ Following', category: 'all' }
     ];
 
     const creationsTodayCount = '12,487';
@@ -287,7 +288,7 @@ function renderHomePage() {
 
             <div class="yume-feed-filters h-scroll" aria-label="Feed filters">
                 <div class="yume-feed-filter-track">
-                    ${filters.map((f, idx) => `<button type="button" class="yume-filter-chip" data-filter-chip="${idx}">${f.label}</button>`).join('')}
+                    ${filters.map((f) => `<button type="button" class="yume-filter-chip" data-home-filter="${f.category}">${f.label}</button>`).join('')}
                 </div>
             </div>
 
@@ -296,16 +297,26 @@ function renderHomePage() {
         </section>
     `;
 
-    // Visual-only CTAs (no behavior changes required)
-    appRoot.querySelector('[data-hero-primary]')?.addEventListener('click', () => {});
-    appRoot.querySelector('[data-hero-secondary]')?.addEventListener('click', () => {});
+    appRoot.querySelector('[data-hero-primary]')?.addEventListener('click', () => {
+        if (requireAuthOrRedirect('/create')) navigateTo('/create');
+    });
+    appRoot.querySelector('[data-hero-secondary]')?.addEventListener('click', () => {
+        activeCategory = 'all';
+        navigateTo('/search');
+    });
+    appRoot.querySelectorAll('[data-home-filter]').forEach((button) => {
+        button.addEventListener('click', () => {
+            activeCategory = button.dataset.homeFilter || 'all';
+            activeSearchTerm = '';
+            searchInput.value = '';
+            navigateTo('/search');
+        });
+    });
 
     renderCards(pins, document.getElementById('masonryGrid'));
 }
 
 function renderSearchPage() {
-    activeCategory = 'all';
-
     const filteredPins = filterPins(activeSearchTerm, activeCategory);
 
     const trending = [
@@ -414,7 +425,7 @@ function renderSearchPage() {
 
                 <div class="category-grid" aria-label="Browse categories">
                     ${browseCategories.map((item) => `
-                        <article class="category-thumb-card surface-panel" tabindex="0" aria-label="${item.title}">
+                        <article class="category-thumb-card surface-panel" tabindex="0" data-category="${item.category}" aria-label="${item.title}">
                             <div class="category-thumb">
                                 <img
                                     class="category-thumb-image"
@@ -1147,14 +1158,16 @@ function createCardElement(card) {
         'Save creation',
         'save-pin-btn yume-card-save-like-btn',
         savedPinIds.has(card.id),
-        `<path d="M5 4.5A2.5 2.5 0 0 1 7.5 2h9A2.5 2.5 0 0 1 19 4.5V22l-7-4-7 4V4.5z" fill="currentColor"/>`
+        `<path d="M5 4.5A2.5 2.5 0 0 1 7.5 2h9A2.5 2.5 0 0 1 19 4.5V22l-7-4-7 4V4.5z" fill="currentColor"/>`,
+        card.id
     );
 
     const likeBtn = createPinAction(
         'Like creation',
         'like-pin-btn yume-card-save-like-btn',
         likedPinIds.has(card.id),
-        `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/>`
+        `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/>`,
+        card.id
     );
 
     actionsBar.appendChild(remixBtn);
@@ -1181,7 +1194,7 @@ function createCardElement(card) {
     return cardDiv;
 }
 
-function createPinAction(label, className, active, iconPath) {
+function createPinAction(label, className, active, iconPath, pinId) {
     const button = document.createElement('button');
     button.className = `pin-action-btn ${className}${active ? ' active' : ''}`;
     button.type = 'button';
@@ -1189,7 +1202,17 @@ function createPinAction(label, className, active, iconPath) {
     button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${iconPath}</svg>`;
     button.addEventListener('click', (event) => {
         event.stopPropagation();
-        button.classList.toggle('active');
+        const isActive = button.classList.toggle('active');
+
+        if (className.includes('save-pin-btn')) {
+            if (isActive) savedPinIds.add(pinId);
+            else savedPinIds.delete(pinId);
+        }
+
+        if (className.includes('like-pin-btn')) {
+            if (isActive) likedPinIds.add(pinId);
+            else likedPinIds.delete(pinId);
+        }
     });
     return button;
 }
