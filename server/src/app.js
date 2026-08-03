@@ -105,6 +105,10 @@ const repoRoot = path.resolve(__dirname, '../..');
 
 app.use(express.static(repoRoot, { etag: false, maxAge: 0 }));
 
+app.get(['/landing', '/landing.html'], (req, res) => {
+  res.redirect('/');
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(repoRoot, 'index.html'));
 });
