@@ -103,7 +103,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '../..');
 
-app.use(express.static(repoRoot));
+app.use(express.static(repoRoot, { etag: false, maxAge: 0 }));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(repoRoot, 'index.html'));
