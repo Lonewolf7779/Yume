@@ -378,9 +378,9 @@ function renderHomePage() {
                     <button type="button" class="landing-generate-btn" data-landing-create>✦ Generate Image</button>
                 </div>
 
-                <!-- Dynamic Bento Masonry Display for Multiple Prompt Wallpapers -->
+                <!-- 5-Column Bento Masonry Display Below Prompt Input Bar -->
                 <div class="prompt-preview-result-wrap">
-                    <div id="promptMasonryGrid" class="prompt-masonry-grid"></div>
+                    <div id="refBentoGrid" class="ref-bento-grid"></div>
                 </div>
             </div>
         </section>
@@ -561,7 +561,7 @@ function renderHomePage() {
 
     renderPinsGrid(pins);
     fetchRegisteredUserCount();
-    updatePromptMasonryGrid('shrine');
+    updateRefBentoGrid('shrine');
 
     document.querySelectorAll('[data-landing-create]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -580,7 +580,7 @@ function renderHomePage() {
             chip.classList.add('active');
             const input = document.getElementById('landingPromptInput');
             if (input) input.value = chip.dataset.promptText;
-            updatePromptMasonryGrid(chip.dataset.suiteKey);
+            updateRefBentoGrid(chip.dataset.suiteKey);
         });
     });
 
@@ -590,80 +590,132 @@ function renderHomePage() {
             e.preventDefault();
             const activeChip = document.querySelector('.prompt-chip.active');
             const key = activeChip ? activeChip.dataset.suiteKey : 'shrine';
-            updatePromptMasonryGrid(key);
+            updateRefBentoGrid(key);
         });
     }
 }
 
-const promptSuites = {
+const refBentoSuites = {
     shrine: {
-        chipTitle: '🌸 Cherry Blossom Shrine Maiden',
-        promptText: 'Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting',
-        badge: '✨ Generated with Flux 1.1 Pro Engine',
-        items: [
-            { url: 'img/hero_artwork.jpg', title: 'Cherry Blossom Shrine Maiden', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
-            { url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80', title: 'Sakura Petal Rain Princess', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
-            { url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80', title: 'Pastel Shrine Courtyard', aspect: '3840x2160 • 16:9 Desktop' },
-            { url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80', title: 'Torii Gate Sunset Glow', aspect: '2048x2048 • 1:1 Avatar' }
+        cols: [
+            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@softpalette', likes: '2.5K', avatar: 'https://i.pravatar.cc/80?img=33' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_dreams', likes: '3.1K', avatar: 'https://i.pravatar.cc/80?img=47' },
+                    { type: 'small', img: 'img/anime_landscape_real.jpg', handle: '@illustrated.by.me', likes: '2.2K', avatar: 'https://i.pravatar.cc/80?img=12' }
+                ] 
+            },
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@fantasy_realms', likes: '4.7K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@lunae', likes: '3.8K', avatar: 'https://i.pravatar.cc/80?img=20' },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@dreamweaver', likes: '3.3K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                ] 
+            },
+            { type: 'tall', img: 'img/hero_artwork.jpg', handle: '@travellight', likes: '2.9K', avatar: 'https://i.pravatar.cc/80?img=5' }
         ]
     },
     cyberpunk: {
-        chipTitle: '⛩️ Cyberpunk Samurai Warrior',
-        promptText: 'Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink',
-        badge: '⚡ Generated with Cyberpunk Flux Engine',
-        items: [
-            { url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80', title: 'Neon Rain Samurai Girl', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
-            { url: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80', title: 'Tokyo Cyberpunk Rain Alley', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
-            { url: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', title: 'Neon Cyberpunk Supercar', aspect: '3840x2160 • 16:9 Desktop' },
-            { url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80', title: 'Matte Black Cyber Machine', aspect: '2048x2048 • 1:1 Avatar' }
+        cols: [
+            { type: 'tall', img: 'img/anime_samurai_real.jpg', handle: '@cyber_vixen', likes: '4.2K', avatar: 'https://i.pravatar.cc/80?img=47' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/cyberpunk_supercar.jpg', handle: '@tokyo_drift', likes: '5.1K', avatar: 'https://i.pravatar.cc/80?img=33' },
+                    { type: 'small', img: 'img/mecha_goddess.jpg', handle: '@mech_core', likes: '3.6K', avatar: 'https://i.pravatar.cc/80?img=12' }
+                ] 
+            },
+            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@blade_master', likes: '6.3K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@neon_valkyrie', likes: '2.8K', avatar: 'https://i.pravatar.cc/80?img=20' },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@shadow_katana', likes: '4.1K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                ] 
+            },
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@cyber_spirit', likes: '3.9K', avatar: 'https://i.pravatar.cc/80?img=5' }
         ]
     },
     ghibli: {
-        chipTitle: '🎨 Studio Ghibli Magical Castle',
-        promptText: 'Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley',
-        badge: '🎨 Generated with Anime Dream Engine',
-        items: [
-            { url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80', title: 'Floating Castle in Pastel Clouds', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
-            { url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80', title: 'Dragon Mountain Shrine', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
-            { url: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=800&q=80', title: 'Enchanted Valley Mist', aspect: '3840x2160 • 16:9 Desktop' },
-            { url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80', title: 'Pastel Celestial Skies', aspect: '2048x2048 • 1:1 Avatar' }
+        cols: [
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@sky_castle', likes: '5.8K', avatar: 'https://i.pravatar.cc/80?img=12' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/anime_landscape_real.jpg', handle: '@sunset_beach', likes: '3.4K', avatar: 'https://i.pravatar.cc/80?img=33' },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@spirit_wolf', likes: '4.9K', avatar: 'https://i.pravatar.cc/80?img=47' }
+                ] 
+            },
+            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@sakura_temple', likes: '7.1K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/hero_artwork.jpg', handle: '@pastel_cloud', likes: '4.5K', avatar: 'https://i.pravatar.cc/80?img=20' },
+                    { type: 'small', img: 'img/anime_samurai_real.jpg', handle: '@dream_artist', likes: '3.2K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                ] 
+            },
+            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@ghibli_master', likes: '6.0K', avatar: 'https://i.pravatar.cc/80?img=5' }
         ]
     },
     mecha: {
-        chipTitle: '🤖 Futuristic Mecha Goddess',
-        promptText: 'Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed 8k',
-        badge: '🤖 Generated with Mecha Ultra Engine',
-        items: [
-            { url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80', title: 'Futuristic Mecha Goddess Visor', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
-            { url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80', title: 'Cybernetic Armor Frame', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
-            { url: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', title: 'Futuristic Cyber Supercar', aspect: '3840x2160 • 16:9 Desktop' },
-            { url: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80', title: 'Holographic Cyber Core', aspect: '2048x2048 • 1:1 Avatar' }
+        cols: [
+            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@exo_frame', likes: '6.5K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_blade', likes: '4.8K', avatar: 'https://i.pravatar.cc/80?img=47' },
+                    { type: 'small', img: 'img/cyberpunk_supercar.jpg', handle: '@hyper_machine', likes: '3.7K', avatar: 'https://i.pravatar.cc/80?img=33' }
+                ] 
+            },
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@stellar_core', likes: '5.4K', avatar: 'https://i.pravatar.cc/80?img=12' },
+            { 
+                stacked: [
+                    { type: 'medium', img: 'img/anime_shrine_real.jpg', handle: '@cyber_goddess', likes: '4.3K', avatar: 'https://i.pravatar.cc/80?img=20' },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@quantum_spirit', likes: '3.9K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                ] 
+            },
+            { type: 'tall', img: 'img/yume_hero_anime.jpg', handle: '@mecha_artisan', likes: '5.2K', avatar: 'https://i.pravatar.cc/80?img=5' }
         ]
     }
 };
 
-function updatePromptMasonryGrid(suiteKey) {
-    const suite = promptSuites[suiteKey] || promptSuites.shrine;
-    const container = document.getElementById('promptMasonryGrid');
+function updateRefBentoGrid(suiteKey) {
+    const suite = refBentoSuites[suiteKey] || refBentoSuites.shrine;
+    const container = document.getElementById('refBentoGrid');
     if (!container) return;
 
     container.style.opacity = '0';
     setTimeout(() => {
-        container.innerHTML = suite.items.map((item) => `
-            <div class="prompt-masonry-card ${item.isFeatured ? 'featured' : ''} ${item.isTall ? 'tall' : ''}">
-                <img src="${item.url}" alt="${item.title}" class="prompt-masonry-img" />
-                <div class="prompt-masonry-overlay">
-                    <div class="prompt-masonry-badge">${suite.badge}</div>
-                    <div class="prompt-masonry-meta">
-                        <div>
-                            <h4 class="prompt-masonry-title">${item.title}</h4>
-                            <span class="preview-aspect">${item.aspect}</span>
+        container.innerHTML = suite.cols.map((col) => {
+            if (col.stacked) {
+                return `
+                    <div class="ref-bento-col">
+                        ${col.stacked.map((card) => `
+                            <div class="ref-bento-card ${card.type}" data-landing-create>
+                                <img src="${card.img}" alt="${card.handle}" class="ref-bento-img" />
+                                <div class="ref-bento-overlay">
+                                    <div class="ref-bento-creator">
+                                        <img src="${card.avatar}" alt="${card.handle}" class="ref-bento-avatar" />
+                                        <span class="ref-bento-handle">${card.handle}</span>
+                                    </div>
+                                    <div class="ref-bento-likes">♡ ${card.likes}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="ref-bento-col">
+                    <div class="ref-bento-card ${col.type}" data-landing-create>
+                        <img src="${col.img}" alt="${col.handle}" class="ref-bento-img" />
+                        <div class="ref-bento-overlay">
+                            <div class="ref-bento-creator">
+                                <img src="${col.avatar}" alt="${col.handle}" class="ref-bento-avatar" />
+                                <span class="ref-bento-handle">${col.handle}</span>
+                            </div>
+                            <div class="ref-bento-likes">♡ ${col.likes}</div>
                         </div>
-                        ${item.isFeatured ? '<button type="button" class="preview-remix-btn" data-landing-create>✦ Remix in Studio</button>' : ''}
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         container.style.opacity = '1';
 
