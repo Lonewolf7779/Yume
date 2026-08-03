@@ -113,6 +113,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '../..');
 
+app.use('/img', express.static(path.join(repoRoot, 'img'), { etag: false, maxAge: 0 }));
 app.use(express.static(repoRoot, { etag: false, maxAge: 0 }));
 
 app.get(['/landing', '/landing.html'], (req, res) => {
@@ -124,7 +125,7 @@ app.get('/', (req, res) => {
 });
 
 app.get(/.*/, (req, res, next) => {
-  if (req.path.startsWith('/api/')) return next();
+  if (req.path.startsWith('/api/') || req.path.startsWith('/img/')) return next();
   return res.sendFile(path.join(repoRoot, 'index.html'));
 });
 

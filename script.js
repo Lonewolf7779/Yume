@@ -595,81 +595,83 @@ function renderHomePage() {
     }
 }
 
+const defaultAvatarSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23ff7eb5'/%3E%3Ccircle cx='50' cy='38' r='20' fill='%23ffffff'/%3E%3Cpath d='M20,85 C20,65 33,56 50,56 C67,56 80,65 80,85 Z' fill='%23ffffff'/%3E%3C/svg%3E";
+
 const refBentoSuites = {
     shrine: {
         cols: [
-            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@softpalette', likes: '2.5K', avatar: 'https://i.pravatar.cc/80?img=33' },
+            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@softpalette', likes: '2.5K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_dreams', likes: '3.1K', avatar: 'https://i.pravatar.cc/80?img=47' },
-                    { type: 'small', img: 'img/anime_landscape_real.jpg', handle: '@illustrated.by.me', likes: '2.2K', avatar: 'https://i.pravatar.cc/80?img=12' }
+                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_dreams', likes: '3.1K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/anime_landscape_real.jpg', handle: '@illustrated.by.me', likes: '2.2K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@fantasy_realms', likes: '4.7K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@fantasy_realms', likes: '4.7K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@lunae', likes: '3.8K', avatar: 'https://i.pravatar.cc/80?img=20' },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@dreamweaver', likes: '3.3K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@lunae', likes: '3.8K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@dreamweaver', likes: '3.3K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/hero_artwork.jpg', handle: '@travellight', likes: '2.9K', avatar: 'https://i.pravatar.cc/80?img=5' }
+            { type: 'tall', img: 'img/hero_artwork.jpg', handle: '@travellight', likes: '2.9K', avatar: defaultAvatarSvg }
         ]
     },
     cyberpunk: {
         cols: [
-            { type: 'tall', img: 'img/anime_samurai_real.jpg', handle: '@cyber_vixen', likes: '4.2K', avatar: 'https://i.pravatar.cc/80?img=47' },
+            { type: 'tall', img: 'img/anime_samurai_real.jpg', handle: '@cyber_vixen', likes: '4.2K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/cyberpunk_supercar.jpg', handle: '@tokyo_drift', likes: '5.1K', avatar: 'https://i.pravatar.cc/80?img=33' },
-                    { type: 'small', img: 'img/mecha_goddess.jpg', handle: '@mech_core', likes: '3.6K', avatar: 'https://i.pravatar.cc/80?img=12' }
+                    { type: 'medium', img: 'img/cyberpunk_supercar.jpg', handle: '@tokyo_drift', likes: '5.1K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/mecha_goddess.jpg', handle: '@mech_core', likes: '3.6K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@blade_master', likes: '6.3K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@blade_master', likes: '6.3K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@neon_valkyrie', likes: '2.8K', avatar: 'https://i.pravatar.cc/80?img=20' },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@shadow_katana', likes: '4.1K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@neon_valkyrie', likes: '2.8K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@shadow_katana', likes: '4.1K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@cyber_spirit', likes: '3.9K', avatar: 'https://i.pravatar.cc/80?img=5' }
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@cyber_spirit', likes: '3.9K', avatar: defaultAvatarSvg }
         ]
     },
     ghibli: {
         cols: [
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@sky_castle', likes: '5.8K', avatar: 'https://i.pravatar.cc/80?img=12' },
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@sky_castle', likes: '5.8K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/anime_landscape_real.jpg', handle: '@sunset_beach', likes: '3.4K', avatar: 'https://i.pravatar.cc/80?img=33' },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@spirit_wolf', likes: '4.9K', avatar: 'https://i.pravatar.cc/80?img=47' }
+                    { type: 'medium', img: 'img/anime_landscape_real.jpg', handle: '@sunset_beach', likes: '3.4K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@spirit_wolf', likes: '4.9K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@sakura_temple', likes: '7.1K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@sakura_temple', likes: '7.1K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/hero_artwork.jpg', handle: '@pastel_cloud', likes: '4.5K', avatar: 'https://i.pravatar.cc/80?img=20' },
-                    { type: 'small', img: 'img/anime_samurai_real.jpg', handle: '@dream_artist', likes: '3.2K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                    { type: 'medium', img: 'img/hero_artwork.jpg', handle: '@pastel_cloud', likes: '4.5K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/anime_samurai_real.jpg', handle: '@dream_artist', likes: '3.2K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@ghibli_master', likes: '6.0K', avatar: 'https://i.pravatar.cc/80?img=5' }
+            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@ghibli_master', likes: '6.0K', avatar: defaultAvatarSvg }
         ]
     },
     mecha: {
         cols: [
-            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@exo_frame', likes: '6.5K', avatar: 'https://i.pravatar.cc/80?img=65' },
+            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@exo_frame', likes: '6.5K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_blade', likes: '4.8K', avatar: 'https://i.pravatar.cc/80?img=47' },
-                    { type: 'small', img: 'img/cyberpunk_supercar.jpg', handle: '@hyper_machine', likes: '3.7K', avatar: 'https://i.pravatar.cc/80?img=33' }
+                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_blade', likes: '4.8K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/cyberpunk_supercar.jpg', handle: '@hyper_machine', likes: '3.7K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@stellar_core', likes: '5.4K', avatar: 'https://i.pravatar.cc/80?img=12' },
+            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@stellar_core', likes: '5.4K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/anime_shrine_real.jpg', handle: '@cyber_goddess', likes: '4.3K', avatar: 'https://i.pravatar.cc/80?img=20' },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@quantum_spirit', likes: '3.9K', avatar: 'https://i.pravatar.cc/80?img=11' }
+                    { type: 'medium', img: 'img/anime_shrine_real.jpg', handle: '@cyber_goddess', likes: '4.3K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@quantum_spirit', likes: '3.9K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/yume_hero_anime.jpg', handle: '@mecha_artisan', likes: '5.2K', avatar: 'https://i.pravatar.cc/80?img=5' }
+            { type: 'tall', img: 'img/yume_hero_anime.jpg', handle: '@mecha_artisan', likes: '5.2K', avatar: defaultAvatarSvg }
         ]
     }
 };
