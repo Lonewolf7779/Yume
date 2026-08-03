@@ -74,17 +74,17 @@ const followedCreatorHandles = new Set(['@sarahpins', '@parkframes', '@lucasvisu
 
 const aiArtImages = [
     { title: '🌸 Cherry Blossom Shrine Maiden', category: 'anime', url: 'img/hero_artwork.jpg' },
-    { title: '⛩️ Cyberpunk Samurai Warrior', category: 'anime', url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🏎️ Neon Tokyo Cyber Supercar', category: 'cyberpunk', url: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🎨 Studio Ghibli Floating Island', category: 'fantasy', url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🤖 Cybernetic Mecha Goddess', category: 'anime', url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🌸 Sakura Spirit Princess', category: 'anime', url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🌃 Neon Cyberpunk Tokyo Rain', category: 'cyberpunk', url: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🐉 Fantasy Dragon Mountain Shrine', category: 'fantasy', url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80' },
-    { title: '✨ Pastel Aurora Magic Valley', category: 'fantasy', url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80' },
-    { title: '⚔️ Anime Katana Duel Concept', category: 'anime', url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🏎️ Matte Black Cyber Hypercar', category: 'cyberpunk', url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80' },
-    { title: '🏰 Enchanted Castle in Clouds', category: 'fantasy', url: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=1200&q=80' }
+    { title: '⛩️ Cyberpunk Samurai Warrior', category: 'anime', url: 'img/anime_girl_samurai.jpg' },
+    { title: '🏎️ Neon Tokyo Cyber Supercar', category: 'cyberpunk', url: 'img/cyberpunk_supercar.jpg' },
+    { title: '🎨 Studio Ghibli Floating Castle', category: 'fantasy', url: 'img/fantasy_ghibli_castle.jpg' },
+    { title: '🤖 Cybernetic Mecha Goddess', category: 'anime', url: 'img/mecha_goddess.jpg' },
+    { title: '🌸 Sakura Spirit Princess', category: 'anime', url: 'img/yume_hero_anime.jpg' },
+    { title: '🌃 Neon Cyberpunk Tokyo Rain', category: 'cyberpunk', url: 'img/cyberpunk_supercar.jpg' },
+    { title: '🐉 Fantasy Dragon Mountain Shrine', category: 'fantasy', url: 'img/fantasy_ghibli_castle.jpg' },
+    { title: '✨ Pastel Aurora Magic Valley', category: 'fantasy', url: 'img/hero_artwork.jpg' },
+    { title: '⚔️ Anime Katana Duel Concept', category: 'anime', url: 'img/anime_girl_samurai.jpg' },
+    { title: '🏎️ Matte Black Cyber Hypercar', category: 'cyberpunk', url: 'img/cyberpunk_supercar.jpg' },
+    { title: '🏰 Enchanted Castle in Clouds', category: 'fantasy', url: 'img/fantasy_ghibli_castle.jpg' }
 ];
 
 function generateMockCards() {
@@ -407,7 +407,7 @@ function renderHomePage() {
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80" alt="Cyberpunk Supercar Prompt" class="step-card-img" />
+                        <img src="img/cyberpunk_supercar.jpg" alt="Cyberpunk Supercar Prompt" class="step-card-img" />
                     </div>
                     <div class="step-number">01</div>
                     <h3 class="step-title">Describe or Upload</h3>
@@ -415,7 +415,7 @@ function renderHomePage() {
                 </div>
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80" alt="Select style and ratio" class="step-card-img" />
+                        <img src="img/anime_girl_samurai.jpg" alt="Select style and ratio" class="step-card-img" />
                     </div>
                     <div class="step-number">02</div>
                     <h3 class="step-title">Select Style & Ratio</h3>
@@ -423,7 +423,7 @@ function renderHomePage() {
                 </div>
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80" alt="Keep private or share" class="step-card-img" />
+                        <img src="img/fantasy_ghibli_castle.jpg" alt="Keep private or share" class="step-card-img" />
                     </div>
                     <div class="step-number">03</div>
                     <h3 class="step-title">Keep Private or Share</h3>
@@ -443,7 +443,7 @@ function renderHomePage() {
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80" alt="Private Library" class="feature-card-img" />
+                        <img src="img/yume_hero_anime.jpg" alt="Private Library" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">🔒</div>
                     <h3 class="feature-title">Private Library by Default</h3>
@@ -459,7 +459,7 @@ function renderHomePage() {
                 </div>
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80" alt="Ultra HD 4K Upscaling" class="feature-card-img" />
+                        <img src="img/cyberpunk_supercar.jpg" alt="Ultra HD 4K Upscaling" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">🖼️</div>
                     <h3 class="feature-title">Ultra HD 4K Upscaling</h3>
@@ -467,7 +467,7 @@ function renderHomePage() {
                 </div>
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80" alt="One-Click Remixing" class="feature-card-img" />
+                        <img src="img/fantasy_ghibli_castle.jpg" alt="One-Click Remixing" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">🤝</div>
                     <h3 class="feature-title">One-Click Remixing</h3>
