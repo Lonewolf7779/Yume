@@ -681,53 +681,50 @@ function updateRefBentoGrid(suiteKey) {
     const container = document.getElementById('refBentoGrid');
     if (!container) return;
 
-    container.style.opacity = '0';
-    setTimeout(() => {
-        container.innerHTML = suite.cols.map((col) => {
-            if (col.stacked) {
-                return `
-                    <div class="ref-bento-col">
-                        ${col.stacked.map((card) => `
-                            <div class="ref-bento-card ${card.type}" data-landing-create>
-                                <img src="${card.img}" alt="${card.handle}" class="ref-bento-img" />
-                                <div class="ref-bento-overlay">
-                                    <div class="ref-bento-creator">
-                                        <img src="${card.avatar}" alt="${card.handle}" class="ref-bento-avatar" />
-                                        <span class="ref-bento-handle">${card.handle}</span>
-                                    </div>
-                                    <div class="ref-bento-likes">♡ ${card.likes}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-
+    container.innerHTML = suite.cols.map((col) => {
+        if (col.stacked) {
             return `
                 <div class="ref-bento-col">
-                    <div class="ref-bento-card ${col.type}" data-landing-create>
-                        <img src="${col.img}" alt="${col.handle}" class="ref-bento-img" />
-                        <div class="ref-bento-overlay">
-                            <div class="ref-bento-creator">
-                                <img src="${col.avatar}" alt="${col.handle}" class="ref-bento-avatar" />
-                                <span class="ref-bento-handle">${col.handle}</span>
+                    ${col.stacked.map((card) => `
+                        <div class="ref-bento-card ${card.type}" data-landing-create>
+                            <img src="${card.img}" alt="${card.handle}" class="ref-bento-img" />
+                            <div class="ref-bento-overlay">
+                                <div class="ref-bento-creator">
+                                    <img src="${card.avatar}" alt="${card.handle}" class="ref-bento-avatar" />
+                                    <span class="ref-bento-handle">${card.handle}</span>
+                                </div>
+                                <div class="ref-bento-likes">♡ ${card.likes}</div>
                             </div>
-                            <div class="ref-bento-likes">♡ ${col.likes}</div>
                         </div>
-                    </div>
+                    `).join('')}
                 </div>
             `;
-        }).join('');
+        }
 
-        container.style.opacity = '1';
+        return `
+            <div class="ref-bento-col">
+                <div class="ref-bento-card ${col.type}" data-landing-create>
+                    <img src="${col.img}" alt="${col.handle}" class="ref-bento-img" />
+                    <div class="ref-bento-overlay">
+                        <div class="ref-bento-creator">
+                            <img src="${col.avatar}" alt="${col.handle}" class="ref-bento-avatar" />
+                            <span class="ref-bento-handle">${col.handle}</span>
+                        </div>
+                        <div class="ref-bento-likes">♡ ${col.likes}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
 
-        container.querySelectorAll('[data-landing-create]').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                if (!requireAuthOrRedirect('/create')) return;
-                navigateTo('/create');
-            });
+    container.style.opacity = '1';
+
+    container.querySelectorAll('[data-landing-create]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            if (!requireAuthOrRedirect('/create')) return;
+            navigateTo('/create');
         });
-    }, 150);
+    });
 }
 
 async function fetchRegisteredUserCount() {
