@@ -455,7 +455,7 @@ body {
 .prompt-box-card {
     background: #ffffff;
     border-radius: 24px;
-    padding: 20px 28px;
+    padding: 24px 28px;
     box-shadow: 0 16px 45px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border-color);
     max-width: 960px;
@@ -466,6 +466,76 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-bottom: 24px;
+}
+
+.prompt-preview-result-wrap {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #18181B;
+}
+
+.prompt-preview-image-box {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    overflow: hidden;
+}
+
+.prompt-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: var(--transition);
+}
+
+.prompt-preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(24, 24, 27, 0.85) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 32px;
+}
+
+.preview-badge {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--dark-color);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+}
+
+.preview-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.preview-aspect {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.preview-remix-btn {
+    border-radius: 999px;
+    padding: 10px 22px;
+    background: var(--primary-pink-gradient);
+    color: #ffffff;
+    border: none;
+    font: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: var(--shadow-pink);
 }
 
 .landing-prompt-input {

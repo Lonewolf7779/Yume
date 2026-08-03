@@ -350,10 +350,10 @@ function renderHomePage() {
             </div>
 
             <div class="prompt-chips-wrapper">
-                <button type="button" class="prompt-chip active" data-prompt-text="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting">🌸 Cherry Blossom Shrine Maiden</button>
-                <button type="button" class="prompt-chip" data-prompt-text="Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink">⛩️ Cyberpunk Samurai Warrior</button>
-                <button type="button" class="prompt-chip" data-prompt-text="Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley">🎨 Studio Ghibli Magical Castle</button>
-                <button type="button" class="prompt-chip" data-prompt-text="Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed">🤖 Futuristic Mecha Goddess</button>
+                <button type="button" class="prompt-chip active" data-img-src="img/hero_artwork.jpg" data-prompt-text="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting">🌸 Cherry Blossom Shrine Maiden</button>
+                <button type="button" class="prompt-chip" data-img-src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80" data-prompt-text="Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink">⛩️ Cyberpunk Samurai Warrior</button>
+                <button type="button" class="prompt-chip" data-img-src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80" data-prompt-text="Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley">🎨 Studio Ghibli Magical Castle</button>
+                <button type="button" class="prompt-chip" data-img-src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" data-prompt-text="Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed">🤖 Futuristic Mecha Goddess</button>
             </div>
 
             <div class="prompt-box-card">
@@ -365,6 +365,20 @@ function renderHomePage() {
                     </svg>
                     <input type="text" id="landingPromptInput" class="landing-prompt-input" value="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting" />
                     <button type="button" class="landing-generate-btn" data-landing-create>✦ Generate Image</button>
+                </div>
+
+                <!-- Live Preview Artwork Display -->
+                <div class="prompt-preview-result-wrap">
+                    <div class="prompt-preview-image-box">
+                        <img id="landingPreviewImg" src="img/hero_artwork.jpg" alt="Generated Wallpaper Preview" class="prompt-preview-img" />
+                        <div class="prompt-preview-overlay">
+                            <div class="preview-badge">✨ Generated with Flux 1.1 Pro Engine</div>
+                            <div class="preview-meta">
+                                <span class="preview-aspect">Resolution: 3840x2160 • 16:9 Wallpaper</span>
+                                <button type="button" class="preview-remix-btn" data-landing-create>✦ Remix Prompt in Studio</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -540,7 +554,9 @@ function renderHomePage() {
             document.querySelectorAll('.prompt-chip').forEach((c) => c.classList.remove('active'));
             chip.classList.add('active');
             const input = document.getElementById('landingPromptInput');
+            const img = document.getElementById('landingPreviewImg');
             if (input) input.value = chip.dataset.promptText;
+            if (img && chip.dataset.imgSrc) img.src = chip.dataset.imgSrc;
         });
     });
 }
