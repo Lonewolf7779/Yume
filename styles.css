@@ -1071,35 +1071,35 @@ body {
    ============================================ */
 
 .hero-showcase {
-    display: grid;
-    grid-template-columns: 46% 54%;
-    gap: 0;
+    position: relative;
+    display: flex;
     align-items: center;
     min-height: 100vh;
-    max-width: 1500px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    background-color: #FFFFFF;
+    background-image: url('img/hero_artwork.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    padding: 80px 0 80px 72px;
     overflow: hidden;
-    position: relative;
 }
 
-/* Subtle Sakura Pink Ambient Lighting Glow behind Hero */
-.hero-showcase::before {
+/* Linear gradient overlay for crystal clear text readability */
+.hero-showcase::after {
     content: '';
     position: absolute;
-    top: 10%;
-    left: 40%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(255, 126, 181, 0.12) 0%, transparent 70%);
+    inset: 0;
+    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0.94) 38%, rgba(255, 255, 255, 0.5) 60%, transparent 100%);
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
 }
 
 .hero-left-content {
     position: relative;
     z-index: 2;
-    padding: 60px 40px 60px 72px;
+    max-width: 580px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1259,12 +1259,18 @@ body {
 @media (max-width: 900px) {
     .public-nav-links { display: none; }
     .public-navbar { padding: 10px 20px; }
-    .hero-showcase { grid-template-columns: 1fr; min-height: auto; }
-    .hero-left-content { width: 100%; max-width: 100%; padding: 40px 20px; text-align: center; align-items: center; }
+    .hero-showcase {
+        padding: 100px 24px 60px 24px;
+        min-height: 85vh;
+        background-position: right top;
+    }
+    .hero-showcase::after {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.94) 55%, #ffffff 100%);
+    }
+    .hero-left-content { width: 100%; max-width: 100%; text-align: center; align-items: center; }
     .hero-subtitle { max-width: 100%; }
     .hero-cta-group { justify-content: center; }
     .hero-social-proof { justify-content: center; }
-    .hero-right-artwork { width: 100%; min-height: 440px; height: 440px; }
     
     .steps-grid { grid-template-columns: 1fr; gap: 24px; }
     .features-grid { grid-template-columns: 1fr; gap: 24px; }

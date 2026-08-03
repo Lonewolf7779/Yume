@@ -335,10 +335,6 @@ function renderHomePage() {
                     </div>
                 </div>
             </div>
-
-            <div class="hero-right-artwork" aria-hidden="true">
-                <img src="img/hero_artwork.jpg" alt="Hero artwork" class="hero-right-artwork-img" />
-            </div>
         </section>
 
         <!-- 3. Interactive Prompt Preview & Sample Chips -->
