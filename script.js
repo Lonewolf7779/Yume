@@ -411,7 +411,7 @@ function updateRefBentoGrid(suiteKey) {
                             <img src="${col.avatar}" alt="${col.handle}" class="ref-bento-avatar" />
                             <span class="ref-bento-handle">${col.handle}</span>
                         </div>
-                        <div class="ref-bento-likes">♡ ${card.likes}</div>
+                        <div class="ref-bento-likes">♡ ${col.likes}</div>
                     </div>
                 </div>
             </div>
