@@ -621,11 +621,33 @@ body {
     background: linear-gradient(145deg, #ffffff 0%, #fff8fb 100%);
     border: 1px solid rgba(255, 230, 242, 0.8);
     border-radius: 32px;
-    padding: 44px 36px;
+    padding: 24px;
     box-shadow: 0 20px 50px rgba(255, 126, 181, 0.05);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+}
+
+.step-card-visual {
+    width: 100%;
+    height: 180px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    background: #18181B;
+}
+
+.step-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-card:hover .step-card-img {
+    transform: scale(1.05);
 }
 
 .step-card::before {
@@ -685,9 +707,31 @@ body {
     background: linear-gradient(145deg, #ffffff 0%, #fff8fb 100%);
     border: 1px solid rgba(255, 230, 242, 0.8);
     border-radius: 32px;
-    padding: 44px;
+    padding: 24px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
     transition: var(--transition);
+}
+
+.feature-card-visual {
+    width: 100%;
+    height: 220px;
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    background: #18181B;
+}
+
+.feature-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature-card:hover .feature-card-img {
+    transform: scale(1.05);
 }
 
 .feature-card:hover {

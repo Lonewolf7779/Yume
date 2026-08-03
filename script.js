@@ -400,16 +400,25 @@ function renderHomePage() {
 
             <div class="steps-grid">
                 <div class="step-card">
+                    <div class="step-card-visual">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Describe or upload" class="step-card-img" />
+                    </div>
                     <div class="step-number">01</div>
                     <h3 class="step-title">Describe or Upload</h3>
                     <p class="step-desc">Write your prompt in plain English or upload an existing photo to transform into anime art.</p>
                 </div>
                 <div class="step-card">
+                    <div class="step-card-visual">
+                        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80" alt="Select style and ratio" class="step-card-img" />
+                    </div>
                     <div class="step-number">02</div>
                     <h3 class="step-title">Select Style & Ratio</h3>
                     <p class="step-desc">Choose Desktop Wallpaper (16:9), Mobile Phone (9:16), or Avatar (1:1) with custom AI style presets.</p>
                 </div>
                 <div class="step-card">
+                    <div class="step-card-visual">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80" alt="Keep private or share" class="step-card-img" />
+                    </div>
                     <div class="step-number">03</div>
                     <h3 class="step-title">Keep Private or Share</h3>
                     <p class="step-desc">All creations are saved 100% private in your library. Publish to the community only when you choose.</p>
@@ -427,21 +436,33 @@ function renderHomePage() {
 
             <div class="features-grid">
                 <div class="feature-card">
+                    <div class="feature-card-visual">
+                        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80" alt="Private Library" class="feature-card-img" />
+                    </div>
                     <div class="feature-icon">🔒</div>
                     <h3 class="feature-title">Private Library by Default</h3>
                     <p class="feature-desc">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-card-visual">
+                        <img src="img/hero_artwork.jpg" alt="Flux 1.1 Pro Engine" class="feature-card-img" />
+                    </div>
                     <div class="feature-icon">⚡</div>
                     <h3 class="feature-title">Flux 1.1 Pro & Redux Engine</h3>
                     <p class="feature-desc">Powered by state-of-the-art AI models for flawless anime hands, intricate clothing textures, and lighting.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-card-visual">
+                        <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80" alt="Ultra HD 4K Upscaling" class="feature-card-img" />
+                    </div>
                     <div class="feature-icon">🖼️</div>
                     <h3 class="feature-title">Ultra HD 4K Upscaling</h3>
                     <p class="feature-desc">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and mobile screens.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-card-visual">
+                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80" alt="One-Click Remixing" class="feature-card-img" />
+                    </div>
                     <div class="feature-icon">🤝</div>
                     <h3 class="feature-title">One-Click Remixing</h3>
                     <p class="feature-desc">Love a wallpaper in the community? Click Remix to copy its prompt, seed, and settings into your studio.</p>
