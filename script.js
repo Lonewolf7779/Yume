@@ -691,7 +691,8 @@ function renderHomePage() {
         </footer>
     `;
 
-    renderPinsGrid(pins);
+    const masonryGrid = document.getElementById('masonryGrid');
+    if (masonryGrid) renderCards(pins, masonryGrid);
     fetchRegisteredUserCount();
     updateRefBentoGrid('shrine');
 
