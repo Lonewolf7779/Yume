@@ -545,25 +545,6 @@ function renderHomePage() {
     });
 }
 
-    appRoot.querySelector('[data-hero-create]')?.addEventListener('click', () => {
-        if (requireAuthOrRedirect('/create')) navigateTo('/create');
-    });
-    appRoot.querySelector('[data-hero-explore]')?.addEventListener('click', () => {
-        const grid = document.getElementById('masonryGrid');
-        if (grid) grid.scrollIntoView({ behavior: 'smooth' });
-    });
-    appRoot.querySelectorAll('[data-home-filter]').forEach((button) => {
-        button.addEventListener('click', () => {
-            activeCategory = button.dataset.homeFilter || 'all';
-            activeSearchTerm = '';
-            searchInput.value = '';
-            navigateTo('/search');
-        });
-    });
-
-    renderCards(pins, document.getElementById('masonryGrid'));
-}
-
 function renderSearchPage() {
     const filteredPins = filterPins(activeSearchTerm, activeCategory);
 
