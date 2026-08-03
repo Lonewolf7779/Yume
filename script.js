@@ -21,21 +21,30 @@ const creators = [
 ];
 
 const imageCollections = [
-    { id: 'silk-editorial', category: 'fashion', title: 'Silk editorial layers', width: 720, height: 1080 },
-    { id: 'coastal-villa', category: 'architecture', title: 'Coastal villa courtyard', width: 960, height: 1200 },
-    { id: 'gallery-wall', category: 'art', title: 'Collected gallery wall', width: 900, height: 900 },
-    { id: 'desert-resort', category: 'travel', title: 'Desert resort horizon', width: 960, height: 540 },
-    { id: 'orchid-room', category: 'lifestyle', title: 'Orchid room ritual', width: 720, height: 1280 },
-    { id: 'marble-stairs', category: 'luxury', title: 'Marble stair moment', width: 840, height: 1120 },
-    { id: 'forest-path', category: 'nature', title: 'Forest path study', width: 900, height: 1200 },
-    { id: 'street-style', category: 'fashion', title: 'Street style neutral', width: 900, height: 1125 },
-    { id: 'glass-house', category: 'architecture', title: 'Glass house morning', width: 960, height: 640 },
-    { id: 'abstract-study', category: 'art', title: 'Abstract color study', width: 720, height: 1080 },
-    { id: 'morning-table', category: 'lifestyle', title: 'Morning table setup', width: 900, height: 900 },
-    { id: 'alpine-hotel', category: 'travel', title: 'Alpine hotel window', width: 720, height: 1280 },
-    { id: 'velvet-suite', category: 'luxury', title: 'Velvet suite palette', width: 900, height: 1200 },
-    { id: 'botanical-light', category: 'nature', title: 'Botanical light study', width: 960, height: 1200 },
-    { id: 'tailored-coat', category: 'fashion', title: 'Tailored coat silhouette', width: 960, height: 540 },
+    // Column 1: Tall (1.5), Square (1.0), Wide (0.75) -> Sum: 3.25
+    { id: '1', category: 'portrait', title: 'Golden Hour', width: 800, height: 1200 },
+    { id: '2', category: 'architecture', title: 'Modern Living', width: 800, height: 800 },
+    { id: '3', category: 'automotive', title: 'Neon Supercar', width: 800, height: 600 },
+    
+    // Column 2: Square (1.0), Wide (0.75), Tall (1.5) -> Sum: 3.25
+    { id: '4', category: 'portrait', title: 'Editorial Look', width: 800, height: 800 },
+    { id: '5', category: 'automotive', title: 'Cyber Drive', width: 800, height: 600 },
+    { id: '6', category: 'architecture', title: 'Concrete Loft', width: 800, height: 1200 },
+    
+    // Column 3: Wide (0.75), Tall (1.5), Square (1.0) -> Sum: 3.25
+    { id: '7', category: 'automotive', title: 'Street Racing', width: 800, height: 600 },
+    { id: '8', category: 'portrait', title: 'Cinematic Light', width: 800, height: 1200 },
+    { id: '9', category: 'architecture', title: 'Forest Glass', width: 800, height: 800 },
+    
+    // Column 4: Tall (1.5), Wide (0.75), Square (1.0) -> Sum: 3.25
+    { id: '10', category: 'portrait', title: 'Natural Skin', width: 800, height: 1200 },
+    { id: '11', category: 'architecture', title: 'Warm Light', width: 800, height: 600 },
+    { id: '12', category: 'automotive', title: 'Matte Black', width: 800, height: 800 },
+    
+    // Column 5: Square (1.0), Tall (1.5), Wide (0.75) -> Sum: 3.25
+    { id: '13', category: 'architecture', title: 'Luxury Minimal', width: 800, height: 800 },
+    { id: '14', category: 'portrait', title: 'Studio Flash', width: 800, height: 1200 },
+    { id: '15', category: 'automotive', title: 'Wet Reflections', width: 800, height: 600 },
     { id: 'courtyard-lines', category: 'architecture', title: 'Courtyard lines', width: 720, height: 1080 },
     { id: 'ceramic-shelf', category: 'art', title: 'Ceramic shelf edit', width: 900, height: 1125 },
     { id: 'island-window', category: 'travel', title: 'Island window light', width: 900, height: 900 },
@@ -505,9 +514,7 @@ function renderHomePage() {
                 <p class="section-subtitle">Discover wallpapers and character art created by creators worldwide. One-click remix any prompt.</p>
             </div>
 
-            <div class="masonry-grid-wrapper">
-                <div class="masonry-grid" id="masonryGrid"></div>
-            </div>
+            <div class="masonry-grid" id="masonryGrid"></div>
         </section>
 
         <!-- 5. How Yume Works (3 Simple Steps) -->

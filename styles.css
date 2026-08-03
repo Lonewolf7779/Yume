@@ -1752,24 +1752,6 @@ body {
    Masonry Grid & Card System
    ============================================ */
 
-.masonry-grid-wrapper {
-    position: relative;
-    max-height: 800px;
-    overflow: hidden;
-    padding-bottom: 24px;
-}
-
-.masonry-grid-wrapper::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, transparent, #FFFFFF);
-    pointer-events: none;
-    z-index: 10;
-}
 
 .masonry-grid {
     columns: 5;
