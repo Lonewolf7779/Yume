@@ -73,22 +73,22 @@ const likedPinIds = new Set([1, 3, 6, 12, 20, 26, 31, 40]);
 const followedCreatorHandles = new Set(['@sarahpins', '@parkframes', '@lucasvisuals']);
 
 const aiArtImages = [
-    { title: '🌸 Cherry Blossom Shrine Maiden', category: 'anime', url: 'img/hero_artwork.jpg' },
-    { title: '⛩️ Cyberpunk Samurai Warrior', category: 'anime', url: 'img/anime_girl_samurai.jpg' },
-    { title: '🏎️ Neon Tokyo Cyber Supercar', category: 'cyberpunk', url: 'img/cyberpunk_supercar.jpg' },
-    { title: '🎨 Studio Ghibli Floating Castle', category: 'fantasy', url: 'img/fantasy_ghibli_castle.jpg' },
-    { title: '🤖 Cybernetic Mecha Goddess', category: 'anime', url: 'img/mecha_goddess.jpg' },
-    { title: '🌸 Sakura Spirit Princess', category: 'anime', url: 'img/yume_hero_anime.jpg' },
-    { title: '🌃 Neon Cyberpunk Tokyo Rain', category: 'cyberpunk', url: 'img/cyberpunk_supercar.jpg' },
-    { title: '🐉 Fantasy Dragon Mountain Shrine', category: 'fantasy', url: 'img/fantasy_ghibli_castle.jpg' },
-    { title: '✨ Pastel Aurora Magic Valley', category: 'fantasy', url: 'img/hero_artwork.jpg' },
-    { title: '⚔️ Anime Katana Duel Concept', category: 'anime', url: 'img/anime_girl_samurai.jpg' },
-    { title: '🏎️ Matte Black Cyber Hypercar', category: 'cyberpunk', url: 'img/cyberpunk_supercar.jpg' },
-    { title: '🏰 Enchanted Castle in Clouds', category: 'fantasy', url: 'img/fantasy_ghibli_castle.jpg' }
+    { title: 'Golden Hour Portrait', category: 'portrait', url: 'img/real_portrait.jpg' },
+    { title: 'Neon Hypercar at Night', category: 'automotive', url: 'img/real_supercar.jpg' },
+    { title: 'Modern Luxury Interior', category: 'architecture', url: 'img/real_architecture.jpg' },
+    { title: 'Editorial Fashion Shot', category: 'portrait', url: 'img/real_portrait.jpg' },
+    { title: 'Sleek Cyber Supercar', category: 'automotive', url: 'img/real_supercar.jpg' },
+    { title: 'Minimalist Concrete Living', category: 'architecture', url: 'img/real_architecture.jpg' },
+    { title: 'Cinematic Lighting Portrait', category: 'portrait', url: 'img/real_portrait.jpg' },
+    { title: 'Wet Street Reflections', category: 'automotive', url: 'img/real_supercar.jpg' },
+    { title: 'Forest View Architecture', category: 'architecture', url: 'img/real_architecture.jpg' },
+    { title: 'Natural Skin Texture', category: 'portrait', url: 'img/real_portrait.jpg' },
+    { title: 'Hypercar Matte Black', category: 'automotive', url: 'img/real_supercar.jpg' },
+    { title: 'Luxury Warm Lighting', category: 'architecture', url: 'img/real_architecture.jpg' }
 ];
 
 function generateMockCards() {
-    return imageCollections.map((imageData, index) => {
+    return imageCollections.slice(0, 15).map((imageData, index) => {
         const creator = creators[index % creators.length];
         const aiArt = aiArtImages[index % aiArtImages.length];
 
@@ -102,7 +102,7 @@ function generateMockCards() {
             likes: Math.floor(((index + 7) * 731) % 9000) + 420,
             saves: Math.floor(((index + 11) * 347) % 4200) + 180,
             category: aiArt.category,
-            description: `Generated with Yume AI Flux 1.1 Pro Engine (${aiArt.category} wallpaper).`
+            description: `Generated with Yume AI Pro Engine (${aiArt.category} photography).`
         };
     });
 }
@@ -299,80 +299,61 @@ function updateActiveNav(page) {
 const defaultAvatarSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23ff7eb5'/%3E%3Ccircle cx='50' cy='38' r='20' fill='%23ffffff'/%3E%3Cpath d='M20,85 C20,65 33,56 50,56 C67,56 80,65 80,85 Z' fill='%23ffffff'/%3E%3C/svg%3E";
 
 const refBentoSuites = {
-    shrine: {
+    portrait: {
         cols: [
-            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@softpalette', likes: '2.5K', avatar: defaultAvatarSvg },
+            { type: 'tall', img: 'img/real_portrait.jpg', handle: '@golden_hour', likes: '2.5K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_dreams', likes: '3.1K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/anime_landscape_real.jpg', handle: '@illustrated.by.me', likes: '2.2K', avatar: defaultAvatarSvg }
+                    { type: 'medium', img: 'img/real_portrait.jpg', handle: '@fashion_lens', likes: '3.1K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/real_portrait.jpg', handle: '@editorial.pro', likes: '2.2K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@fantasy_realms', likes: '4.7K', avatar: defaultAvatarSvg },
+            { type: 'tall', img: 'img/real_portrait.jpg', handle: '@sony_shooter', likes: '4.7K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@lunae', likes: '3.8K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@dreamweaver', likes: '3.3K', avatar: defaultAvatarSvg }
+                    { type: 'medium', img: 'img/real_portrait.jpg', handle: '@bokeh_master', likes: '3.8K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/real_portrait.jpg', handle: '@raw_portraits', likes: '3.3K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/hero_artwork.jpg', handle: '@travellight', likes: '2.9K', avatar: defaultAvatarSvg }
+            { type: 'tall', img: 'img/real_portrait.jpg', handle: '@studio_light', likes: '2.9K', avatar: defaultAvatarSvg }
         ]
     },
-    cyberpunk: {
+    automotive: {
         cols: [
-            { type: 'tall', img: 'img/anime_samurai_real.jpg', handle: '@cyber_vixen', likes: '4.2K', avatar: defaultAvatarSvg },
+            { type: 'tall', img: 'img/real_supercar.jpg', handle: '@hyper_rides', likes: '4.2K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/cyberpunk_supercar.jpg', handle: '@tokyo_drift', likes: '5.1K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/mecha_goddess.jpg', handle: '@mech_core', likes: '3.6K', avatar: defaultAvatarSvg }
+                    { type: 'medium', img: 'img/real_supercar.jpg', handle: '@neon_streets', likes: '5.1K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/real_supercar.jpg', handle: '@speed_hunters', likes: '3.6K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@blade_master', likes: '6.3K', avatar: defaultAvatarSvg },
+            { type: 'tall', img: 'img/real_supercar.jpg', handle: '@carbon_fiber', likes: '6.3K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/yume_hero_anime.jpg', handle: '@neon_valkyrie', likes: '2.8K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@shadow_katana', likes: '4.1K', avatar: defaultAvatarSvg }
+                    { type: 'medium', img: 'img/real_supercar.jpg', handle: '@night_drive', likes: '2.8K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/real_supercar.jpg', handle: '@exotic_cars', likes: '4.1K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@cyber_spirit', likes: '3.9K', avatar: defaultAvatarSvg }
+            { type: 'tall', img: 'img/real_supercar.jpg', handle: '@supercar_daily', likes: '3.9K', avatar: defaultAvatarSvg }
         ]
     },
-    ghibli: {
+    architecture: {
         cols: [
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@sky_castle', likes: '5.8K', avatar: defaultAvatarSvg },
+            { type: 'tall', img: 'img/real_architecture.jpg', handle: '@arch_digest', likes: '5.8K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/anime_landscape_real.jpg', handle: '@sunset_beach', likes: '3.4K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@spirit_wolf', likes: '4.9K', avatar: defaultAvatarSvg }
+                    { type: 'medium', img: 'img/real_architecture.jpg', handle: '@minimal_living', likes: '3.4K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/real_architecture.jpg', handle: '@concrete_home', likes: '4.9K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/anime_shrine_real.jpg', handle: '@sakura_temple', likes: '7.1K', avatar: defaultAvatarSvg },
+            { type: 'tall', img: 'img/real_architecture.jpg', handle: '@luxury_spaces', likes: '7.1K', avatar: defaultAvatarSvg },
             { 
                 stacked: [
-                    { type: 'medium', img: 'img/hero_artwork.jpg', handle: '@pastel_cloud', likes: '4.5K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/anime_samurai_real.jpg', handle: '@dream_artist', likes: '3.2K', avatar: defaultAvatarSvg }
+                    { type: 'medium', img: 'img/real_architecture.jpg', handle: '@interior_pro', likes: '4.5K', avatar: defaultAvatarSvg },
+                    { type: 'small', img: 'img/real_architecture.jpg', handle: '@forest_view', likes: '3.2K', avatar: defaultAvatarSvg }
                 ] 
             },
-            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@ghibli_master', likes: '6.0K', avatar: defaultAvatarSvg }
-        ]
-    },
-    mecha: {
-        cols: [
-            { type: 'tall', img: 'img/mecha_goddess.jpg', handle: '@exo_frame', likes: '6.5K', avatar: defaultAvatarSvg },
-            { 
-                stacked: [
-                    { type: 'medium', img: 'img/anime_samurai_real.jpg', handle: '@neon_blade', likes: '4.8K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/cyberpunk_supercar.jpg', handle: '@hyper_machine', likes: '3.7K', avatar: defaultAvatarSvg }
-                ] 
-            },
-            { type: 'tall', img: 'img/fantasy_ghibli_castle.jpg', handle: '@stellar_core', likes: '5.4K', avatar: defaultAvatarSvg },
-            { 
-                stacked: [
-                    { type: 'medium', img: 'img/anime_shrine_real.jpg', handle: '@cyber_goddess', likes: '4.3K', avatar: defaultAvatarSvg },
-                    { type: 'small', img: 'img/anime_wolf_girl_real.jpg', handle: '@quantum_spirit', likes: '3.9K', avatar: defaultAvatarSvg }
-                ] 
-            },
-            { type: 'tall', img: 'img/yume_hero_anime.jpg', handle: '@mecha_artisan', likes: '5.2K', avatar: defaultAvatarSvg }
+            { type: 'tall', img: 'img/real_architecture.jpg', handle: '@modern_homes', likes: '6.0K', avatar: defaultAvatarSvg }
         ]
     }
 };
@@ -461,7 +442,7 @@ function renderHomePage() {
                     remember<span class="pink-dot">.</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Turn your imagination or photos into stunning anime wallpapers and character art in seconds. Private library by default.
+                    Turn your imagination or photos into stunning ultra-realistic images and professional photography in seconds. Private library by default.
                 </p>
 
                 <div class="hero-cta-group">
@@ -489,14 +470,13 @@ function renderHomePage() {
             <div class="landing-section-header">
                 <span class="section-badge">Instant Generation Hook</span>
                 <h2 class="section-title">Try Popular Prompts & See Quality Instantly</h2>
-                <p class="section-subtitle">Click any sample prompt chip below to preview high-resolution 8K wallpapers generated with Yume.</p>
+                <p class="section-subtitle">Click any sample prompt chip below to preview ultra-realistic 8K images generated with Yume.</p>
             </div>
 
             <div class="prompt-chips-wrapper">
-                <button type="button" class="prompt-chip active" data-suite-key="shrine" data-prompt-text="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting">🌸 Cherry Blossom Shrine Maiden</button>
-                <button type="button" class="prompt-chip" data-suite-key="cyberpunk" data-prompt-text="Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink">⛩️ Cyberpunk Samurai Warrior</button>
-                <button type="button" class="prompt-chip" data-suite-key="ghibli" data-prompt-text="Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley">🎨 Studio Ghibli Magical Castle</button>
-                <button type="button" class="prompt-chip" data-suite-key="mecha" data-prompt-text="Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed">🤖 Futuristic Mecha Goddess</button>
+                <button type="button" class="prompt-chip active" data-suite-key="portrait" data-prompt-text="Ultra photorealistic portrait of a young woman with flowing auburn hair, golden hour sunlight streaming through, soft bokeh background of autumn leaves, wearing a cream cashmere sweater, shot on Sony A7R IV, 85mm f/1.4 lens, natural skin texture, cinematic color grading, editorial fashion photography">📸 Golden Hour Portrait</button>
+                <button type="button" class="prompt-chip" data-suite-key="automotive" data-prompt-text="Ultra photorealistic shot of a sleek modern hypercar parked on a wet city street at night, neon reflections on puddles, cinematic lighting, highly detailed reflections, shot on medium format camera, 8k resolution">🏎️ Neon Night Hypercar</button>
+                <button type="button" class="prompt-chip" data-suite-key="architecture" data-prompt-text="Ultra photorealistic interior design photography of a modern luxury living room, minimalist aesthetic, concrete walls, floor to ceiling windows showing a forest, warm natural lighting, high end furniture, 8k resolution, architectural digest style">🏢 Modern Luxury Interior</button>
             </div>
 
             <div class="prompt-box-card">
@@ -506,7 +486,7 @@ function renderHomePage() {
                         <polyline points="2 17 12 22 22 17"></polyline>
                         <polyline points="2 12 12 17 22 12"></polyline>
                     </svg>
-                    <input type="text" id="landingPromptInput" class="landing-prompt-input" value="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting" />
+                    <input type="text" id="landingPromptInput" class="landing-prompt-input" value="Ultra photorealistic portrait of a young woman with flowing auburn hair, golden hour sunlight streaming through, soft bokeh background of autumn leaves, wearing a cream cashmere sweater, shot on Sony A7R IV, 85mm f/1.4 lens, natural skin texture, cinematic color grading, editorial fashion photography" />
                     <button type="button" class="landing-generate-btn" data-landing-create>✦ Generate Image</button>
                 </div>
 
@@ -539,23 +519,23 @@ function renderHomePage() {
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="img/cyberpunk_supercar.jpg" alt="Cyberpunk Supercar Prompt" class="step-card-img" />
+                        <img src="img/real_supercar.jpg" alt="Cyberpunk Supercar Prompt" class="step-card-img" />
                     </div>
                     <div class="step-number">01</div>
                     <h3 class="step-title">Describe or Upload</h3>
-                    <p class="step-desc">Write your prompt in plain English or upload an existing photo to transform into anime art.</p>
+                    <p class="step-desc">Write your prompt in plain English or upload an existing photo to transform into realistic art.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="img/anime_girl_samurai.jpg" alt="Select style and ratio" class="step-card-img" />
+                        <img src="img/real_portrait.jpg" alt="Select style and ratio" class="step-card-img" />
                     </div>
                     <div class="step-number">02</div>
                     <h3 class="step-title">Select Style & Ratio</h3>
-                    <p class="step-desc">Choose Desktop Wallpaper (16:9), Mobile Phone (9:16), or Avatar (1:1) with custom AI style presets.</p>
+                    <p class="step-desc">Choose Desktop Wallpaper (16:9), Mobile Phone (9:16), or Avatar (1:1) with custom realistic style presets.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="img/fantasy_ghibli_castle.jpg" alt="Keep private or share" class="step-card-img" />
+                        <img src="img/real_architecture.jpg" alt="Keep private or share" class="step-card-img" />
                     </div>
                     <div class="step-number">03</div>
                     <h3 class="step-title">Keep Private or Share</h3>
@@ -575,7 +555,7 @@ function renderHomePage() {
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="img/yume_hero_anime.jpg" alt="Private Library" class="feature-card-img" />
+                        <img src="img/real_architecture.jpg" alt="Private Library" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">🔒</div>
                     <h3 class="feature-title">Private Library by Default</h3>
@@ -583,15 +563,15 @@ function renderHomePage() {
                 </div>
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="img/hero_artwork.jpg" alt="Flux 1.1 Pro Engine" class="feature-card-img" />
+                        <img src="img/real_portrait.jpg" alt="Flux 1.1 Pro Engine" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Flux 1.1 Pro & Redux Engine</h3>
-                    <p class="feature-desc">Powered by state-of-the-art AI models for flawless anime hands, intricate clothing textures, and lighting.</p>
+                    <h3 class="feature-title">Yume Pro Engine</h3>
+                    <p class="feature-desc">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and lighting.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="img/cyberpunk_supercar.jpg" alt="Ultra HD 4K Upscaling" class="feature-card-img" />
+                        <img src="img/real_supercar.jpg" alt="Ultra HD 4K Upscaling" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">🖼️</div>
                     <h3 class="feature-title">Ultra HD 4K Upscaling</h3>
@@ -694,7 +674,7 @@ function renderHomePage() {
     const masonryGrid = document.getElementById('masonryGrid');
     if (masonryGrid) renderCards(pins, masonryGrid);
     fetchRegisteredUserCount();
-    updateRefBentoGrid('shrine');
+    updateRefBentoGrid('portrait');
 
     document.querySelectorAll('[data-landing-create]').forEach((btn) => {
         btn.addEventListener('click', () => {
