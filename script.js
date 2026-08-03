@@ -361,10 +361,10 @@ function renderHomePage() {
             </div>
 
             <div class="prompt-chips-wrapper">
-                <button type="button" class="prompt-chip active" data-img-src="img/hero_artwork.jpg" data-prompt-text="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting">🌸 Cherry Blossom Shrine Maiden</button>
-                <button type="button" class="prompt-chip" data-img-src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80" data-prompt-text="Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink">⛩️ Cyberpunk Samurai Warrior</button>
-                <button type="button" class="prompt-chip" data-img-src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80" data-prompt-text="Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley">🎨 Studio Ghibli Magical Castle</button>
-                <button type="button" class="prompt-chip" data-img-src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" data-prompt-text="Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed">🤖 Futuristic Mecha Goddess</button>
+                <button type="button" class="prompt-chip active" data-suite-key="shrine" data-prompt-text="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting">🌸 Cherry Blossom Shrine Maiden</button>
+                <button type="button" class="prompt-chip" data-suite-key="cyberpunk" data-prompt-text="Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink">⛩️ Cyberpunk Samurai Warrior</button>
+                <button type="button" class="prompt-chip" data-suite-key="ghibli" data-prompt-text="Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley">🎨 Studio Ghibli Magical Castle</button>
+                <button type="button" class="prompt-chip" data-suite-key="mecha" data-prompt-text="Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed">🤖 Futuristic Mecha Goddess</button>
             </div>
 
             <div class="prompt-box-card">
@@ -378,18 +378,9 @@ function renderHomePage() {
                     <button type="button" class="landing-generate-btn" data-landing-create>✦ Generate Image</button>
                 </div>
 
-                <!-- Live Preview Artwork Display -->
+                <!-- Dynamic Bento Masonry Display for Multiple Prompt Wallpapers -->
                 <div class="prompt-preview-result-wrap">
-                    <div class="prompt-preview-image-box">
-                        <img id="landingPreviewImg" src="img/hero_artwork.jpg" alt="Generated Wallpaper Preview" class="prompt-preview-img" />
-                        <div class="prompt-preview-overlay">
-                            <div class="preview-badge">✨ Generated with Flux 1.1 Pro Engine</div>
-                            <div class="preview-meta">
-                                <span class="preview-aspect">Resolution: 3840x2160 • 16:9 Wallpaper</span>
-                                <button type="button" class="preview-remix-btn" data-landing-create>✦ Remix Prompt in Studio</button>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="promptMasonryGrid" class="prompt-masonry-grid"></div>
                 </div>
             </div>
         </section>
@@ -570,6 +561,7 @@ function renderHomePage() {
 
     renderPinsGrid(pins);
     fetchRegisteredUserCount();
+    updatePromptMasonryGrid('shrine');
 
     document.querySelectorAll('[data-landing-create]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -587,11 +579,101 @@ function renderHomePage() {
             document.querySelectorAll('.prompt-chip').forEach((c) => c.classList.remove('active'));
             chip.classList.add('active');
             const input = document.getElementById('landingPromptInput');
-            const img = document.getElementById('landingPreviewImg');
             if (input) input.value = chip.dataset.promptText;
-            if (img && chip.dataset.imgSrc) img.src = chip.dataset.imgSrc;
+            updatePromptMasonryGrid(chip.dataset.suiteKey);
         });
     });
+
+    const landingGenBtn = document.querySelector('.landing-generate-btn');
+    if (landingGenBtn) {
+        landingGenBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const activeChip = document.querySelector('.prompt-chip.active');
+            const key = activeChip ? activeChip.dataset.suiteKey : 'shrine';
+            updatePromptMasonryGrid(key);
+        });
+    }
+}
+
+const promptSuites = {
+    shrine: {
+        chipTitle: '🌸 Cherry Blossom Shrine Maiden',
+        promptText: 'Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting',
+        badge: '✨ Generated with Flux 1.1 Pro Engine',
+        items: [
+            { url: 'img/hero_artwork.jpg', title: 'Cherry Blossom Shrine Maiden', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
+            { url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80', title: 'Sakura Petal Rain Princess', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
+            { url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80', title: 'Pastel Shrine Courtyard', aspect: '3840x2160 • 16:9 Desktop' },
+            { url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80', title: 'Torii Gate Sunset Glow', aspect: '2048x2048 • 1:1 Avatar' }
+        ]
+    },
+    cyberpunk: {
+        chipTitle: '⛩️ Cyberpunk Samurai Warrior',
+        promptText: 'Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink',
+        badge: '⚡ Generated with Cyberpunk Flux Engine',
+        items: [
+            { url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80', title: 'Neon Rain Samurai Girl', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
+            { url: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80', title: 'Tokyo Cyberpunk Rain Alley', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
+            { url: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', title: 'Neon Cyberpunk Supercar', aspect: '3840x2160 • 16:9 Desktop' },
+            { url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80', title: 'Matte Black Cyber Machine', aspect: '2048x2048 • 1:1 Avatar' }
+        ]
+    },
+    ghibli: {
+        chipTitle: '🎨 Studio Ghibli Magical Castle',
+        promptText: 'Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley',
+        badge: '🎨 Generated with Anime Dream Engine',
+        items: [
+            { url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80', title: 'Floating Castle in Pastel Clouds', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
+            { url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80', title: 'Dragon Mountain Shrine', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
+            { url: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=800&q=80', title: 'Enchanted Valley Mist', aspect: '3840x2160 • 16:9 Desktop' },
+            { url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80', title: 'Pastel Celestial Skies', aspect: '2048x2048 • 1:1 Avatar' }
+        ]
+    },
+    mecha: {
+        chipTitle: '🤖 Futuristic Mecha Goddess',
+        promptText: 'Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed 8k',
+        badge: '🤖 Generated with Mecha Ultra Engine',
+        items: [
+            { url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80', title: 'Futuristic Mecha Goddess Visor', aspect: '3840x2160 • 16:9 Desktop', isFeatured: true },
+            { url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80', title: 'Cybernetic Armor Frame', aspect: '1080x1920 • 9:16 Mobile', isTall: true },
+            { url: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', title: 'Futuristic Cyber Supercar', aspect: '3840x2160 • 16:9 Desktop' },
+            { url: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80', title: 'Holographic Cyber Core', aspect: '2048x2048 • 1:1 Avatar' }
+        ]
+    }
+};
+
+function updatePromptMasonryGrid(suiteKey) {
+    const suite = promptSuites[suiteKey] || promptSuites.shrine;
+    const container = document.getElementById('promptMasonryGrid');
+    if (!container) return;
+
+    container.style.opacity = '0';
+    setTimeout(() => {
+        container.innerHTML = suite.items.map((item) => `
+            <div class="prompt-masonry-card ${item.isFeatured ? 'featured' : ''} ${item.isTall ? 'tall' : ''}">
+                <img src="${item.url}" alt="${item.title}" class="prompt-masonry-img" />
+                <div class="prompt-masonry-overlay">
+                    <div class="prompt-masonry-badge">${suite.badge}</div>
+                    <div class="prompt-masonry-meta">
+                        <div>
+                            <h4 class="prompt-masonry-title">${item.title}</h4>
+                            <span class="preview-aspect">${item.aspect}</span>
+                        </div>
+                        ${item.isFeatured ? '<button type="button" class="preview-remix-btn" data-landing-create>✦ Remix in Studio</button>' : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        container.style.opacity = '1';
+
+        container.querySelectorAll('[data-landing-create]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                if (!requireAuthOrRedirect('/create')) return;
+                navigateTo('/create');
+            });
+        });
+    }, 150);
 }
 
 async function fetchRegisteredUserCount() {
