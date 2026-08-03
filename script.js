@@ -282,25 +282,28 @@ function updateActiveNav(page) {
    ============================================ */
 
 function renderHomePage() {
-    const featuredCreator = creators.find((c) => c.handle === '@miatorres') || creators[0];
-
-    const filters = [
-        { label: '✨ Recommended', category: 'all' },
-        { label: '🔥 Trending', category: 'all' },
-        { label: '🌸 Anime', category: 'art' },
-        { label: '🎮 Gaming', category: 'art' },
-        { label: '🏙 Cyberpunk', category: 'art' },
-        { label: '🏰 Fantasy', category: 'art' },
-        { label: '🌄 Landscape', category: 'nature' },
-        { label: '👗 Fashion', category: 'fashion' },
-        { label: '🤖 Sci-Fi', category: 'art' },
-        { label: '❤️ Following', category: 'all' }
-    ];
-
-    const creationsTodayCount = '12,487';
-
     appRoot.innerHTML = `
-        <!-- Hero Showcase Section (Exact Match to User Design Mock) -->
+        <!-- 1. Floating Public Header Bar -->
+        <header class="public-landing-header">
+            <nav class="public-navbar">
+                <a class="public-brand" href="#/home">
+                    <span class="public-brand-text">Yume<sup class="public-brand-plus">⁺</sup></span>
+                </a>
+                <div class="public-nav-links">
+                    <a href="#showcaseSection" class="public-nav-link">Gallery</a>
+                    <a href="#promptSection" class="public-nav-link">Prompts</a>
+                    <a href="#howItWorksSection" class="public-nav-link">How It Works</a>
+                    <a href="#featuresSection" class="public-nav-link">Features</a>
+                    <a href="#pricingSection" class="public-nav-link">Pricing</a>
+                </div>
+                <div class="public-nav-actions">
+                    <button type="button" class="public-login-btn" data-landing-login>Log in</button>
+                    <button type="button" class="public-cta-btn" data-landing-create>✦ Start Creating Free</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 2. Hero Showcase Section (Exact Reference Layout Match) -->
         <section class="hero-showcase">
             <div class="hero-left-content">
                 <p class="hero-eyebrow">WHERE AI CREATORS ARE BORN</p>
@@ -311,12 +314,12 @@ function renderHomePage() {
                     remember<span class="pink-dot">.</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Your imagination deserves more than a prompt. It deserves a legacy.
+                    Turn your imagination or photos into stunning anime wallpapers and character art in seconds. Private library by default.
                 </p>
 
                 <div class="hero-cta-group">
-                    <button class="hero-primary-btn" type="button" data-hero-create>✦ Start Creating ✦</button>
-                    <button class="hero-secondary-btn" type="button" data-hero-explore>Explore Gallery &rarr;</button>
+                    <button class="hero-primary-btn" type="button" data-landing-create>✦ Start Creating Free</button>
+                    <a class="hero-secondary-btn" href="#showcaseSection">Explore Gallery &rarr;</a>
                 </div>
 
                 <div class="hero-social-proof">
@@ -338,25 +341,209 @@ function renderHomePage() {
             </div>
         </section>
 
-        <!-- Feed Header + Visual Filter Bar -->
-        <section class="grid-container yume-feed-shell" aria-label="Feed header and filters">
-            <header class="yume-feed-header">
-                <div class="yume-feed-header-left">
-                    <div class="yume-feed-title">Discover today's most inspiring AI creations</div>
-                    <div class="yume-feed-subtitle">${creationsTodayCount} creations today</div>
-                </div>
-            </header>
-
-            <div class="yume-feed-filters h-scroll" aria-label="Feed filters">
-                <div class="yume-feed-filter-track">
-                    ${filters.map((f) => `<button type="button" class="yume-filter-chip" data-home-filter="${f.category}">${f.label}</button>`).join('')}
-                </div>
+        <!-- 3. Interactive Prompt Preview & Sample Chips -->
+        <section class="landing-section prompt-preview-section" id="promptSection">
+            <div class="landing-section-header">
+                <span class="section-badge">Instant Generation Hook</span>
+                <h2 class="section-title">Try Popular Prompts & See Quality Instantly</h2>
+                <p class="section-subtitle">Click any sample prompt chip below to preview high-resolution 8K wallpapers generated with Yume.</p>
             </div>
 
-            <!-- Existing masonry feed -->
+            <div class="prompt-chips-wrapper">
+                <button type="button" class="prompt-chip active" data-prompt-text="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting">🌸 Cherry Blossom Shrine Maiden</button>
+                <button type="button" class="prompt-chip" data-prompt-text="Cyberpunk samurai warrior girl standing under neon rain signs in Tokyo, intricate Katana blade glowing pink">⛩️ Cyberpunk Samurai Warrior</button>
+                <button type="button" class="prompt-chip" data-prompt-text="Studio Ghibli style magical floating castle over pastel clouds, ancient spirit creatures, lush green valley">🎨 Studio Ghibli Magical Castle</button>
+                <button type="button" class="prompt-chip" data-prompt-text="Futuristic mechanical mecha goddess portrait with glowing visor and delicate flower hairpins, ultra detailed">🤖 Futuristic Mecha Goddess</button>
+            </div>
+
+            <div class="prompt-box-card">
+                <div class="prompt-box-input-row">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                    <input type="text" id="landingPromptInput" class="landing-prompt-input" value="Cherry blossom anime shrine maiden 8k wallpaper, detailed embroidery, snow petals, golden hour cinematic lighting" />
+                    <button type="button" class="landing-generate-btn" data-landing-create>✦ Generate Image</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Curated Style & Wallpaper Gallery Showcase -->
+        <section class="landing-section showcase-section" id="showcaseSection">
+            <div class="landing-section-header">
+                <span class="section-badge">Created with Yume</span>
+                <h2 class="section-title">Explore Community Wallpapers & Styles</h2>
+                <p class="section-subtitle">Discover wallpapers and character art created by creators worldwide. One-click remix any prompt.</p>
+            </div>
+
             <div class="masonry-grid" id="masonryGrid"></div>
         </section>
+
+        <!-- 5. How Yume Works (3 Simple Steps) -->
+        <section class="landing-section how-it-works-section" id="howItWorksSection">
+            <div class="landing-section-header">
+                <span class="section-badge">Simple & Intuitive</span>
+                <h2 class="section-title">How Yume Works in 3 Steps</h2>
+                <p class="section-subtitle">From imagination to desktop wallpaper in under 10 seconds.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">Describe or Upload</h3>
+                    <p class="step-desc">Write your prompt in plain English or upload an existing photo to transform into anime art.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">Select Style & Ratio</h3>
+                    <p class="step-desc">Choose Desktop Wallpaper (16:9), Mobile Phone (9:16), or Avatar (1:1) with custom AI style presets.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">Keep Private or Share</h3>
+                    <p class="step-desc">All creations are saved 100% private in your library. Publish to the community only when you choose.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Core Value Highlights -->
+        <section class="landing-section features-section" id="featuresSection">
+            <div class="landing-section-header">
+                <span class="section-badge">Built for Creators</span>
+                <h2 class="section-title">Why Creators Choose Yume</h2>
+                <p class="section-subtitle">Designed from the ground up for privacy, quality, and creative control.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Private Library by Default</h3>
+                    <p class="feature-desc">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Flux 1.1 Pro & Redux Engine</h3>
+                    <p class="feature-desc">Powered by state-of-the-art AI models for flawless anime hands, intricate clothing textures, and lighting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3 class="feature-title">Ultra HD 4K Upscaling</h3>
+                    <p class="feature-desc">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and mobile screens.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3 class="feature-title">One-Click Remixing</h3>
+                    <p class="feature-desc">Love a wallpaper in the community? Click Remix to copy its prompt, seed, and settings into your studio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Pricing & Free Credits -->
+        <section class="landing-section pricing-section" id="pricingSection">
+            <div class="landing-section-header">
+                <span class="section-badge">Transparent Pricing</span>
+                <h2 class="section-title">Start Free, Upgrade for Power</h2>
+                <p class="section-subtitle">No credit card required to start creating today.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-plan-name">Free Creator</div>
+                    <div class="pricing-price">$0 <span>/ month</span></div>
+                    <p class="pricing-desc">Perfect for trying out Yume and creating daily wallpapers.</p>
+                    <ul class="pricing-features">
+                        <li>✦ 50 Daily Free Generation Credits</li>
+                        <li>✦ Access to Text to Image Studio</li>
+                        <li>✦ Private Library Access</li>
+                        <li>✦ Standard Resolution Exports</li>
+                    </ul>
+                    <button type="button" class="pricing-btn secondary" data-landing-create>✦ Start Creating Free</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Popular</div>
+                    <div class="pricing-plan-name">Pro Creator</div>
+                    <div class="pricing-price">$12 <span>/ month</span></div>
+                    <p class="pricing-desc">For serious creators who want unlimited generations and 4K upscaling.</p>
+                    <ul class="pricing-features">
+                        <li>✦ Unlimited Fast Generation Credits</li>
+                        <li>✦ Photo Transformation Studio (Flux Redux)</li>
+                        <li>✦ Ultra HD 4K Upscaling Exports</li>
+                        <li>✦ Commercial Rights for Creations</li>
+                        <li>✦ Priority Generation Queue</li>
+                    </ul>
+                    <button type="button" class="pricing-btn primary" data-landing-create>✦ Go Pro Creator</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Final High-Impact CTA Banner -->
+        <section class="landing-section cta-banner-section">
+            <div class="cta-banner-content">
+                <h2 class="cta-banner-title">Ready to create your custom wallpaper?</h2>
+                <p class="cta-banner-subtitle">Join over 50,000+ creators building their visual worlds on Yume today.</p>
+                <button type="button" class="cta-banner-btn" data-landing-create>✦ Start Creating Free</button>
+            </div>
+        </section>
+
+        <!-- 9. Editorial Footer -->
+        <footer class="public-footer">
+            <div class="footer-container">
+                <div class="footer-brand-col">
+                    <span class="footer-logo">Yume<sup class="footer-logo-plus">⁺</sup></span>
+                    <p class="footer-tagline">Where AI Creators Are Born. High-quality anime wallpapers and character art.</p>
+                </div>
+                <div class="footer-links-col">
+                    <h4>Product</h4>
+                    <a href="#showcaseSection">Showcase</a>
+                    <a href="#promptSection">Prompts</a>
+                    <a href="#howItWorksSection">How It Works</a>
+                    <a href="#pricingSection">Pricing</a>
+                </div>
+                <div class="footer-links-col">
+                    <h4>Community</h4>
+                    <a href="#">Discord</a>
+                    <a href="#">Twitter / X</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Creator Blog</a>
+                </div>
+                <div class="footer-links-col">
+                    <h4>Legal & Trust</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Content Guidelines</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Yume AI Inc. All rights reserved.</p>
+            </div>
+        </footer>
     `;
+
+    renderPinsGrid(pins);
+
+    document.querySelectorAll('[data-landing-create]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            if (!requireAuthOrRedirect('/create')) return;
+            navigateTo('/create');
+        });
+    });
+
+    document.querySelectorAll('[data-landing-login]').forEach((btn) => {
+        btn.addEventListener('click', () => navigateTo('/login'));
+    });
+
+    document.querySelectorAll('.prompt-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.prompt-chip').forEach((c) => c.classList.remove('active'));
+            chip.classList.add('active');
+            const input = document.getElementById('landingPromptInput');
+            if (input) input.value = chip.dataset.promptText;
+        });
+    });
+}
 
     appRoot.querySelector('[data-hero-create]')?.addEventListener('click', () => {
         if (requireAuthOrRedirect('/create')) navigateTo('/create');
