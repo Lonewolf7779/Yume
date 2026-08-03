@@ -99,6 +99,16 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+app.get('/api/stats/users', async (req, res) => {
+  try {
+    const result = await pgPool.query('SELECT COUNT(*)::int AS count FROM users');
+    const count = Number(result.rows[0]?.count || 0);
+    res.json({ userCount: count });
+  } catch {
+    res.json({ userCount: 0 });
+  }
+});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '../..');

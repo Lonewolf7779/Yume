@@ -345,7 +345,7 @@ function renderHomePage() {
                         <img src="https://i.pravatar.cc/80?img=65" alt="Creator avatar" />
                     </div>
                     <div class="proof-copy">
-                        <strong>50K+</strong>
+                        <strong id="heroUserCount">0</strong>
                         <span>Creators building their worlds</span>
                     </div>
                 </div>
@@ -528,7 +528,7 @@ function renderHomePage() {
         <section class="landing-section cta-banner-section">
             <div class="cta-banner-content">
                 <h2 class="cta-banner-title">Ready to create your custom wallpaper?</h2>
-                <p class="cta-banner-subtitle">Join over 50,000+ creators building their visual worlds on Yume today.</p>
+                <p class="cta-banner-subtitle">Join <span data-user-count>0</span> creators building their visual worlds on Yume today.</p>
                 <button type="button" class="cta-banner-btn" data-landing-create>✦ Start Creating Free</button>
             </div>
         </section>
@@ -569,6 +569,7 @@ function renderHomePage() {
     `;
 
     renderPinsGrid(pins);
+    fetchRegisteredUserCount();
 
     document.querySelectorAll('[data-landing-create]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -591,6 +592,25 @@ function renderHomePage() {
             if (img && chip.dataset.imgSrc) img.src = chip.dataset.imgSrc;
         });
     });
+}
+
+async function fetchRegisteredUserCount() {
+    try {
+        const response = await fetch('/api/stats/users');
+        if (!response.ok) return;
+        const data = await response.json();
+        const userCount = Number(data.userCount || 0);
+        const countElements = document.querySelectorAll('#heroUserCount, [data-user-count]');
+        countElements.forEach((el) => {
+            if (userCount >= 1000) {
+                el.textContent = (userCount / 1000).toFixed(1) + 'K+';
+            } else {
+                el.textContent = userCount.toLocaleString();
+            }
+        });
+    } catch {
+        // Fallback remains 0
+    }
 }
 
 function renderSearchPage() {
