@@ -471,14 +471,22 @@ body {
     box-shadow: 0 4px 16px rgba(255, 126, 181, 0.15);
 }
 
+/* Eye-Catching Floating Prompt Capsule */
 .prompt-box-card {
-    background: #ffffff;
-    border-radius: 24px;
-    padding: 24px 28px;
-    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-color);
-    max-width: 960px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 36px;
+    padding: 24px 32px;
+    box-shadow: 0 24px 60px rgba(255, 126, 181, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    max-width: 980px;
     margin: 0 auto;
+    transition: var(--transition);
+}
+
+.prompt-box-card:hover {
+    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.22);
 }
 
 .prompt-box-input-row {
@@ -486,81 +494,17 @@ body {
     align-items: center;
     gap: 16px;
     margin-bottom: 24px;
-}
-
-.prompt-preview-result-wrap {
-    width: 100%;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #18181B;
-}
-
-.prompt-preview-image-box {
-    position: relative;
-    width: 100%;
-    height: 480px;
-    overflow: hidden;
-}
-
-.prompt-preview-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-    transition: var(--transition);
-}
-
-.prompt-preview-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(24, 24, 27, 0.85) 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 32px;
-}
-
-.preview-badge {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--dark-color);
-    font-size: 12px;
-    font-weight: 700;
-    padding: 6px 14px;
+    background: #faf4f7;
+    padding: 8px 12px 8px 24px;
     border-radius: 999px;
-    backdrop-filter: blur(10px);
-}
-
-.preview-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.preview-aspect {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.preview-remix-btn {
-    border-radius: 999px;
-    padding: 10px 22px;
-    background: var(--primary-pink-gradient);
-    color: #ffffff;
-    border: none;
-    font: inherit;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    box-shadow: var(--shadow-pink);
+    border: 1px solid #f2e2eb;
 }
 
 .landing-prompt-input {
     flex: 1;
     border: none;
     outline: none;
+    background: transparent;
     font-size: 15px;
     font-weight: 500;
     color: var(--dark-color);
@@ -578,9 +522,95 @@ body {
     font-size: 14px;
     cursor: pointer;
     box-shadow: var(--shadow-pink);
+    transition: var(--transition);
 }
 
-/* Steps Grid */
+.landing-generate-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 32px rgba(255, 126, 181, 0.5);
+}
+
+.prompt-preview-result-wrap {
+    width: 100%;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #18181B;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.prompt-preview-image-box {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    overflow: hidden;
+}
+
+.prompt-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prompt-preview-image-box:hover .prompt-preview-img {
+    transform: scale(1.04);
+}
+
+.prompt-preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(24, 24, 27, 0.88) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px 36px;
+}
+
+.preview-badge {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--dark-color);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 999px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.preview-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.preview-aspect {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.preview-remix-btn {
+    border-radius: 999px;
+    padding: 12px 24px;
+    background: var(--primary-pink-gradient);
+    color: #ffffff;
+    border: none;
+    font: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: var(--shadow-pink);
+    transition: var(--transition);
+}
+
+.preview-remix-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Floating Bento Steps Grid */
 .steps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -588,31 +618,53 @@ body {
 }
 
 .step-card {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 40px 32px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    background: linear-gradient(145deg, #ffffff 0%, #fff8fb 100%);
+    border: 1px solid rgba(255, 230, 242, 0.8);
+    border-radius: 32px;
+    padding: 44px 36px;
+    box-shadow: 0 20px 50px rgba(255, 126, 181, 0.05);
     transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255, 126, 181, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
 }
 
 .step-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(255, 126, 181, 0.12);
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.2);
     border-color: var(--primary-pink);
 }
 
 .step-number {
-    font-size: 32px;
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: var(--primary-pink-gradient);
+    color: #ffffff;
+    font-size: 24px;
     font-weight: 900;
-    color: var(--primary-pink);
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-pink);
 }
 
 .step-title {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 22px;
+    font-weight: 800;
     color: var(--dark-color);
+    letter-spacing: -0.02em;
     margin-bottom: 12px;
 }
 
@@ -622,7 +674,7 @@ body {
     line-height: 1.6;
 }
 
-/* Features Grid */
+/* Asymmetric Bento Features Grid */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -630,28 +682,38 @@ body {
 }
 
 .feature-card {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 36px;
+    background: linear-gradient(145deg, #ffffff 0%, #fff8fb 100%);
+    border: 1px solid rgba(255, 230, 242, 0.8);
+    border-radius: 32px;
+    padding: 44px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
     transition: var(--transition);
 }
 
 .feature-card:hover {
+    transform: translateY(-8px) scale(1.015);
     border-color: var(--primary-pink);
-    box-shadow: 0 12px 36px rgba(255, 126, 181, 0.1);
+    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.2);
 }
 
 .feature-icon {
-    font-size: 36px;
-    margin-bottom: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: #fdf2f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 24px;
 }
 
 .feature-title {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 22px;
+    font-weight: 800;
     color: var(--dark-color);
-    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
 }
 
 .feature-desc {
@@ -660,55 +722,66 @@ body {
     line-height: 1.6;
 }
 
-/* Pricing Grid */
+/* Floating Luxury Pricing Cards */
 .pricing-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 36px;
-    max-width: 900px;
+    max-width: 940px;
     margin: 0 auto;
 }
 
 .pricing-card {
     position: relative;
     background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 28px;
-    padding: 48px 40px;
+    border: 1px solid rgba(255, 230, 242, 0.8);
+    border-radius: 36px;
+    padding: 52px 44px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+    transition: var(--transition);
+}
+
+.pricing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.18);
 }
 
 .pricing-card.featured {
     border-color: var(--primary-pink);
-    box-shadow: 0 20px 50px rgba(255, 126, 181, 0.15);
+    box-shadow: 0 24px 60px rgba(255, 126, 181, 0.2);
+    background: linear-gradient(160deg, #ffffff 0%, #fff5f8 100%);
 }
 
 .pricing-badge {
     position: absolute;
-    top: -14px;
-    right: 32px;
+    top: -16px;
+    right: 36px;
     background: var(--primary-pink-gradient);
     color: #ffffff;
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 4px 14px;
+    padding: 6px 18px;
     border-radius: 999px;
+    box-shadow: var(--shadow-pink);
 }
 
 .pricing-plan-name {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 800;
     color: var(--dark-color);
+    letter-spacing: -0.02em;
     margin-bottom: 16px;
 }
 
 .pricing-price {
-    font-size: 44px;
+    font-size: 48px;
     font-weight: 900;
     color: var(--dark-color);
+    letter-spacing: -0.03em;
     margin-bottom: 12px;
 }
 
@@ -728,20 +801,20 @@ body {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-bottom: 40px;
+    gap: 16px;
+    margin-bottom: 44px;
 }
 
 .pricing-features li {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--dark-color);
 }
 
 .pricing-btn {
     width: 100%;
     border-radius: 999px;
-    padding: 14px 24px;
+    padding: 16px 28px;
     font: inherit;
     font-weight: 700;
     font-size: 14px;
@@ -749,6 +822,28 @@ body {
     border: none;
     margin-top: auto;
     transition: var(--transition);
+}
+
+.pricing-btn.primary {
+    background: var(--primary-pink-gradient);
+    color: #ffffff;
+    box-shadow: var(--shadow-pink);
+}
+
+.pricing-btn.primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 14px 36px rgba(255, 126, 181, 0.5);
+}
+
+.pricing-btn.secondary {
+    background: #ffffff;
+    color: var(--dark-color);
+    border: 1px solid var(--border-color);
+}
+
+.pricing-btn.secondary:hover {
+    border-color: var(--primary-pink);
+    color: var(--primary-pink);
 }
 
 .pricing-btn.primary {
