@@ -505,7 +505,9 @@ function renderHomePage() {
                 <p class="section-subtitle">Discover wallpapers and character art created by creators worldwide. One-click remix any prompt.</p>
             </div>
 
-            <div class="masonry-grid" id="masonryGrid"></div>
+            <div class="masonry-grid-wrapper">
+                <div class="masonry-grid" id="masonryGrid"></div>
+            </div>
         </section>
 
         <!-- 5. How Yume Works (3 Simple Steps) -->
