@@ -72,22 +72,37 @@ const likedPinIds = new Set([1, 3, 6, 12, 20, 26, 31, 40]);
 // Mock follow state (by creator handle)
 const followedCreatorHandles = new Set(['@sarahpins', '@parkframes', '@lucasvisuals']);
 
+const aiArtImages = [
+    { title: '🌸 Cherry Blossom Shrine Maiden', category: 'anime', url: 'img/hero_artwork.jpg' },
+    { title: '⛩️ Cyberpunk Samurai Warrior', category: 'anime', url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🏎️ Neon Tokyo Cyber Supercar', category: 'cyberpunk', url: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🎨 Studio Ghibli Floating Island', category: 'fantasy', url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🤖 Cybernetic Mecha Goddess', category: 'anime', url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🌸 Sakura Spirit Princess', category: 'anime', url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🌃 Neon Cyberpunk Tokyo Rain', category: 'cyberpunk', url: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🐉 Fantasy Dragon Mountain Shrine', category: 'fantasy', url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80' },
+    { title: '✨ Pastel Aurora Magic Valley', category: 'fantasy', url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80' },
+    { title: '⚔️ Anime Katana Duel Concept', category: 'anime', url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🏎️ Matte Black Cyber Hypercar', category: 'cyberpunk', url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80' },
+    { title: '🏰 Enchanted Castle in Clouds', category: 'fantasy', url: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=1200&q=80' }
+];
+
 function generateMockCards() {
     return imageCollections.map((imageData, index) => {
         const creator = creators[index % creators.length];
-        const imageUrl = `https://picsum.photos/seed/pinpin-${imageData.id}/${imageData.width}/${imageData.height}`;
+        const aiArt = aiArtImages[index % aiArtImages.length];
 
         return {
             id: index + 1,
-            title: imageData.title,
-            image: imageUrl,
+            title: aiArt.title,
+            image: aiArt.url,
             width: imageData.width,
             height: imageData.height,
             creator,
             likes: Math.floor(((index + 7) * 731) % 9000) + 420,
             saves: Math.floor(((index + 11) * 347) % 4200) + 180,
-            category: imageData.category,
-            description: `A ${imageData.category} reference collected for moodboards, visual planning, and future ideas.`
+            category: aiArt.category,
+            description: `Generated with Yume AI Flux 1.1 Pro Engine (${aiArt.category} wallpaper).`
         };
     });
 }
@@ -401,7 +416,7 @@ function renderHomePage() {
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-card-visual">
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Describe or upload" class="step-card-img" />
+                        <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80" alt="Cyberpunk Supercar Prompt" class="step-card-img" />
                     </div>
                     <div class="step-number">01</div>
                     <h3 class="step-title">Describe or Upload</h3>
