@@ -385,61 +385,90 @@ body {
 }
 
 .public-cta-btn {
+    position: relative;
+    overflow: hidden;
+    background: #FFFFFF;
+    color: #18181B;
+    border: 2px solid #FF7EB5;
     border-radius: 999px;
-    padding: 12px 24px;
-    background: var(--primary-pink-gradient);
-    color: #FFFFFF;
-    border: none;
-    font: inherit;
-    font-weight: 700;
-    font-size: 13px;
+    padding: 14px 28px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.01em;
     cursor: pointer;
-    box-shadow: var(--shadow-pink);
-    transition: var(--transition);
+    z-index: 1;
+    transition: color 0.4s ease, border-color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+    box-shadow: 0 8px 24px rgba(255, 126, 181, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.public-cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 140%;
+    height: 300%;
+    background: var(--primary-pink-gradient);
+    border-radius: 45%;
+    transform: translate(-50%, 0) rotate(0deg);
+    transition: all 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+.public-cta-btn:hover::before {
+    top: -80%;
+    transform: translate(-50%, 0) rotate(360deg);
 }
 
 .public-cta-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 12px 30px rgba(255, 126, 181, 0.45);
+    color: #FFFFFF;
+    border-color: #ff5c9f;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 14px 34px rgba(255, 126, 181, 0.45);
 }
 
 /* Landing Page Universal Section Container */
 .landing-section {
-    max-width: 1320px;
+    max-width: 1380px;
     margin: 0 auto;
-    padding: 100px 32px;
+    padding: 110px 32px;
 }
 
 .landing-section-header {
     text-align: center;
-    max-width: 720px;
-    margin: 0 auto 56px auto;
+    max-width: 820px;
+    margin: 0 auto 64px auto;
 }
 
 .section-badge {
     display: inline-block;
     color: var(--primary-pink);
     background: #fdf2f6;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    padding: 6px 16px;
+    padding: 8px 20px;
     border-radius: 999px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .section-title {
-    font-size: 40px;
+    font-size: 52px;
     font-weight: 800;
     color: var(--dark-color);
-    letter-spacing: -1px;
-    line-height: 1.15;
-    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
 }
 
 .section-subtitle {
-    font-size: 16px;
+    font-size: 20px;
     color: var(--secondary-text);
     line-height: 1.6;
 }
@@ -685,7 +714,7 @@ body {
 }
 
 .step-title {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 800;
     color: var(--dark-color);
     letter-spacing: -0.02em;
@@ -693,7 +722,7 @@ body {
 }
 
 .step-desc {
-    font-size: 14px;
+    font-size: 17px;
     color: var(--secondary-text);
     line-height: 1.6;
 }
@@ -755,7 +784,7 @@ body {
 }
 
 .feature-title {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 800;
     color: var(--dark-color);
     letter-spacing: -0.02em;
@@ -763,7 +792,7 @@ body {
 }
 
 .feature-desc {
-    font-size: 14px;
+    font-size: 17px;
     color: var(--secondary-text);
     line-height: 1.6;
 }
@@ -1145,7 +1174,7 @@ body {
 .hero-left-content {
     position: relative;
     z-index: 2;
-    max-width: 580px;
+    max-width: 680px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1153,20 +1182,20 @@ body {
 
 .hero-eyebrow {
     color: #FF7EB5;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 24px;
 }
 
 .hero-headline {
     font-family: 'Urbanist', sans-serif;
-    font-size: 68px;
-    font-weight: 800;
-    line-height: 1.05;
+    font-size: 84px;
+    font-weight: 900;
+    line-height: 1.02;
     color: #18181B;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     margin-bottom: 24px;
 }
 
@@ -1182,12 +1211,12 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 16px;
-    font-weight: 400;
-    color: #7A7A7A;
+    font-size: 22px;
+    font-weight: 500;
+    color: #666668;
     line-height: 1.6;
-    max-width: 440px;
-    margin-bottom: 36px;
+    max-width: 520px;
+    margin-bottom: 40px;
 }
 
 .hero-cta-group {
@@ -1198,22 +1227,51 @@ body {
 }
 
 .hero-primary-btn {
+    position: relative;
+    overflow: hidden;
+    background: #FFFFFF;
+    color: #18181B;
+    border: 2px solid #FF7EB5;
     border-radius: 999px;
-    padding: 16px 36px;
-    background: var(--primary-pink-gradient);
-    color: #FFFFFF;
-    border: none;
-    font: inherit;
-    font-weight: 700;
-    font-size: 14px;
+    padding: 18px 42px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.01em;
     cursor: pointer;
-    box-shadow: var(--shadow-pink);
-    transition: var(--transition);
+    z-index: 1;
+    transition: color 0.4s ease, border-color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    box-shadow: 0 10px 28px rgba(255, 126, 181, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.hero-primary-btn::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 140%;
+    height: 300%;
+    background: var(--primary-pink-gradient);
+    border-radius: 45%;
+    transform: translate(-50%, 0) rotate(0deg);
+    transition: all 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+.hero-primary-btn:hover::before {
+    top: -80%;
+    transform: translate(-50%, 0) rotate(360deg);
 }
 
 .hero-primary-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 34px rgba(255, 126, 181, 0.45);
+    color: #FFFFFF;
+    border-color: #ff5c9f;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 18px 40px rgba(255, 126, 181, 0.5);
 }
 
 .hero-secondary-btn {
