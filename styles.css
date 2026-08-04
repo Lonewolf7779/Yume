@@ -360,7 +360,7 @@ body {
     
     .public-navbar {
         pointer-events: auto;
-        width: 1060px; /* The exact target expanded width */
+        width: 1200px; /* The exact target expanded width */
         max-width: 64px; /* The collapsed orb width */
         height: 64px;
         padding: 0;
@@ -407,7 +407,7 @@ body {
     }
 
     .public-navbar:hover {
-        max-width: 1060px;
+        max-width: 1200px;
         height: 72px;
         cursor: default;
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 200, 225, 0.4) 100%);
