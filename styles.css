@@ -320,16 +320,13 @@ body {
     padding: 0 20px;
     display: flex;
     justify-content: center;
-    pointer-events: none;
 }
 
+/* Base styles (Full pill by default for mobile and fallback) */
 .public-navbar {
-    pointer-events: auto;
     position: relative;
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-    overflow: hidden;
+    width: 100%;
+    border-radius: 999px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 215, 235, 0.3) 100%);
     border: 1.5px solid rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(36px) saturate(220%);
@@ -339,66 +336,90 @@ body {
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    justify-content: space-between;
+    padding: 14px 24px;
+    overflow: hidden;
 }
 
 .orb-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: #18181B;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-}
-.orb-icon .plus {
-    color: var(--primary-pink);
-    font-size: 18px;
-    margin-left: -2px;
-    margin-top: -8px;
+    display: none;
 }
 
 .nav-expanded-content {
-    opacity: 0;
-    visibility: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 820px;
-    padding: 0 36px;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    white-space: nowrap;
+    width: 100%;
 }
 
-.public-navbar:hover {
-    width: 820px;
-    height: 72px;
-    border-radius: 36px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 200, 225, 0.4) 100%);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12), 
-                0 14px 28px rgba(255, 126, 181, 0.25), 
-                inset 0 2px 2px rgba(255, 255, 255, 1), 
-                inset 0 -2px 2px rgba(255, 126, 181, 0.35);
-    cursor: default;
-}
+/* Desktop Orb Hover Effect */
+@media (min-width: 901px) {
+    .public-landing-header {
+        pointer-events: none;
+    }
+    
+    .public-navbar {
+        pointer-events: auto;
+        width: 920px; /* The exact target expanded width */
+        max-width: 64px; /* The collapsed orb width */
+        height: 64px;
+        padding: 0;
+        cursor: pointer;
+        justify-content: center;
+    }
 
-.public-navbar:hover .orb-icon {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6);
-    visibility: hidden;
-}
+    .orb-icon {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Urbanist', sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #18181B;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+    .orb-icon .plus {
+        color: var(--primary-pink);
+        font-size: 18px;
+        margin-left: -2px;
+        margin-top: -8px;
+    }
 
-.public-navbar:hover .nav-expanded-content {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0.15s;
+    .nav-expanded-content {
+        opacity: 0;
+        visibility: hidden;
+        padding: 0 36px;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .public-navbar:hover {
+        max-width: 920px;
+        height: 72px;
+        cursor: default;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 200, 225, 0.4) 100%);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12), 
+                    0 14px 28px rgba(255, 126, 181, 0.25), 
+                    inset 0 2px 2px rgba(255, 255, 255, 1), 
+                    inset 0 -2px 2px rgba(255, 126, 181, 0.35);
+    }
+
+    .public-navbar:hover .orb-icon {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.6);
+        visibility: hidden;
+    }
+
+    .public-navbar:hover .nav-expanded-content {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0.15s;
+    }
 }
 
 .public-brand {
