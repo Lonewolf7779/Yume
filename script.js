@@ -423,19 +423,22 @@ function renderHomePage() {
         <!-- 1. Floating Public Header Bar -->
         <header class="public-landing-header">
             <nav class="public-navbar">
-                <a class="public-brand" href="#/home">
-                    <span class="public-brand-text">Yume<sup class="public-brand-plus">⁺</sup></span>
-                </a>
-                <div class="public-nav-links">
-                    <a href="#showcaseSection" class="public-nav-link">Gallery</a>
-                    <a href="#promptSection" class="public-nav-link">Prompts</a>
-                    <a href="#howItWorksSection" class="public-nav-link">How It Works</a>
-                    <a href="#featuresSection" class="public-nav-link">Features</a>
-                    <a href="#pricingSection" class="public-nav-link">Pricing</a>
-                </div>
-                <div class="public-nav-actions">
-                    <button type="button" class="public-login-btn" data-landing-login>Log in</button>
-                    <button type="button" class="public-cta-btn" data-landing-create>✦ Start Creating Free</button>
+                <div class="orb-icon">Y<span class="plus">⁺</span></div>
+                <div class="nav-expanded-content">
+                    <a class="public-brand" href="#/home">
+                        <span class="public-brand-text">Yume<sup class="public-brand-plus">⁺</sup></span>
+                    </a>
+                    <div class="public-nav-links">
+                        <a href="#showcaseSection" class="public-nav-link">Gallery</a>
+                        <a href="#promptSection" class="public-nav-link">Prompts</a>
+                        <a href="#howItWorksSection" class="public-nav-link">How It Works</a>
+                        <a href="#featuresSection" class="public-nav-link">Features</a>
+                        <a href="#pricingSection" class="public-nav-link">Pricing</a>
+                    </div>
+                    <div class="public-nav-actions">
+                        <button type="button" class="public-login-btn" data-landing-login>Log in</button>
+                        <button type="button" class="public-cta-btn" data-landing-create>✦ Start Creating Free</button>
+                    </div>
                 </div>
             </nav>
         </header>
