@@ -572,7 +572,7 @@ function renderHomePage() {
                 </div>
                 <div class="feature-card">
                     <div class="feature-card-visual">
-                        <img src="img/real_portrait.jpg" alt="Flux 1.1 Pro Engine" class="feature-card-img" />
+                        <img src="img/real_portrait.jpg" alt="FLUX.2 PRO Engine" class="feature-card-img" />
                     </div>
                     <div class="feature-icon">⚡</div>
                     <h3 class="feature-title">Yume Pro Engine</h3>
@@ -626,7 +626,7 @@ function renderHomePage() {
                     <p class="pricing-desc">For serious creators who want unlimited generations and 4K upscaling.</p>
                     <ul class="pricing-features">
                         <li>✦ Unlimited Fast Generation Credits</li>
-                        <li>✦ Photo Transformation Studio (Flux Redux)</li>
+                        <li>✦ Photo Transformation Studio (FLUX.2 PRO Redux)</li>
                         <li>✦ Ultra HD 4K Upscaling Exports</li>
                         <li>✦ Commercial Rights for Creations</li>
                         <li>✦ Priority Generation Queue</li>
@@ -893,7 +893,7 @@ function renderCreatePage() {
                 <div>
                     <p class="studio-kicker">YUME LAB · CREATION STUDIO</p>
                     <h1 class="studio-title">Make the image<br><em>only you can imagine.</em></h1>
-                    <p class="studio-subtitle">Build original AI characters from prompts or transform your personal photos with Flux AI. All creations are kept strictly private.</p>
+                    <p class="studio-subtitle">Build original AI characters from prompts or transform your personal photos with FLUX.2 PRO AI. All creations are kept strictly private.</p>
                 </div>
                 <div class="studio-hero-mark" aria-hidden="true"><span>✦</span><span>✦</span><span>✦</span></div>
             </header>
@@ -912,13 +912,13 @@ function renderCreatePage() {
                     <!-- Mode A: Text-to-Image Header -->
                     <div class="studio-panel-heading" data-mode-heading="generate">
                         <div><p class="studio-label">01 · DESCRIBE YOUR DREAM</p><h2>Prompt canvas</h2></div>
-                        <span class="studio-model-pill">fal · Flux 1.1 Pro</span>
+                        <span class="studio-model-pill">fal · FLUX.2 PRO</span>
                     </div>
 
                     <!-- Mode B: Photo Transformation Header -->
                     <div class="studio-panel-heading" data-mode-heading="transform" style="display:none;">
                         <div><p class="studio-label">01 · SELECT YOUR PHOTO</p><h2>Personal Photo Library</h2></div>
-                        <span class="studio-model-pill">fal · Flux Redux</span>
+                        <span class="studio-model-pill">fal · FLUX.2 PRO Redux</span>
                     </div>
 
                     <!-- Mode B Photo Upload Section -->
@@ -990,7 +990,7 @@ function renderCreatePage() {
                     </details>
 
                     <div class="studio-submit-row">
-                        <button class="generate-art-button" type="submit" data-generate-button><span class="generate-art-icon">✦</span><span data-generate-button-label>Generate with Flux</span><span class="generate-art-arrow">→</span></button>
+                        <button class="generate-art-button" type="submit" data-generate-button><span class="generate-art-icon">✦</span><span data-generate-button-label>Generate with FLUX.2 PRO</span><span class="generate-art-arrow">→</span></button>
                         <p class="studio-status" data-studio-status aria-live="polite">Ready when your idea is.</p>
                     </div>
                 </form>
@@ -1057,11 +1057,11 @@ function renderCreatePage() {
 
             if (isTransform) {
                 promptInput.placeholder = "Transform this photo into an anime hero with glowing aura, cybernetic armor, and detailed background...";
-                generateButtonLabel.textContent = 'Transform Photo with Flux Redux';
+                generateButtonLabel.textContent = 'Transform Photo with FLUX.2 PRO Redux';
                 loadUserUploads();
             } else {
                 promptInput.placeholder = "A luminous anime heroine standing in a rain-soaked neon alley, cinematic light, intricate details...";
-                generateButtonLabel.textContent = 'Generate with Flux';
+                generateButtonLabel.textContent = 'Generate with FLUX.2 PRO';
             }
         });
     });
@@ -1311,7 +1311,7 @@ function renderCreatePage() {
             setStudioStatus('Could not reach Yume’s generation service. Please try again.', 'error');
         } finally {
             generateButton.disabled = false;
-            generateButtonLabel.textContent = studioMode === 'transform' ? 'Transform Photo with Flux Redux' : 'Generate with Flux';
+            generateButtonLabel.textContent = studioMode === 'transform' ? 'Transform Photo with FLUX.2 PRO Redux' : 'Generate with FLUX.2 PRO';
         }
     });
 
@@ -1383,7 +1383,7 @@ function renderGenerationLibrary(library, generations) {
                 <div class="generation-card-visual">${visual}<span class="generation-status status-${escapeHtml(generation.status)}">${statusLabel}</span>${pending ? '<div class="generation-sheen" aria-hidden="true"></div>' : ''}</div>
                 <div class="generation-card-body">
                     <p class="generation-card-prompt">${escapeHtml(generation.prompt)}</p>
-                    <div class="generation-card-meta"><span>Flux 1.1 Pro</span><time datetime="${escapeHtml(String(generation.createdAt || ''))}">${escapeHtml(formatGenerationDate(generation.createdAt))}</time></div>
+                    <div class="generation-card-meta"><span>FLUX.2 PRO</span><time datetime="${escapeHtml(String(generation.createdAt || ''))}">${escapeHtml(formatGenerationDate(generation.createdAt))}</time></div>
                     ${failed && generation.error ? `<p class="generation-card-error">${escapeHtml(generation.error)}</p>` : ''}
                     <div class="generation-card-actions">
                         <button type="button" data-generation-reuse="${generation.id}">Use prompt</button>
@@ -1409,7 +1409,7 @@ async function pollGenerationUntilSettled(generationId) {
             await loadGenerationLibrary();
             const status = body?.generation?.status;
             if (['queued', 'processing'].includes(status)) {
-                setStudioStatus(status === 'queued' ? 'Your idea is queued with Flux…' : 'Flux is drawing your visual…', 'working');
+                setStudioStatus(status === 'queued' ? 'Your idea is queued with FLUX.2 PRO…' : 'FLUX.2 PRO is drawing your visual…', 'working');
                 generationPollingTimer = window.setTimeout(checkStatus, 2400);
                 return;
             }
@@ -1808,7 +1808,7 @@ function renderAdminWorkspace(overview, users, generations) {
                     <h2>Good to know</h2>
                     <div class="admin-health-stack">
                         <div><span class="admin-health-dot healthy"></span><p><strong>App data</strong><small>PostgreSQL is responding through Yume.</small></p></div>
-                        <div><span class="admin-health-dot ${metrics.processingGenerations ? 'watch' : 'healthy'}"></span><p><strong>Flux queue</strong><small>${metrics.processingGenerations || 0} active request${metrics.processingGenerations === 1 ? '' : 's'}.</small></p></div>
+                        <div><span class="admin-health-dot ${metrics.processingGenerations ? 'watch' : 'healthy'}"></span><p><strong>FLUX.2 PRO queue</strong><small>${metrics.processingGenerations || 0} active request${metrics.processingGenerations === 1 ? '' : 's'}.</small></p></div>
                         <div><span class="admin-health-dot ${metrics.failedGenerations ? 'alert' : 'healthy'}"></span><p><strong>Failures</strong><small>${metrics.failedGenerations || 0} generation${metrics.failedGenerations === 1 ? '' : 's'} need review.</small></p></div>
                     </div>
                     <p class="admin-health-note">Provider keys remain server-only. A “failed” result means the creator can refine their prompt and retry.</p>
