@@ -348,9 +348,8 @@ body {
 .nav-expanded-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
-    gap: 32px;
 }
 
 /* Desktop Orb Hover Effect */
@@ -367,6 +366,14 @@ body {
         padding: 0;
         cursor: pointer;
         justify-content: center;
+    }
+
+    .public-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        margin-left: 80px; /* space after Yume */
+        margin-right: 120px; /* space before Log in */
     }
 
     .orb-icon {
