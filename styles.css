@@ -350,6 +350,7 @@ body {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 32px;
 }
 
 /* Desktop Orb Hover Effect */
@@ -360,7 +361,7 @@ body {
     
     .public-navbar {
         pointer-events: auto;
-        width: 920px; /* The exact target expanded width */
+        width: 1060px; /* The exact target expanded width */
         max-width: 64px; /* The collapsed orb width */
         height: 64px;
         padding: 0;
@@ -393,13 +394,13 @@ body {
     .nav-expanded-content {
         opacity: 0;
         visibility: hidden;
-        padding: 0 36px;
+        padding: 0 40px;
         transition: opacity 0.3s ease, visibility 0.3s ease;
         white-space: nowrap;
     }
 
     .public-navbar:hover {
-        max-width: 920px;
+        max-width: 1060px;
         height: 72px;
         cursor: default;
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 200, 225, 0.4) 100%);
