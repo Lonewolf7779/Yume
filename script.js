@@ -517,7 +517,44 @@ function renderHomePage() {
                 <p class="section-subtitle">Discover wallpapers and character art created by creators worldwide. One-click remix any prompt.</p>
             </div>
 
-            <div class="masonry-grid" id="masonryGrid"></div>
+            <div class="landing-showcase-grid">
+                <div class="landing-showcase-item">
+                    <img src="img/real_portrait.jpg" alt="1st item">
+                    <div class="landing-showcase-text">1st item</div>
+                </div>
+                <div class="landing-showcase-item">
+                    <img src="img/real_architecture.jpg" alt="2nd item">
+                    <div class="landing-showcase-text">2nd item</div>
+                </div>
+                <div class="landing-showcase-item span-large">
+                    <img src="img/real_supercar.jpg" alt="3rd item">
+                    <div class="landing-showcase-text">3rd item</div>
+                </div>
+                <div class="landing-showcase-item span-row-2">
+                    <img src="img/real_portrait.jpg" alt="4th item">
+                    <div class="landing-showcase-text">4th item</div>
+                </div>
+                <div class="landing-showcase-item">
+                    <img src="img/real_architecture.jpg" alt="5th item">
+                    <div class="landing-showcase-text">5th item</div>
+                </div>
+                <div class="landing-showcase-item span-col-2">
+                    <img src="img/real_supercar.jpg" alt="6th item">
+                    <div class="landing-showcase-text">6th item</div>
+                </div>
+                <div class="landing-showcase-item">
+                    <img src="img/real_portrait.jpg" alt="7th item">
+                    <div class="landing-showcase-text">7th item</div>
+                </div>
+                <div class="landing-showcase-item span-row-2">
+                    <img src="img/real_architecture.jpg" alt="8th item">
+                    <div class="landing-showcase-text">8th item</div>
+                </div>
+                <div class="landing-showcase-item">
+                    <img src="img/real_supercar.jpg" alt="9th item">
+                    <div class="landing-showcase-text">9th item</div>
+                </div>
+            </div>
         </section>
 
         <!-- 5. How Yume Works (3 Simple Steps) -->
@@ -683,8 +720,7 @@ function renderHomePage() {
         </footer>
     `;
 
-    const masonryGrid = document.getElementById('masonryGrid');
-    if (masonryGrid) renderCards(pins, masonryGrid);
+    // Masonry is now a hardcoded showcase on the landing page
     fetchRegisteredUserCount();
     updateRefBentoGrid('portrait');
 
