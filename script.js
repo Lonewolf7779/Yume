@@ -569,39 +569,29 @@ function renderHomePage() {
                 <p class="section-subtitle">Designed from the ground up for privacy, quality, and creative control.</p>
             </div>
 
-            <div class="features-accordion-container">
-                <div class="features-accordion">
-                    <div class="accordion-panel">
-                        <img src="img/real_architecture.jpg" alt="Private Library" class="accordion-img" />
-                        <div class="accordion-overlay"></div>
-                        <div class="accordion-content">
-                            <h3 class="accordion-title">Private Library</h3>
-                            <p class="accordion-desc">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
-                        </div>
+            <div class="kinetic-features-container">
+                <div class="kinetic-feature-item">
+                    <h3 class="kinetic-huge-title">Privacy</h3>
+                    <div class="kinetic-description-wrapper">
+                        <p class="kinetic-description">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
                     </div>
-                    <div class="accordion-panel">
-                        <img src="img/real_portrait.jpg" alt="Yume Pro Engine" class="accordion-img" />
-                        <div class="accordion-overlay"></div>
-                        <div class="accordion-content">
-                            <h3 class="accordion-title">Yume Pro Engine</h3>
-                            <p class="accordion-desc">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and lighting.</p>
-                        </div>
+                </div>
+                <div class="kinetic-feature-item">
+                    <h3 class="kinetic-huge-title">Power</h3>
+                    <div class="kinetic-description-wrapper">
+                        <p class="kinetic-description">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and breathtaking lighting.</p>
                     </div>
-                    <div class="accordion-panel">
-                        <img src="img/real_supercar.jpg" alt="Ultra HD 4K Upscaling" class="accordion-img" />
-                        <div class="accordion-overlay"></div>
-                        <div class="accordion-content">
-                            <h3 class="accordion-title">4K Upscaling</h3>
-                            <p class="accordion-desc">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and mobile screens.</p>
-                        </div>
+                </div>
+                <div class="kinetic-feature-item">
+                    <h3 class="kinetic-huge-title">Quality</h3>
+                    <div class="kinetic-description-wrapper">
+                        <p class="kinetic-description">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and high-DPI mobile screens.</p>
                     </div>
-                    <div class="accordion-panel">
-                        <img src="img/fantasy_ghibli_castle.jpg" alt="One-Click Remixing" class="accordion-img" />
-                        <div class="accordion-overlay"></div>
-                        <div class="accordion-content">
-                            <h3 class="accordion-title">One-Click Remixing</h3>
-                            <p class="accordion-desc">Love a wallpaper in the community? Click Remix to copy its prompt, seed, and settings into your studio.</p>
-                        </div>
+                </div>
+                <div class="kinetic-feature-item">
+                    <h3 class="kinetic-huge-title">Community</h3>
+                    <div class="kinetic-description-wrapper">
+                        <p class="kinetic-description">Love a wallpaper in the community showcase? One-click remix to copy its exact prompt, seed, and settings into your studio.</p>
                     </div>
                 </div>
             </div>
