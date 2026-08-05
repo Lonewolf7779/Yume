@@ -136,6 +136,44 @@ async function refreshGeneration(generation) {
   }
 }
 
+router.get('/public', async (req, res) => {
+  const requestedLimit = Number(req.query.limit || 24);
+  const limit = Number.isSafeInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 24;
+
+  try {
+    // Fetch recent successful generations. In a real app, you might filter by 'is_public' or similar,
+    // but here we just fetch recent completed ones for the showcase.
+    const result = await pgPool.query(
+      `
+        SELECT id, prompt, image_size, model, status, images, created_at, user_id
+        FROM generations
+        WHERE status = 'completed' AND jsonb_array_length(images) > 0
+        ORDER BY created_at DESC
+        LIMIT $1
+      `,
+      [limit]
+    );
+
+    const publicGenerations = result.rows.map(row => {
+      // Map to safe public structure (hiding sensitive info if any)
+      return {
+        id: row.id,
+        prompt: row.prompt,
+        imageSize: row.image_size,
+        model: row.model,
+        images: Array.isArray(row.images) ? row.images : [],
+        createdAt: row.created_at,
+        userId: row.user_id // Used to match creator info if needed
+      };
+    });
+
+    return res.status(200).json({ generations: publicGenerations });
+  } catch (error) {
+    console.error('Failed to fetch public generations', error);
+    return res.status(500).json({ error: 'Failed to fetch public generations' });
+  }
+});
+
 router.get('/', requireAuth, async (req, res) => {
   const requestedLimit = Number(req.query.limit || 24);
   const limit = Number.isSafeInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 24;

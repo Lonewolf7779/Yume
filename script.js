@@ -517,43 +517,8 @@ function renderHomePage() {
                 <p class="section-subtitle">Discover wallpapers and character art created by creators worldwide. One-click remix any prompt.</p>
             </div>
 
-            <div class="landing-showcase-grid">
-                <div class="landing-showcase-item">
-                    <img src="img/real_portrait.jpg" alt="1st item">
-                    <div class="landing-showcase-text">1st item</div>
-                </div>
-                <div class="landing-showcase-item">
-                    <img src="img/real_architecture.jpg" alt="2nd item">
-                    <div class="landing-showcase-text">2nd item</div>
-                </div>
-                <div class="landing-showcase-item span-large">
-                    <img src="img/real_supercar.jpg" alt="3rd item">
-                    <div class="landing-showcase-text">3rd item</div>
-                </div>
-                <div class="landing-showcase-item span-row-2">
-                    <img src="img/real_portrait.jpg" alt="4th item">
-                    <div class="landing-showcase-text">4th item</div>
-                </div>
-                <div class="landing-showcase-item">
-                    <img src="img/real_architecture.jpg" alt="5th item">
-                    <div class="landing-showcase-text">5th item</div>
-                </div>
-                <div class="landing-showcase-item span-col-2">
-                    <img src="img/real_supercar.jpg" alt="6th item">
-                    <div class="landing-showcase-text">6th item</div>
-                </div>
-                <div class="landing-showcase-item">
-                    <img src="img/real_portrait.jpg" alt="7th item">
-                    <div class="landing-showcase-text">7th item</div>
-                </div>
-                <div class="landing-showcase-item span-row-2">
-                    <img src="img/real_architecture.jpg" alt="8th item">
-                    <div class="landing-showcase-text">8th item</div>
-                </div>
-                <div class="landing-showcase-item">
-                    <img src="img/real_supercar.jpg" alt="9th item">
-                    <div class="landing-showcase-text">9th item</div>
-                </div>
+            <div class="landing-showcase-grid" id="publicShowcaseGrid">
+                <!-- Populated dynamically by populatePublicShowcase() -->
             </div>
         </section>
 
@@ -720,8 +685,8 @@ function renderHomePage() {
         </footer>
     `;
 
-    // Masonry is now a hardcoded showcase on the landing page
     fetchRegisteredUserCount();
+    populatePublicShowcase();
     updateRefBentoGrid('portrait');
 
     document.querySelectorAll('[data-landing-create]').forEach((btn) => {
@@ -729,10 +694,19 @@ function renderHomePage() {
             if (!requireAuthOrRedirect('/create')) return;
             navigateTo('/create');
         });
+        if (isAuthenticated() && btn.tagName === 'BUTTON') {
+            btn.textContent = '✦ Open Studio';
+        }
     });
 
     document.querySelectorAll('[data-landing-login]').forEach((btn) => {
-        btn.addEventListener('click', () => navigateTo('/login'));
+        btn.addEventListener('click', () => {
+            if (isAuthenticated()) navigateTo('/profile');
+            else navigateTo('/login');
+        });
+        if (isAuthenticated()) {
+            btn.textContent = 'Dashboard';
+        }
     });
 
     document.querySelectorAll('.prompt-chip').forEach((chip) => {
@@ -773,6 +747,47 @@ async function fetchRegisteredUserCount() {
     } catch {
         // Fallback remains 0
     }
+}
+
+async function populatePublicShowcase() {
+    const grid = document.getElementById('publicShowcaseGrid');
+    if (!grid) return;
+
+    let items = [];
+    try {
+        const { res, body } = await apiFetchJson('/api/generations/public?limit=9');
+        if (res.ok && body?.generations?.length >= 9) {
+            items = body.generations.map((g, idx) => ({
+                url: g.images[0]?.url,
+                title: g.prompt || `AI Generation ${idx + 1}`
+            }));
+        }
+    } catch (e) {
+        console.error('Failed to load public generations', e);
+    }
+
+    // Fallback to local curated showcase if backend is empty or failed
+    if (items.length < 9) {
+        items = aiArtImages.slice(0, 9).map(art => ({
+            url: art.url,
+            title: art.title
+        }));
+    }
+
+    // True Masonry Specific Classes for indices
+    const classMap = {
+        2: 'span-large', // 3rd item (0-indexed 2)
+        3: 'span-row-2',
+        5: 'span-col-2',
+        7: 'span-row-2'
+    };
+
+    grid.innerHTML = items.slice(0, 9).map((item, index) => `
+        <div class="landing-showcase-item ${classMap[index] || ''}">
+            <img src="${item.url}" alt="${item.title}">
+            <div class="landing-showcase-text">${index + 1}${['st', 'nd', 'rd'][((index + 1) % 10) - 1] || 'th'} item</div>
+        </div>
+    `).join('');
 }
 
 function renderSearchPage() {
