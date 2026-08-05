@@ -372,41 +372,38 @@ function updateRefBentoGrid(suiteKey) {
     const container = document.getElementById('refBentoGrid');
     if (!container) return;
 
-    container.innerHTML = suite.cols.map((col) => {
-        if (col.stacked) {
-            return `
-                <div class="ref-bento-col">
-                    ${col.stacked.map((card) => `
-                        <div class="ref-bento-card ${card.type}" data-landing-create>
-                            <img src="${card.img}" alt="${card.handle}" class="ref-bento-img" />
-                            <div class="ref-bento-overlay">
-                                <div class="ref-bento-creator">
-                                    <img src="${card.avatar}" alt="${card.handle}" class="ref-bento-avatar" />
-                                    <span class="ref-bento-handle">${card.handle}</span>
-                                </div>
-                                <div class="ref-bento-likes">♡ ${card.likes}</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
+    // We flatten the old nested structure to extract images, as we are adopting the new True Masonry layout.
+    const flatItems = [];
+    if (suite.cols) {
+        suite.cols.forEach(col => {
+            if (col.stacked) col.stacked.forEach(c => flatItems.push(c));
+            else flatItems.push(col);
+        });
+    }
 
-        return `
-            <div class="ref-bento-col">
-                <div class="ref-bento-card ${col.type}" data-landing-create>
-                    <img src="${col.img}" alt="${col.handle}" class="ref-bento-img" />
-                    <div class="ref-bento-overlay">
-                        <div class="ref-bento-creator">
-                            <img src="${col.avatar}" alt="${col.handle}" class="ref-bento-avatar" />
-                            <span class="ref-bento-handle">${col.handle}</span>
-                        </div>
-                        <div class="ref-bento-likes">♡ ${col.likes}</div>
-                    </div>
-                </div>
+    // Ensure we have exactly 13 items to fill the 7-row grid perfectly. Loop if necessary.
+    const items = [];
+    for (let i = 0; i < 13; i++) {
+        items.push(flatItems[i % flatItems.length]);
+    }
+
+    const spanMap = [
+        'span-row-2', 'span-large', 'span-row-2',
+        'span-col-2', 'span-row-2', 'span-row-2',
+        'span-row-2', 'span-row-3', 'span-large',
+        'span-row-2', '', '', ''
+    ];
+
+    container.className = 'landing-ref-grid'; // Use the new grid class
+    container.innerHTML = items.map((card, index) => `
+        <div class="landing-showcase-item ${spanMap[index] || ''}" data-landing-create>
+            <img src="${card.img}" alt="${card.handle}" class="ref-bento-img" />
+            <div class="landing-showcase-text" style="font-size: 16px; display: flex; flex-direction: column; gap: 8px;">
+                <span>${card.handle}</span>
+                <span style="font-size: 12px; opacity: 0.7;">♡ ${card.likes}</span>
             </div>
-        `;
-    }).join('');
+        </div>
+    `).join('');
 
     container.style.opacity = '1';
 
@@ -755,8 +752,8 @@ async function populatePublicShowcase() {
 
     let items = [];
     try {
-        const { res, body } = await apiFetchJson('/api/generations/public?limit=9');
-        if (res.ok && body?.generations?.length >= 9) {
+        const { res, body } = await apiFetchJson('/api/generations/public?limit=13');
+        if (res.ok && body?.generations?.length > 0) {
             items = body.generations.map((g, idx) => ({
                 url: g.images[0]?.url,
                 title: g.prompt || `AI Generation ${idx + 1}`
@@ -766,24 +763,25 @@ async function populatePublicShowcase() {
         console.error('Failed to load public generations', e);
     }
 
-    // Fallback to local curated showcase if backend is empty or failed
-    if (items.length < 9) {
-        items = aiArtImages.slice(0, 9).map(art => ({
+    // Fallback to local curated showcase if backend doesn't have enough
+    while (items.length < 13) {
+        const art = aiArtImages[items.length % aiArtImages.length];
+        items.push({
             url: art.url,
             title: art.title
-        }));
+        });
     }
 
-    // True Masonry Specific Classes for indices
-    const classMap = {
-        2: 'span-large', // 3rd item (0-indexed 2)
-        3: 'span-row-2',
-        5: 'span-col-2',
-        7: 'span-row-2'
-    };
+    // 13 items mapped into our 7-row perfectly rectangular asymmetric true masonry grid
+    const spanMap = [
+        'span-row-2', 'span-large', 'span-row-2',
+        'span-col-2', 'span-row-2', 'span-row-2',
+        'span-row-2', 'span-row-3', 'span-large',
+        'span-row-2', '', '', ''
+    ];
 
-    grid.innerHTML = items.slice(0, 9).map((item, index) => `
-        <div class="landing-showcase-item ${classMap[index] || ''}">
+    grid.innerHTML = items.slice(0, 13).map((item, index) => `
+        <div class="landing-showcase-item ${spanMap[index] || ''}">
             <img src="${item.url}" alt="${item.title}">
             <div class="landing-showcase-text">${index + 1}${['st', 'nd', 'rd'][((index + 1) % 10) - 1] || 'th'} item</div>
         </div>
