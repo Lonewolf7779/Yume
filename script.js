@@ -527,30 +527,36 @@ function renderHomePage() {
                 <p class="section-subtitle">From imagination to desktop wallpaper in under 10 seconds.</p>
             </div>
 
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-card-visual">
-                        <img src="img/real_supercar.jpg" alt="Cyberpunk Supercar Prompt" class="step-card-img" />
+            <div class="steps-flow">
+                <div class="step-flow-item">
+                    <div class="step-flow-content">
+                        <div class="step-flow-bg-number">01</div>
+                        <h3 class="step-flow-title">Describe or Upload</h3>
+                        <p class="step-flow-desc">Write your prompt in plain English or upload an existing photo to transform into realistic art.</p>
                     </div>
-                    <div class="step-number">01</div>
-                    <h3 class="step-title">Describe or Upload</h3>
-                    <p class="step-desc">Write your prompt in plain English or upload an existing photo to transform into realistic art.</p>
+                    <div class="step-flow-visual">
+                        <img src="img/real_supercar.jpg" alt="Cyberpunk Supercar Prompt" />
+                    </div>
                 </div>
-                <div class="step-card">
-                    <div class="step-card-visual">
-                        <img src="img/real_portrait.jpg" alt="Select style and ratio" class="step-card-img" />
+                <div class="step-flow-item">
+                    <div class="step-flow-content">
+                        <div class="step-flow-bg-number">02</div>
+                        <h3 class="step-flow-title">Select Style & Ratio</h3>
+                        <p class="step-flow-desc">Choose Desktop Wallpaper (16:9), Mobile Phone (9:16), or Avatar (1:1) with custom realistic style presets.</p>
                     </div>
-                    <div class="step-number">02</div>
-                    <h3 class="step-title">Select Style & Ratio</h3>
-                    <p class="step-desc">Choose Desktop Wallpaper (16:9), Mobile Phone (9:16), or Avatar (1:1) with custom realistic style presets.</p>
+                    <div class="step-flow-visual">
+                        <img src="img/real_portrait.jpg" alt="Select style and ratio" />
+                    </div>
                 </div>
-                <div class="step-card">
-                    <div class="step-card-visual">
-                        <img src="img/real_architecture.jpg" alt="Keep private or share" class="step-card-img" />
+                <div class="step-flow-item">
+                    <div class="step-flow-content">
+                        <div class="step-flow-bg-number">03</div>
+                        <h3 class="step-flow-title">Keep Private or Share</h3>
+                        <p class="step-flow-desc">All creations are saved 100% private in your library. Publish to the community only when you choose.</p>
                     </div>
-                    <div class="step-number">03</div>
-                    <h3 class="step-title">Keep Private or Share</h3>
-                    <p class="step-desc">All creations are saved 100% private in your library. Publish to the community only when you choose.</p>
+                    <div class="step-flow-visual">
+                        <img src="img/real_architecture.jpg" alt="Keep private or share" />
+                    </div>
                 </div>
             </div>
         </section>
@@ -563,38 +569,54 @@ function renderHomePage() {
                 <p class="section-subtitle">Designed from the ground up for privacy, quality, and creative control.</p>
             </div>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-card-visual">
-                        <img src="img/real_architecture.jpg" alt="Private Library" class="feature-card-img" />
+            <div class="features-list">
+                <div class="feature-list-item">
+                    <div class="feature-list-content">
+                        <div class="feature-list-icon">🔒</div>
+                        <div class="feature-list-text-group">
+                            <h3 class="feature-list-title">Private Library by Default</h3>
+                            <p class="feature-list-desc">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
+                        </div>
                     </div>
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">Private Library by Default</h3>
-                    <p class="feature-desc">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
+                    <div class="feature-list-visual">
+                        <img src="img/real_architecture.jpg" alt="Private Library" />
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-card-visual">
-                        <img src="img/real_portrait.jpg" alt="FLUX.2 PRO Engine" class="feature-card-img" />
+                <div class="feature-list-item">
+                    <div class="feature-list-content">
+                        <div class="feature-list-icon">⚡</div>
+                        <div class="feature-list-text-group">
+                            <h3 class="feature-list-title">Yume Pro Engine</h3>
+                            <p class="feature-list-desc">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and lighting.</p>
+                        </div>
                     </div>
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Yume Pro Engine</h3>
-                    <p class="feature-desc">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and lighting.</p>
+                    <div class="feature-list-visual">
+                        <img src="img/real_portrait.jpg" alt="FLUX.2 PRO Engine" />
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-card-visual">
-                        <img src="img/real_supercar.jpg" alt="Ultra HD 4K Upscaling" class="feature-card-img" />
+                <div class="feature-list-item">
+                    <div class="feature-list-content">
+                        <div class="feature-list-icon">🖼️</div>
+                        <div class="feature-list-text-group">
+                            <h3 class="feature-list-title">Ultra HD 4K Upscaling</h3>
+                            <p class="feature-list-desc">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and mobile screens.</p>
+                        </div>
                     </div>
-                    <div class="feature-icon">🖼️</div>
-                    <h3 class="feature-title">Ultra HD 4K Upscaling</h3>
-                    <p class="feature-desc">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and mobile screens.</p>
+                    <div class="feature-list-visual">
+                        <img src="img/real_supercar.jpg" alt="Ultra HD 4K Upscaling" />
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-card-visual">
-                        <img src="img/fantasy_ghibli_castle.jpg" alt="One-Click Remixing" class="feature-card-img" />
+                <div class="feature-list-item">
+                    <div class="feature-list-content">
+                        <div class="feature-list-icon">🤝</div>
+                        <div class="feature-list-text-group">
+                            <h3 class="feature-list-title">One-Click Remixing</h3>
+                            <p class="feature-list-desc">Love a wallpaper in the community? Click Remix to copy its prompt, seed, and settings into your studio.</p>
+                        </div>
                     </div>
-                    <div class="feature-icon">🤝</div>
-                    <h3 class="feature-title">One-Click Remixing</h3>
-                    <p class="feature-desc">Love a wallpaper in the community? Click Remix to copy its prompt, seed, and settings into your studio.</p>
+                    <div class="feature-list-visual">
+                        <img src="img/fantasy_ghibli_castle.jpg" alt="One-Click Remixing" />
+                    </div>
                 </div>
             </div>
         </section>

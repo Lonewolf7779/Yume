@@ -959,162 +959,220 @@ body {
     box-shadow: 0 16px 36px rgba(255, 126, 181, 0.45);
 }
 
-/* Floating Bento Steps Grid */
-.steps-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-}
-
-.step-card {
-    background: linear-gradient(145deg, #ffffff 0%, #fff8fb 100%);
-    border: 1px solid rgba(255, 230, 242, 0.8);
-    border-radius: 32px;
-    padding: 24px;
-    box-shadow: 0 20px 50px rgba(255, 126, 181, 0.05);
-    transition: var(--transition);
+/* ============================================
+   Card-less Open Flow: Steps Section
+   ============================================ */
+.steps-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+    margin-top: 60px;
     position: relative;
-    overflow: hidden;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.step-card-visual {
-    width: 100%;
-    height: 180px;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 24px;
-    background: #18181B;
-}
-
-.step-card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.step-card:hover .step-card-img {
-    transform: scale(1.05);
-}
-
-.step-card::before {
+.steps-flow::before {
     content: '';
     position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(255, 126, 181, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--primary-pink), transparent);
+    opacity: 0.15;
+    z-index: 0;
 }
 
-.step-card:hover {
-    transform: translateY(-8px) scale(1.015);
-    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.2);
-    border-color: var(--primary-pink);
-}
-
-.step-number {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
-    background: var(--primary-pink-gradient);
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 900;
+.step-flow-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow-pink);
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
 }
 
-.step-title {
-    font-size: 38px;
+.step-flow-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.step-flow-visual {
+    width: 48%;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-flow-visual:hover {
+    transform: scale(1.03) translateY(-10px);
+    box-shadow: 0 50px 100px rgba(255, 126, 181, 0.2);
+}
+
+.step-flow-visual img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+}
+
+.step-flow-content {
+    width: 42%;
+    position: relative;
+}
+
+.step-flow-bg-number {
+    position: absolute;
+    top: -120px;
+    left: -60px;
+    font-size: 280px;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 3px rgba(255, 126, 181, 0.1);
+    z-index: -1;
+    pointer-events: none;
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.step-flow-item:nth-child(even) .step-flow-bg-number {
+    left: auto;
+    right: -60px;
+}
+
+.step-flow-title {
+    font-size: 48px;
     font-weight: 300;
     color: var(--dark-color);
-    letter-spacing: -0.03em;
-    margin-bottom: 12px;
+    letter-spacing: -0.04em;
+    margin-bottom: 20px;
+    line-height: 1.1;
 }
 
-.step-desc {
+.step-flow-desc {
     font-size: 22px;
     font-weight: 300;
     color: var(--secondary-text);
     line-height: 1.6;
 }
 
-/* Asymmetric Bento Features Grid */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
+/* ============================================
+   Card-less Open Flow: Features Section
+   ============================================ */
+.features-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+    border-top: 1px solid var(--border-color);
+    position: relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.feature-card {
-    background: linear-gradient(145deg, #ffffff 0%, #fff8fb 100%);
-    border: 1px solid rgba(255, 230, 242, 0.8);
-    border-radius: 32px;
-    padding: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
-    transition: var(--transition);
+.feature-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    cursor: pointer;
+    transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease;
 }
 
-.feature-card-visual {
+.feature-list-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    z-index: 2;
     width: 100%;
-    height: 220px;
-    border-radius: 22px;
-    overflow: hidden;
-    margin-bottom: 24px;
-    background: #18181B;
 }
 
-.feature-card-img {
+.feature-list-icon {
+    font-size: 48px;
+    color: var(--primary-pink);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    background: transparent;
+}
+
+.feature-list-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.feature-list-title {
+    font-size: 56px;
+    font-weight: 300;
+    color: var(--dark-color);
+    letter-spacing: -0.04em;
+    transition: color 0.4s ease;
+    line-height: 1;
+}
+
+.feature-list-desc {
+    font-size: 22px;
+    color: var(--secondary-text);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 500px;
+    position: absolute;
+    top: 100%;
+    left: 88px; /* Align with title */
+    margin-top: 16px;
+}
+
+.feature-list-visual {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+    width: 480px;
+    height: 280px;
+    border-radius: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+}
+
+.feature-list-visual img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.feature-card:hover .feature-card-img {
-    transform: scale(1.05);
+.feature-list-item:hover {
+    padding-left: 32px;
+    border-bottom-color: var(--primary-pink);
 }
 
-.feature-card:hover {
-    transform: translateY(-8px) scale(1.015);
-    border-color: var(--primary-pink);
-    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.2);
+.feature-list-item:hover .feature-list-icon {
+    transform: scale(1.1) rotate(-5deg);
 }
 
-.feature-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 18px;
-    background: #fdf2f6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin-bottom: 24px;
+.feature-list-item:hover .feature-list-title {
+    color: var(--primary-pink);
 }
 
-.feature-title {
-    font-size: 38px;
-    font-weight: 300;
-    color: var(--dark-color);
-    letter-spacing: -0.03em;
-    margin-bottom: 12px;
+.feature-list-item:hover .feature-list-desc {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.feature-desc {
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--secondary-text);
-    line-height: 1.6;
+.feature-list-item:hover .feature-list-visual {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    box-shadow: 0 40px 80px rgba(255, 126, 181, 0.25);
 }
 
 /* Floating Luxury Pricing Cards */
