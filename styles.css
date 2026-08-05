@@ -1031,7 +1031,7 @@ body {
     font-size: 280px;
     font-weight: 900;
     color: transparent;
-    -webkit-text-stroke: 3px rgba(255, 126, 181, 0.1);
+    -webkit-text-stroke: 2px rgba(255, 126, 181, 0.6);
     z-index: -1;
     pointer-events: none;
     line-height: 1;
@@ -1060,240 +1060,152 @@ body {
 }
 
 /* ============================================
-   Kinetic Typography Stack: Features Section
+   Delicate Features Flow: Features Section
    ============================================ */
-.kinetic-features-container {
-    max-width: 1400px;
-    margin: 140px auto;
+.delicate-features-container {
+    max-width: 1000px;
+    margin: 80px auto;
     padding: 0 40px;
-    display: flex;
-    flex-direction: column;
 }
 
-.kinetic-feature-item {
-    width: 100%;
-    text-align: left;
-    position: relative;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+.delicate-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
     padding: 40px 0;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 126, 181, 0.15);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.kinetic-feature-item:first-child {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+.delicate-feature-item:last-child {
+    border-bottom: none;
 }
 
-.kinetic-huge-title {
-    font-size: clamp(60px, 12vw, 180px);
-    font-weight: 900;
-    text-transform: uppercase;
-    color: transparent;
-    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.15);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    margin: 0;
+.delicate-feature-item:hover {
+    transform: translateX(20px);
 }
 
-.kinetic-feature-item:hover .kinetic-huge-title {
+.delicate-feature-number {
+    font-size: 32px;
+    font-weight: 300;
     color: var(--primary-pink);
-    -webkit-text-stroke: 2px var(--primary-pink);
-    transform: translateX(40px);
-    text-shadow: 0 20px 60px rgba(255, 126, 181, 0.3);
+    min-width: 60px;
+    padding-top: 4px;
 }
 
-.kinetic-description-wrapper {
-    max-height: 0;
-    opacity: 0;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    justify-content: flex-start;
-    padding-left: 40px;
+.delicate-feature-text {
+    flex: 1;
 }
 
-.kinetic-feature-item:hover .kinetic-description-wrapper {
-    max-height: 200px;
-    opacity: 1;
-    margin-top: 32px;
+.delicate-feature-title {
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--dark-color);
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    margin-top: 0;
 }
 
-.kinetic-description {
-    font-size: 26px;
+.delicate-feature-desc {
+    font-size: 22px;
     font-weight: 300;
     color: var(--secondary-text);
-    max-width: 800px;
     line-height: 1.6;
-    margin: 0;
+    margin-bottom: 0;
 }
 
-/* Floating Luxury Pricing Cards */
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 36px;
-    max-width: 940px;
+/* Seamless Glass Pricing Strip */
+.pricing-strip-container {
+    max-width: 1400px;
     margin: 0 auto;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 100%);
+    border: 1px solid rgba(255, 126, 181, 0.2);
+    border-radius: 40px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.03);
+    display: flex;
+    overflow: hidden;
+    padding: 0;
 }
 
-.pricing-card {
-    position: relative;
-    background: #ffffff;
-    border: 1px solid rgba(255, 230, 242, 0.8);
-    border-radius: 36px;
-    padding: 52px 44px;
+.pricing-tier {
+    flex: 1;
+    padding: 40px 32px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
-    transition: var(--transition);
+    border-right: 1px solid rgba(255, 126, 181, 0.15);
+    transition: background 0.4s ease;
+    position: relative;
 }
 
-.pricing-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 30px 70px rgba(255, 126, 181, 0.18);
+.pricing-tier:last-child {
+    border-right: none;
 }
 
-.pricing-card.featured {
-    border-color: var(--primary-pink);
-    box-shadow: 0 24px 60px rgba(255, 126, 181, 0.2);
-    background: linear-gradient(160deg, #ffffff 0%, #fff5f8 100%);
+.pricing-tier:hover {
+    background: rgba(255, 126, 181, 0.03);
 }
 
-.pricing-badge {
-    position: absolute;
-    top: -16px;
-    right: 36px;
-    background: var(--primary-pink-gradient);
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 800;
+.tier-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-pink);
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 6px 18px;
-    border-radius: 999px;
-    box-shadow: var(--shadow-pink);
-}
-
-.pricing-plan-name {
-    font-size: 40px;
-    font-weight: 300;
-    color: var(--dark-color);
-    letter-spacing: -0.03em;
-    margin-bottom: 16px;
-}
-
-.pricing-price {
-    font-size: 80px;
-    font-weight: 300;
-    color: var(--dark-color);
-    letter-spacing: -0.04em;
     margin-bottom: 12px;
 }
 
-.pricing-price span {
-    font-size: 24px;
-    font-weight: 300;
-    color: var(--secondary-text);
-}
-
-.pricing-desc {
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--secondary-text);
-    margin-bottom: 32px;
-}
-
-.pricing-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 44px;
-}
-
-.pricing-features li {
-    font-size: 20px;
+.tier-price {
+    font-size: 48px;
     font-weight: 300;
     color: var(--dark-color);
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
 }
 
-.pricing-btn {
+.tier-price span {
+    font-size: 18px;
+    color: var(--secondary-text);
+}
+
+.tier-desc {
+    font-size: 16px;
+    color: var(--secondary-text);
+    margin-bottom: 24px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.tier-btn {
     width: 100%;
+    padding: 16px;
     border-radius: 999px;
-    padding: 20px 36px;
+    font-size: 18px;
     font-family: 'Urbanist', sans-serif;
-    font-weight: 400;
-    font-size: 22px;
+    font-weight: 500;
     cursor: pointer;
-    border: none;
-    margin-top: auto;
-    transition: var(--transition);
-}
-
-.pricing-btn.primary {
-    position: relative;
-    overflow: hidden;
-    background: #FFFFFF;
-    color: #18181B;
-    border: 2px solid #FF7EB5;
-    z-index: 1;
-}
-
-.pricing-btn.primary::before {
-    content: '';
-    position: absolute;
-    top: 110%;
-    left: 50%;
-    width: 220%;
-    height: 380%;
-    background: var(--primary-pink-gradient);
-    border-radius: 40% 42% 43% 40%;
-    transform: translate(-50%, 0) rotate(0deg);
-    transition: top 0.75s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: -1;
-}
-
-.pricing-btn.primary::after {
-    content: '';
-    position: absolute;
-    top: 120%;
-    left: 50%;
-    width: 220%;
-    height: 380%;
-    background: rgba(255, 92, 159, 0.85);
-    border-radius: 42% 40% 44% 42%;
-    transform: translate(-50%, 0) rotate(45deg);
-    transition: top 0.85s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: -1;
-}
-
-.pricing-btn.primary:hover::before {
-    top: -90%;
-    animation: liquidWaveRotate 5s linear infinite;
-}
-
-.pricing-btn.primary:hover::after {
-    top: -85%;
-    animation: liquidWaveRotate 7s linear infinite reverse;
-}
-
-.pricing-btn.primary:hover {
-    color: #FFFFFF;
-    border-color: #ff5c9f;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 16px 36px rgba(255, 126, 181, 0.45);
-}
-
-.pricing-btn.secondary {
-    background: #ffffff;
-    color: var(--dark-color);
+    background: transparent;
     border: 1px solid var(--border-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+    text-align: center;
 }
 
-.pricing-btn.secondary:hover {
+.pricing-tier.popular .tier-btn {
+    background: var(--dark-color);
+    color: #fff;
+    border: none;
+}
+
+.tier-btn:hover {
     border-color: var(--primary-pink);
     color: var(--primary-pink);
+}
+
+.pricing-tier.popular .tier-btn:hover {
+    background: var(--primary-pink);
+    color: #fff;
 }
 
 /* CTA Banner */
@@ -1406,11 +1318,11 @@ body {
 
 .footer-logo {
     font-family: 'Urbanist', sans-serif;
-    font-size: 28px;
+    font-size: 84px;
     font-weight: 800;
     color: #18181B;
     display: inline-block;
-    margin-bottom: 16px;
+    margin-bottom: 48px;
     letter-spacing: -0.03em;
 }
 
@@ -1419,25 +1331,25 @@ body {
 }
 
 .footer-tagline {
-    font-size: 14px;
+    font-size: 42px;
     color: var(--secondary-text);
-    max-width: 320px;
+    max-width: 960px;
     line-height: 1.6;
 }
 
 .footer-links-col h4 {
-    font-size: 14px;
+    font-size: 42px;
     font-weight: 700;
     color: var(--dark-color);
-    margin-bottom: 20px;
+    margin-bottom: 60px;
 }
 
 .footer-links-col a {
     display: block;
     color: var(--secondary-text);
     text-decoration: none;
-    font-size: 14px;
-    margin-bottom: 12px;
+    font-size: 42px;
+    margin-bottom: 36px;
     transition: var(--transition);
 }
 
@@ -1448,10 +1360,10 @@ body {
 .footer-bottom {
     max-width: 1280px;
     margin: 0 auto;
-    padding-top: 32px;
+    padding-top: 96px;
     border-top: 1px solid var(--border-color);
     text-align: center;
-    font-size: 13px;
+    font-size: 39px;
     color: var(--secondary-text);
 }
 

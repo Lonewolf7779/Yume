@@ -569,29 +569,33 @@ function renderHomePage() {
                 <p class="section-subtitle">Designed from the ground up for privacy, quality, and creative control.</p>
             </div>
 
-            <div class="kinetic-features-container">
-                <div class="kinetic-feature-item">
-                    <h3 class="kinetic-huge-title">Privacy</h3>
-                    <div class="kinetic-description-wrapper">
-                        <p class="kinetic-description">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
+            <div class="delicate-features-container">
+                <div class="delicate-feature-item">
+                    <div class="delicate-feature-number">01</div>
+                    <div class="delicate-feature-text">
+                        <h3 class="delicate-feature-title">Private Library</h3>
+                        <p class="delicate-feature-desc">Your uploaded photos and generated wallpapers stay strictly private until you consciously choose to publish them.</p>
                     </div>
                 </div>
-                <div class="kinetic-feature-item">
-                    <h3 class="kinetic-huge-title">Power</h3>
-                    <div class="kinetic-description-wrapper">
-                        <p class="kinetic-description">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and breathtaking lighting.</p>
+                <div class="delicate-feature-item">
+                    <div class="delicate-feature-number">02</div>
+                    <div class="delicate-feature-text">
+                        <h3 class="delicate-feature-title">Yume Pro Engine</h3>
+                        <p class="delicate-feature-desc">Powered by state-of-the-art AI models for flawless anatomy, intricate clothing textures, and breathtaking lighting.</p>
                     </div>
                 </div>
-                <div class="kinetic-feature-item">
-                    <h3 class="kinetic-huge-title">Quality</h3>
-                    <div class="kinetic-description-wrapper">
-                        <p class="kinetic-description">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and high-DPI mobile screens.</p>
+                <div class="delicate-feature-item">
+                    <div class="delicate-feature-number">03</div>
+                    <div class="delicate-feature-text">
+                        <h3 class="delicate-feature-title">4K Upscaling</h3>
+                        <p class="delicate-feature-desc">Export crystal clear 4K resolutions perfect for dual-monitor setups, iPad wallpapers, and high-DPI mobile screens.</p>
                     </div>
                 </div>
-                <div class="kinetic-feature-item">
-                    <h3 class="kinetic-huge-title">Community</h3>
-                    <div class="kinetic-description-wrapper">
-                        <p class="kinetic-description">Love a wallpaper in the community showcase? One-click remix to copy its exact prompt, seed, and settings into your studio.</p>
+                <div class="delicate-feature-item">
+                    <div class="delicate-feature-number">04</div>
+                    <div class="delicate-feature-text">
+                        <h3 class="delicate-feature-title">One-Click Remix</h3>
+                        <p class="delicate-feature-desc">Love a wallpaper in the community showcase? One-click remix to copy its exact prompt, seed, and settings into your studio.</p>
                     </div>
                 </div>
             </div>
@@ -605,33 +609,30 @@ function renderHomePage() {
                 <p class="section-subtitle">No credit card required to start creating today.</p>
             </div>
 
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-plan-name">Free Creator</div>
-                    <div class="pricing-price">$0 <span>/ month</span></div>
-                    <p class="pricing-desc">Perfect for trying out Yume and creating daily wallpapers.</p>
-                    <ul class="pricing-features">
-                        <li>✦ 50 Daily Free Generation Credits</li>
-                        <li>✦ Access to Text to Image Studio</li>
-                        <li>✦ Private Library Access</li>
-                        <li>✦ Standard Resolution Exports</li>
-                    </ul>
-                    <button type="button" class="pricing-btn secondary" data-landing-create>✦ Start Creating Free</button>
+            <div class="pricing-strip-container">
+                <div class="pricing-tier">
+                    <div class="tier-name">Free</div>
+                    <div class="tier-price">$0<span>/mo</span></div>
+                    <p class="tier-desc">50 Daily Credits<br>Standard Resolution</p>
+                    <button class="tier-btn" data-landing-create>Start Free</button>
                 </div>
-
-                <div class="pricing-card featured">
-                    <div class="pricing-badge">Popular</div>
-                    <div class="pricing-plan-name">Pro Creator</div>
-                    <div class="pricing-price">$12 <span>/ month</span></div>
-                    <p class="pricing-desc">For serious creators who want unlimited generations and 4K upscaling.</p>
-                    <ul class="pricing-features">
-                        <li>✦ Unlimited Fast Generation Credits</li>
-                        <li>✦ Photo Transformation Studio (FLUX.2 PRO Redux)</li>
-                        <li>✦ Ultra HD 4K Upscaling Exports</li>
-                        <li>✦ Commercial Rights for Creations</li>
-                        <li>✦ Priority Generation Queue</li>
-                    </ul>
-                    <button type="button" class="pricing-btn primary" data-landing-create>✦ Go Pro Creator</button>
+                <div class="pricing-tier">
+                    <div class="tier-name">Creator</div>
+                    <div class="tier-price">$5<span>/mo</span></div>
+                    <p class="tier-desc">300 Daily Credits<br>High Resolution</p>
+                    <button class="tier-btn" data-landing-create>Upgrade</button>
+                </div>
+                <div class="pricing-tier popular">
+                    <div class="tier-name">Pro</div>
+                    <div class="tier-price">$12<span>/mo</span></div>
+                    <p class="tier-desc">Unlimited Fast Credits<br>4K Upscaling</p>
+                    <button class="tier-btn" data-landing-create>Go Pro</button>
+                </div>
+                <div class="pricing-tier">
+                    <div class="tier-name">Studio</div>
+                    <div class="tier-price">$29<span>/mo</span></div>
+                    <p class="tier-desc">Commercial Rights<br>Priority Generation Queue</p>
+                    <button class="tier-btn" data-landing-create>Get Studio</button>
                 </div>
             </div>
         </section>
