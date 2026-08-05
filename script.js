@@ -613,25 +613,51 @@ function renderHomePage() {
                 <div class="pricing-tier">
                     <div class="tier-name">Free</div>
                     <div class="tier-price">$0<span>/mo</span></div>
-                    <p class="tier-desc">50 Daily Credits<br>Standard Resolution</p>
+                    <ul class="tier-features-list">
+                        <li>50 Daily Free Credits</li>
+                        <li>Standard Resolution Exports</li>
+                        <li>Access to Yume Studio</li>
+                        <li>Private Library Access</li>
+                        <li>Community Showcase Access</li>
+                    </ul>
                     <button class="tier-btn" data-landing-create>Start Free</button>
                 </div>
                 <div class="pricing-tier">
                     <div class="tier-name">Creator</div>
                     <div class="tier-price">$5<span>/mo</span></div>
-                    <p class="tier-desc">300 Daily Credits<br>High Resolution</p>
+                    <ul class="tier-features-list">
+                        <li>300 Daily Fast Credits</li>
+                        <li>High Resolution Exports</li>
+                        <li>Advanced Prompt Tuning</li>
+                        <li>1-Click Community Remixing</li>
+                        <li>Image to Image Generation</li>
+                    </ul>
                     <button class="tier-btn" data-landing-create>Upgrade</button>
                 </div>
                 <div class="pricing-tier popular">
                     <div class="tier-name">Pro</div>
                     <div class="tier-price">$12<span>/mo</span></div>
-                    <p class="tier-desc">Unlimited Fast Credits<br>4K Upscaling</p>
+                    <ul class="tier-features-list">
+                        <li>Unlimited Fast Credits</li>
+                        <li>4K Ultra HD Upscaling</li>
+                        <li>FLUX.2 PRO Engine Access</li>
+                        <li>Priority Generation Queue</li>
+                        <li>Commercial Rights Included</li>
+                        <li>Custom Aspect Ratios</li>
+                    </ul>
                     <button class="tier-btn" data-landing-create>Go Pro</button>
                 </div>
                 <div class="pricing-tier">
                     <div class="tier-name">Studio</div>
                     <div class="tier-price">$29<span>/mo</span></div>
-                    <p class="tier-desc">Commercial Rights<br>Priority Generation Queue</p>
+                    <ul class="tier-features-list">
+                        <li>Dedicated GPU Instances</li>
+                        <li>Enterprise API Access</li>
+                        <li>Team Collaboration Tools</li>
+                        <li>White-label Generation</li>
+                        <li>Unlimited 4K Upscaling</li>
+                        <li>Dedicated Account Support</li>
+                    </ul>
                     <button class="tier-btn" data-landing-create>Get Studio</button>
                 </div>
             </div>

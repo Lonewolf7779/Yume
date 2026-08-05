@@ -1169,12 +1169,29 @@ body {
     color: var(--secondary-text);
 }
 
-.tier-desc {
-    font-size: 16px;
-    color: var(--secondary-text);
-    margin-bottom: 24px;
-    line-height: 1.5;
+.tier-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     flex-grow: 1;
+}
+
+.tier-features-list li {
+    font-size: 15px;
+    color: var(--secondary-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.4;
+}
+
+.tier-features-list li::before {
+    content: '✦';
+    color: var(--primary-pink);
+    font-size: 12px;
 }
 
 .tier-btn {
@@ -1318,11 +1335,11 @@ body {
 
 .footer-logo {
     font-family: 'Urbanist', sans-serif;
-    font-size: 84px;
+    font-size: 42px;
     font-weight: 800;
     color: #18181B;
     display: inline-block;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
     letter-spacing: -0.03em;
 }
 
@@ -1331,25 +1348,25 @@ body {
 }
 
 .footer-tagline {
-    font-size: 42px;
+    font-size: 21px;
     color: var(--secondary-text);
-    max-width: 960px;
+    max-width: 480px;
     line-height: 1.6;
 }
 
 .footer-links-col h4 {
-    font-size: 42px;
+    font-size: 21px;
     font-weight: 700;
     color: var(--dark-color);
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .footer-links-col a {
     display: block;
     color: var(--secondary-text);
     text-decoration: none;
-    font-size: 42px;
-    margin-bottom: 36px;
+    font-size: 21px;
+    margin-bottom: 18px;
     transition: var(--transition);
 }
 
@@ -1360,10 +1377,10 @@ body {
 .footer-bottom {
     max-width: 1280px;
     margin: 0 auto;
-    padding-top: 96px;
+    padding-top: 48px;
     border-top: 1px solid var(--border-color);
     text-align: center;
-    font-size: 39px;
+    font-size: 20px;
     color: var(--secondary-text);
 }
 
