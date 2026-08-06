@@ -7,11 +7,7 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import authRouter from './routes/auth.js';
-import protectedRouter from './routes/protected.js';
 import generationsRouter from './routes/generations.js';
-import adminRouter from './routes/admin.js';
-import uploadsRouter from './routes/uploads.js';
 import { MemoryPgPool } from './db/memoryFallback.js';
 
 dotenv.config();
@@ -84,11 +80,7 @@ app.use(
   })
 );
 
-app.use('/api/auth', authRouter);
-app.use('/api', protectedRouter);
 app.use('/api/generations', generationsRouter);
-app.use('/api/admin', adminRouter);
-app.use('/api/uploads', uploadsRouter);
 
 app.get('/api/health', async (req, res) => {
   try {
@@ -116,9 +108,7 @@ const repoRoot = path.resolve(__dirname, '../..');
 app.use('/img', express.static(path.join(repoRoot, 'img'), { etag: false, maxAge: 0 }));
 app.use(express.static(repoRoot, { etag: false, maxAge: 0 }));
 
-app.get(['/landing', '/landing.html'], (req, res) => {
-  res.redirect('/');
-});
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(repoRoot, 'index.html'));
